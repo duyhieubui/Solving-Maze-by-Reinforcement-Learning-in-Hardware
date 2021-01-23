@@ -1,0 +1,32 @@
+[
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~sloving_maze_by_RL|sloving_maze_by_RL>io_Q_value",
+    "sources":[
+      "~sloving_maze_by_RL|sloving_maze_by_RL>io_write_data_into_a_txtfile",
+      "~sloving_maze_by_RL|sloving_maze_by_RL>io_act_read"
+    ]
+  },
+  {
+    "class":"logger.LogLevelAnnotation",
+    "globalLogLevel":{
+      
+    }
+  },
+  {
+    "class":"firrtl.options.TargetDirAnnotation",
+    "directory":"test_run_dir/solvingMazeTester1165652342"
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.LowFirrtlEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"test_run_dir/solvingMazeTester1165652342"
+  },
+  {
+    "class":"firrtl.options.OutputAnnotationFileAnnotation",
+    "file":"sloving_maze_by_RL"
+  }
+]

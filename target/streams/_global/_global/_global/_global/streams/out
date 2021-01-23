@@ -1,0 +1,97 @@
+[debug] [watch] [waveform / Compile / run] Found inputs: C:\Users\leduc\waveform\*.{java,scala},C:\Users\leduc\waveform\src\main\java\**\*.{java,scala},C:\Users\leduc\waveform\src\main\resources\**\*,C:\Users\leduc\waveform\src\main\scala\**\*.{java,scala},C:\Users\leduc\waveform\src\main\scala-2.11\**\*.{java,scala}
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Vu.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Vu.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Vu.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Vu.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Vu.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Vu.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Block123.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Block123.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Block123.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Block123.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Block123.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Block123.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\ActionBlock.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Action_State.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Action_State.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
+[debug] waveform / Compile / run - Accepted event for C:\Users\leduc\waveform\src\main\scala\Blocks.scala
+[debug] Received Update(C:\Users\leduc\waveform\src\main\scala\Blocks.scala,FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false),FileAttributes(isDirectory = false, isOther = false,isRegularFile = true, isSymbolicLink = false))
