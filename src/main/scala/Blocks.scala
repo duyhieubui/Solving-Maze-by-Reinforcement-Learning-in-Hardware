@@ -12,7 +12,7 @@ class Agent extends Module{
     val done_learning=Output(Bool())
     val load_new_state=Input(Bool())
     val step=Output(UInt(4.W))
-    val exploit=Input(Bool())
+    //val exploit=Input(Bool())
     val t=Output(Bool())    // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
     // to reset the current state to the initial state
   })
@@ -40,11 +40,7 @@ class Agent extends Module{
       state := io.new_state
       io.done_learning := false.B
       step:=step+1.U
-      when(step===15.U){
-        step:=0.U
-      }.elsewhen(io.exploit){
-        step:=0.U
-      }
+   
     }
   }
   // check when to stop training
