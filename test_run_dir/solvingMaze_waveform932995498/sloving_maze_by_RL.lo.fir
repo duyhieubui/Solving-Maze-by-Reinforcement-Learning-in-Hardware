@@ -9,56 +9,56 @@ circuit sloving_maze_by_RL :
     output io_x : UInt<3>
     output io_y : UInt<3>
     output io_state : UInt<6>
-    output io_episode : UInt<9>
+    output io_episode : UInt<10>
     output io_done_learning : UInt<1>
     input io_load_new_state : UInt<1>
     output io_step : UInt<4>
+    input io_exploit : UInt<1>
     output io_t : UInt<1>
   
     reg ROW : UInt<3>, clock with :
-      reset => (UInt<1>("h0"), ROW) @[Blocks.scala 18:18]
+      reset => (UInt<1>("h0"), ROW) @[Blocks.scala 19:18]
     reg COL : UInt<3>, clock with :
-      reset => (UInt<1>("h0"), COL) @[Blocks.scala 19:18]
+      reset => (UInt<1>("h0"), COL) @[Blocks.scala 20:18]
     reg state : UInt<6>, clock with :
-      reset => (UInt<1>("h0"), state) @[Blocks.scala 20:20]
-    reg episode : UInt<9>, clock with :
-      reset => (UInt<1>("h0"), episode) @[Blocks.scala 21:22]
-    node start_again = eq(state, UInt<5>("h18")) @[Blocks.scala 22:24]
+      reset => (UInt<1>("h0"), state) @[Blocks.scala 21:20]
+    reg episode : UInt<10>, clock with :
+      reset => (UInt<1>("h0"), episode) @[Blocks.scala 22:22]
+    node start_again = eq(state, UInt<5>("h18")) @[Blocks.scala 23:24]
     reg step : UInt<4>, clock with :
-      reset => (UInt<1>("h0"), step) @[Blocks.scala 23:21]
+      reset => (UInt<1>("h0"), step) @[Blocks.scala 24:21]
     node t = eq(step, UInt<4>("hf")) @[Blocks.scala 28:14]
     node iterate = or(start_again, t) @[Blocks.scala 29:26]
     node _T = eq(iterate, UInt<1>("h1")) @[Blocks.scala 32:15]
     node _T_1 = add(episode, UInt<1>("h1")) @[Blocks.scala 34:21]
     node _T_2 = tail(_T_1, 1) @[Blocks.scala 34:21]
-    node _T_3 = eq(step, UInt<4>("hf")) @[Blocks.scala 35:14]
-    node _GEN_0 = mux(_T_3, UInt<1>("h0"), step) @[Blocks.scala 35:22]
-    node _T_4 = add(step, UInt<1>("h1")) @[Blocks.scala 42:17]
-    node _T_5 = tail(_T_4, 1) @[Blocks.scala 42:17]
-    node _T_6 = eq(step, UInt<4>("hf")) @[Blocks.scala 43:16]
-    node _GEN_1 = mux(_T_6, UInt<1>("h0"), _T_5) @[Blocks.scala 43:24]
+    node _T_3 = add(step, UInt<1>("h1")) @[Blocks.scala 42:17]
+    node _T_4 = tail(_T_3, 1) @[Blocks.scala 42:17]
+    node _T_5 = eq(step, UInt<4>("hf")) @[Blocks.scala 43:16]
+    node _GEN_0 = mux(io_exploit, UInt<1>("h0"), _T_4) @[Blocks.scala 45:29]
+    node _GEN_1 = mux(_T_5, UInt<1>("h0"), _GEN_0) @[Blocks.scala 43:24]
     node _GEN_2 = mux(io_load_new_state, io_new_state, state) @[Blocks.scala 39:28]
     node _GEN_3 = mux(io_load_new_state, _GEN_1, step) @[Blocks.scala 39:28]
     node _GEN_4 = mux(_T, UInt<1>("h0"), _GEN_2) @[Blocks.scala 32:25]
     node _GEN_5 = mux(_T, _T_2, episode) @[Blocks.scala 32:25]
-    node _GEN_6 = mux(_T, _GEN_0, _GEN_3) @[Blocks.scala 32:25]
-    node _T_7 = eq(episode, UInt<9>("h12c")) @[Blocks.scala 49:15]
-    node _GEN_7 = mux(_T_7, UInt<1>("h1"), UInt<1>("h0")) @[Blocks.scala 49:24]
-    node _T_8 = rem(state, COL) @[Blocks.scala 55:14]
-    node _T_9 = div(state, COL) @[Blocks.scala 56:14]
+    node _GEN_6 = mux(_T, UInt<1>("h0"), _GEN_3) @[Blocks.scala 32:25]
+    node _T_6 = eq(episode, UInt<9>("h12c")) @[Blocks.scala 51:15]
+    node _GEN_7 = mux(_T_6, UInt<1>("h1"), UInt<1>("h0")) @[Blocks.scala 51:24]
+    node _T_7 = rem(state, COL) @[Blocks.scala 57:14]
+    node _T_8 = div(state, COL) @[Blocks.scala 58:14]
     io_iterate <= iterate @[Blocks.scala 30:13]
-    io_x <= _T_8 @[Blocks.scala 55:7]
-    io_y <= bits(_T_9, 2, 0) @[Blocks.scala 56:7]
-    io_state <= state @[Blocks.scala 57:11]
-    io_episode <= episode @[Blocks.scala 58:13]
-    io_done_learning <= _GEN_7 @[Blocks.scala 41:24 Blocks.scala 50:21 Blocks.scala 52:21]
-    io_step <= step @[Blocks.scala 59:10]
+    io_x <= _T_7 @[Blocks.scala 57:7]
+    io_y <= bits(_T_8, 2, 0) @[Blocks.scala 58:7]
+    io_state <= state @[Blocks.scala 59:11]
+    io_episode <= episode @[Blocks.scala 60:13]
+    io_done_learning <= _GEN_7 @[Blocks.scala 41:24 Blocks.scala 52:21 Blocks.scala 54:21]
+    io_step <= step @[Blocks.scala 61:10]
     io_t <= t @[Blocks.scala 31:7]
     ROW <= mux(reset, UInt<3>("h0"), io_ROW) @[Blocks.scala 26:6]
     COL <= mux(reset, UInt<3>("h0"), io_COL) @[Blocks.scala 27:6]
     state <= mux(reset, UInt<6>("h0"), _GEN_4) @[Blocks.scala 33:10 Blocks.scala 40:13]
-    episode <= mux(reset, UInt<9>("h0"), _GEN_5) @[Blocks.scala 34:12]
-    step <= mux(reset, UInt<4>("h0"), _GEN_6) @[Blocks.scala 36:11 Blocks.scala 42:11 Blocks.scala 44:13]
+    episode <= mux(reset, UInt<10>("h0"), _GEN_5) @[Blocks.scala 34:12]
+    step <= mux(reset, UInt<4>("h0"), _GEN_6) @[Blocks.scala 36:11 Blocks.scala 42:11 Blocks.scala 44:13 Blocks.scala 46:13]
 
   module Action_FMS :
     input clock : Clock
@@ -68,6 +68,7 @@ circuit sloving_maze_by_RL :
     input io_validAction : UInt<1>
     output io_move_to_confirming_Reward : UInt<1>
     output io_keep_action : UInt<1>
+    output io_generate_rand2 : UInt<1>
   
     reg action_FMS : UInt<3>, clock with :
       reset => (UInt<1>("h0"), action_FMS) @[Action and ActionFMS.scala 14:27]
@@ -79,30 +80,38 @@ circuit sloving_maze_by_RL :
     node _T_4 = eq(UInt<3>("h4"), action_FMS) @[Conditional.scala 37:30]
     node _GEN_1 = mux(io_validAction, UInt<1>("h1"), UInt<1>("h0")) @[Action and ActionFMS.scala 40:29]
     node _GEN_2 = mux(io_validAction, UInt<3>("h4"), UInt<3>("h0")) @[Action and ActionFMS.scala 40:29]
-    node _GEN_3 = mux(_T_4, _GEN_1, UInt<1>("h0")) @[Conditional.scala 39:67]
-    node _GEN_4 = mux(_T_4, _GEN_2, action_FMS) @[Conditional.scala 39:67]
-    node _GEN_5 = mux(_T_3, UInt<3>("h4"), _GEN_4) @[Conditional.scala 39:67]
-    node _GEN_6 = mux(_T_3, UInt<1>("h0"), _GEN_3) @[Conditional.scala 39:67]
-    node _GEN_7 = mux(_T_2, UInt<3>("h3"), _GEN_5) @[Conditional.scala 39:67]
-    node _GEN_8 = mux(_T_2, UInt<1>("h0"), _GEN_6) @[Conditional.scala 39:67]
-    node _GEN_9 = mux(_T_1, UInt<3>("h3"), _GEN_7) @[Conditional.scala 39:67]
-    node _GEN_10 = mux(_T_1, UInt<1>("h0"), _GEN_8) @[Conditional.scala 39:67]
-    node _GEN_11 = mux(_T, UInt<1>("h0"), UInt<1>("h1")) @[Conditional.scala 40:58]
-    node _GEN_12 = mux(_T, _GEN_0, _GEN_9) @[Conditional.scala 40:58]
-    node _GEN_13 = mux(_T, UInt<1>("h0"), _GEN_10) @[Conditional.scala 40:58]
-    node _GEN_14 = mux(io_reset_Action_fms, UInt<3>("h0"), _GEN_12) @[Action and ActionFMS.scala 18:29]
-    node _GEN_15 = mux(io_reset_Action_fms, UInt<1>("h1"), _GEN_11) @[Action and ActionFMS.scala 18:29]
-    node _GEN_16 = mux(io_reset_Action_fms, UInt<1>("h0"), _GEN_13) @[Action and ActionFMS.scala 18:29]
-    io_move_to_confirming_Reward <= _GEN_16 @[Action and ActionFMS.scala 15:32 Action and ActionFMS.scala 41:40]
-    io_keep_action <= _GEN_15 @[Action and ActionFMS.scala 17:17 Action and ActionFMS.scala 23:23]
-    action_FMS <= mux(reset, UInt<3>("h0"), _GEN_14) @[Action and ActionFMS.scala 19:16 Action and ActionFMS.scala 25:22 Action and ActionFMS.scala 27:22 Action and ActionFMS.scala 31:20 Action and ActionFMS.scala 34:20 Action and ActionFMS.scala 37:20 Action and ActionFMS.scala 42:22 Action and ActionFMS.scala 44:22]
+    node _GEN_3 = mux(io_validAction, UInt<1>("h0"), UInt<1>("h1")) @[Action and ActionFMS.scala 40:29]
+    node _GEN_4 = mux(_T_4, _GEN_1, UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_5 = mux(_T_4, _GEN_2, action_FMS) @[Conditional.scala 39:67]
+    node _GEN_6 = mux(_T_4, _GEN_3, UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_7 = mux(_T_3, UInt<3>("h4"), _GEN_5) @[Conditional.scala 39:67]
+    node _GEN_8 = mux(_T_3, UInt<1>("h0"), _GEN_4) @[Conditional.scala 39:67]
+    node _GEN_9 = mux(_T_3, UInt<1>("h0"), _GEN_6) @[Conditional.scala 39:67]
+    node _GEN_10 = mux(_T_2, UInt<3>("h3"), _GEN_7) @[Conditional.scala 39:67]
+    node _GEN_11 = mux(_T_2, UInt<1>("h0"), _GEN_8) @[Conditional.scala 39:67]
+    node _GEN_12 = mux(_T_2, UInt<1>("h0"), _GEN_9) @[Conditional.scala 39:67]
+    node _GEN_13 = mux(_T_1, UInt<3>("h3"), _GEN_10) @[Conditional.scala 39:67]
+    node _GEN_14 = mux(_T_1, UInt<1>("h0"), _GEN_11) @[Conditional.scala 39:67]
+    node _GEN_15 = mux(_T_1, UInt<1>("h0"), _GEN_12) @[Conditional.scala 39:67]
+    node _GEN_16 = mux(_T, UInt<1>("h0"), UInt<1>("h1")) @[Conditional.scala 40:58]
+    node _GEN_17 = mux(_T, _GEN_0, _GEN_13) @[Conditional.scala 40:58]
+    node _GEN_18 = mux(_T, UInt<1>("h0"), _GEN_14) @[Conditional.scala 40:58]
+    node _GEN_19 = mux(_T, UInt<1>("h0"), _GEN_15) @[Conditional.scala 40:58]
+    node _GEN_20 = mux(io_reset_Action_fms, UInt<3>("h0"), _GEN_17) @[Action and ActionFMS.scala 18:29]
+    node _GEN_21 = mux(io_reset_Action_fms, UInt<1>("h1"), _GEN_16) @[Action and ActionFMS.scala 18:29]
+    node _GEN_22 = mux(io_reset_Action_fms, UInt<1>("h0"), _GEN_18) @[Action and ActionFMS.scala 18:29]
+    node _GEN_23 = mux(io_reset_Action_fms, UInt<1>("h0"), _GEN_19) @[Action and ActionFMS.scala 18:29]
+    io_move_to_confirming_Reward <= _GEN_22 @[Action and ActionFMS.scala 15:32 Action and ActionFMS.scala 41:40]
+    io_keep_action <= _GEN_21 @[Action and ActionFMS.scala 17:17 Action and ActionFMS.scala 23:23]
+    io_generate_rand2 <= _GEN_23 @[Action and ActionFMS.scala 16:20 Action and ActionFMS.scala 45:28]
+    action_FMS <= mux(reset, UInt<3>("h0"), _GEN_20) @[Action and ActionFMS.scala 19:16 Action and ActionFMS.scala 25:22 Action and ActionFMS.scala 27:22 Action and ActionFMS.scala 31:20 Action and ActionFMS.scala 34:20 Action and ActionFMS.scala 37:20 Action and ActionFMS.scala 42:22 Action and ActionFMS.scala 44:22]
 
   module Action :
     input clock : Clock
     input reset : UInt<1>
     input io_x : UInt<3>
     input io_y : UInt<3>
-    input io_rand2 : UInt<10>
+    input io_rand2 : UInt<16>
     output io_new_state : UInt<6>
     output io_act : UInt<2>
     input io_action_at_Qmax : UInt<2>
@@ -121,18 +130,18 @@ circuit sloving_maze_by_RL :
     reg action_at_Qmax : UInt<2>, clock with :
       reset => (UInt<1>("h0"), action_at_Qmax) @[Action and ActionFMS.scala 68:29]
     node _T = eq(io_keep_action, UInt<1>("h0")) @[Action and ActionFMS.scala 71:22]
-    node _T_1 = leq(io_rand2, UInt<8>("hfa")) @[Action and ActionFMS.scala 75:21]
-    node _T_2 = lt(UInt<8>("hfa"), io_rand2) @[Action and ActionFMS.scala 77:25]
-    node _T_3 = leq(io_rand2, UInt<9>("h1f4")) @[Action and ActionFMS.scala 77:50]
-    node _T_4 = eq(_T_3, UInt<1>("h1")) @[Action and ActionFMS.scala 77:60]
-    node _T_5 = and(_T_2, _T_4) @[Action and ActionFMS.scala 77:37]
-    node _T_6 = lt(UInt<9>("h1f4"), io_rand2) @[Action and ActionFMS.scala 79:25]
-    node _T_7 = leq(io_rand2, UInt<10>("h2ee")) @[Action and ActionFMS.scala 79:50]
-    node _T_8 = eq(_T_7, UInt<1>("h1")) @[Action and ActionFMS.scala 79:60]
-    node _T_9 = and(_T_6, _T_8) @[Action and ActionFMS.scala 79:37]
-    node _GEN_0 = mux(_T_9, UInt<2>("h2"), UInt<2>("h3")) @[Action and ActionFMS.scala 79:72]
-    node _GEN_1 = mux(_T_5, UInt<1>("h1"), _GEN_0) @[Action and ActionFMS.scala 77:72]
-    node _GEN_2 = mux(_T_1, UInt<1>("h0"), _GEN_1) @[Action and ActionFMS.scala 75:31]
+    node _T_1 = leq(io_rand2, UInt<14>("h3fff")) @[Action and ActionFMS.scala 75:21]
+    node _T_2 = lt(UInt<14>("h3fff"), io_rand2) @[Action and ActionFMS.scala 77:27]
+    node _T_3 = leq(io_rand2, UInt<15>("h7fff")) @[Action and ActionFMS.scala 77:52]
+    node _T_4 = eq(_T_3, UInt<1>("h1")) @[Action and ActionFMS.scala 77:64]
+    node _T_5 = and(_T_2, _T_4) @[Action and ActionFMS.scala 77:39]
+    node _T_6 = lt(UInt<15>("h7fff"), io_rand2) @[Action and ActionFMS.scala 79:27]
+    node _T_7 = leq(io_rand2, UInt<16>("hbffe")) @[Action and ActionFMS.scala 79:52]
+    node _T_8 = eq(_T_7, UInt<1>("h1")) @[Action and ActionFMS.scala 79:64]
+    node _T_9 = and(_T_6, _T_8) @[Action and ActionFMS.scala 79:39]
+    node _GEN_0 = mux(_T_9, UInt<2>("h2"), UInt<2>("h3")) @[Action and ActionFMS.scala 79:76]
+    node _GEN_1 = mux(_T_5, UInt<1>("h1"), _GEN_0) @[Action and ActionFMS.scala 77:76]
+    node _GEN_2 = mux(_T_1, UInt<1>("h0"), _GEN_1) @[Action and ActionFMS.scala 75:32]
     node _GEN_3 = mux(io_exploit, action_at_Qmax, _GEN_2) @[Action and ActionFMS.scala 72:21]
     node _GEN_4 = mux(_T, _GEN_3, act) @[Action and ActionFMS.scala 71:33]
     node _T_10 = eq(act, UInt<1>("h0")) @[Action and ActionFMS.scala 86:12]
@@ -159,18 +168,18 @@ circuit sloving_maze_by_RL :
     node _T_25 = or(_T_23, _T_24) @[Action and ActionFMS.scala 99:39]
     node _T_26 = eq(y_new, UInt<3>("h5")) @[Action and ActionFMS.scala 99:65]
     node _T_27 = or(_T_25, _T_26) @[Action and ActionFMS.scala 99:56]
-    node _T_28 = mul(UInt<3>("h5"), y_new) @[Action and ActionFMS.scala 103:25]
-    node _T_29 = add(x_new, _T_28) @[Action and ActionFMS.scala 103:21]
-    node _T_30 = tail(_T_29, 1) @[Action and ActionFMS.scala 103:21]
+    node _T_28 = mul(UInt<3>("h5"), y_new) @[Action and ActionFMS.scala 102:25]
+    node _T_29 = add(x_new, _T_28) @[Action and ActionFMS.scala 102:21]
+    node _T_30 = tail(_T_29, 1) @[Action and ActionFMS.scala 102:21]
     node _GEN_11 = mux(_T_27, UInt<1>("h0"), UInt<1>("h1")) @[Action and ActionFMS.scala 99:73]
     node _GEN_12 = mux(_T_27, new_state, _T_30) @[Action and ActionFMS.scala 99:73]
-    io_new_state <= new_state @[Action and ActionFMS.scala 107:15]
-    io_act <= act @[Action and ActionFMS.scala 106:9]
-    io_validAction <= _GEN_11 @[Action and ActionFMS.scala 100:19 Action and ActionFMS.scala 104:19]
+    io_new_state <= new_state @[Action and ActionFMS.scala 106:15]
+    io_act <= act @[Action and ActionFMS.scala 105:9]
+    io_validAction <= _GEN_11 @[Action and ActionFMS.scala 100:19 Action and ActionFMS.scala 103:19]
     act <= mux(reset, UInt<2>("h0"), _GEN_4) @[Action and ActionFMS.scala 73:11 Action and ActionFMS.scala 76:13 Action and ActionFMS.scala 78:13 Action and ActionFMS.scala 80:13 Action and ActionFMS.scala 82:13]
     x_new <= mux(reset, UInt<3>("h0"), _GEN_10) @[Action and ActionFMS.scala 88:11 Action and ActionFMS.scala 90:11 Action and ActionFMS.scala 94:11 Action and ActionFMS.scala 96:11]
     y_new <= mux(reset, UInt<3>("h0"), _GEN_9) @[Action and ActionFMS.scala 87:11 Action and ActionFMS.scala 91:11 Action and ActionFMS.scala 93:11 Action and ActionFMS.scala 97:11]
-    new_state <= mux(reset, UInt<6>("h0"), _GEN_12) @[Action and ActionFMS.scala 103:14]
+    new_state <= mux(reset, UInt<6>("h0"), _GEN_12) @[Action and ActionFMS.scala 102:14]
     action_at_Qmax <= mux(reset, UInt<2>("h0"), io_action_at_Qmax) @[Action and ActionFMS.scala 70:17]
 
   module MaxPeriodFibonacciLFSR :
@@ -187,6 +196,12 @@ circuit sloving_maze_by_RL :
     input io_seed_bits_7 : UInt<1>
     input io_seed_bits_8 : UInt<1>
     input io_seed_bits_9 : UInt<1>
+    input io_seed_bits_10 : UInt<1>
+    input io_seed_bits_11 : UInt<1>
+    input io_seed_bits_12 : UInt<1>
+    input io_seed_bits_13 : UInt<1>
+    input io_seed_bits_14 : UInt<1>
+    input io_seed_bits_15 : UInt<1>
     input io_increment : UInt<1>
     output io_out_0 : UInt<1>
     output io_out_1 : UInt<1>
@@ -198,6 +213,12 @@ circuit sloving_maze_by_RL :
     output io_out_7 : UInt<1>
     output io_out_8 : UInt<1>
     output io_out_9 : UInt<1>
+    output io_out_10 : UInt<1>
+    output io_out_11 : UInt<1>
+    output io_out_12 : UInt<1>
+    output io_out_13 : UInt<1>
+    output io_out_14 : UInt<1>
+    output io_out_15 : UInt<1>
   
     reg state_0 : UInt<1>, clock with :
       reset => (UInt<1>("h0"), state_0) @[PRNG.scala 47:50]
@@ -219,8 +240,22 @@ circuit sloving_maze_by_RL :
       reset => (UInt<1>("h0"), state_8) @[PRNG.scala 47:50]
     reg state_9 : UInt<1>, clock with :
       reset => (UInt<1>("h0"), state_9) @[PRNG.scala 47:50]
-    node _T_1 = xor(state_9, state_6) @[LFSR.scala 15:41]
-    node _GEN_0 = mux(io_increment, _T_1, state_0) @[PRNG.scala 61:23]
+    reg state_10 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_10) @[PRNG.scala 47:50]
+    reg state_11 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_11) @[PRNG.scala 47:50]
+    reg state_12 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_12) @[PRNG.scala 47:50]
+    reg state_13 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_13) @[PRNG.scala 47:50]
+    reg state_14 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_14) @[PRNG.scala 47:50]
+    reg state_15 : UInt<1>, clock with :
+      reset => (UInt<1>("h0"), state_15) @[PRNG.scala 47:50]
+    node _T_1 = xor(state_15, state_13) @[LFSR.scala 15:41]
+    node _T_2 = xor(_T_1, state_12) @[LFSR.scala 15:41]
+    node _T_3 = xor(_T_2, state_10) @[LFSR.scala 15:41]
+    node _GEN_0 = mux(io_increment, _T_3, state_0) @[PRNG.scala 61:23]
     node _GEN_1 = mux(io_increment, state_0, state_1) @[PRNG.scala 61:23]
     node _GEN_2 = mux(io_increment, state_1, state_2) @[PRNG.scala 61:23]
     node _GEN_3 = mux(io_increment, state_2, state_3) @[PRNG.scala 61:23]
@@ -230,16 +265,28 @@ circuit sloving_maze_by_RL :
     node _GEN_7 = mux(io_increment, state_6, state_7) @[PRNG.scala 61:23]
     node _GEN_8 = mux(io_increment, state_7, state_8) @[PRNG.scala 61:23]
     node _GEN_9 = mux(io_increment, state_8, state_9) @[PRNG.scala 61:23]
-    node _GEN_10 = mux(io_seed_valid, io_seed_bits_0, _GEN_0) @[PRNG.scala 65:25]
-    node _GEN_11 = mux(io_seed_valid, io_seed_bits_1, _GEN_1) @[PRNG.scala 65:25]
-    node _GEN_12 = mux(io_seed_valid, io_seed_bits_2, _GEN_2) @[PRNG.scala 65:25]
-    node _GEN_13 = mux(io_seed_valid, io_seed_bits_3, _GEN_3) @[PRNG.scala 65:25]
-    node _GEN_14 = mux(io_seed_valid, io_seed_bits_4, _GEN_4) @[PRNG.scala 65:25]
-    node _GEN_15 = mux(io_seed_valid, io_seed_bits_5, _GEN_5) @[PRNG.scala 65:25]
-    node _GEN_16 = mux(io_seed_valid, io_seed_bits_6, _GEN_6) @[PRNG.scala 65:25]
-    node _GEN_17 = mux(io_seed_valid, io_seed_bits_7, _GEN_7) @[PRNG.scala 65:25]
-    node _GEN_18 = mux(io_seed_valid, io_seed_bits_8, _GEN_8) @[PRNG.scala 65:25]
-    node _GEN_19 = mux(io_seed_valid, io_seed_bits_9, _GEN_9) @[PRNG.scala 65:25]
+    node _GEN_10 = mux(io_increment, state_9, state_10) @[PRNG.scala 61:23]
+    node _GEN_11 = mux(io_increment, state_10, state_11) @[PRNG.scala 61:23]
+    node _GEN_12 = mux(io_increment, state_11, state_12) @[PRNG.scala 61:23]
+    node _GEN_13 = mux(io_increment, state_12, state_13) @[PRNG.scala 61:23]
+    node _GEN_14 = mux(io_increment, state_13, state_14) @[PRNG.scala 61:23]
+    node _GEN_15 = mux(io_increment, state_14, state_15) @[PRNG.scala 61:23]
+    node _GEN_16 = mux(io_seed_valid, io_seed_bits_0, _GEN_0) @[PRNG.scala 65:25]
+    node _GEN_17 = mux(io_seed_valid, io_seed_bits_1, _GEN_1) @[PRNG.scala 65:25]
+    node _GEN_18 = mux(io_seed_valid, io_seed_bits_2, _GEN_2) @[PRNG.scala 65:25]
+    node _GEN_19 = mux(io_seed_valid, io_seed_bits_3, _GEN_3) @[PRNG.scala 65:25]
+    node _GEN_20 = mux(io_seed_valid, io_seed_bits_4, _GEN_4) @[PRNG.scala 65:25]
+    node _GEN_21 = mux(io_seed_valid, io_seed_bits_5, _GEN_5) @[PRNG.scala 65:25]
+    node _GEN_22 = mux(io_seed_valid, io_seed_bits_6, _GEN_6) @[PRNG.scala 65:25]
+    node _GEN_23 = mux(io_seed_valid, io_seed_bits_7, _GEN_7) @[PRNG.scala 65:25]
+    node _GEN_24 = mux(io_seed_valid, io_seed_bits_8, _GEN_8) @[PRNG.scala 65:25]
+    node _GEN_25 = mux(io_seed_valid, io_seed_bits_9, _GEN_9) @[PRNG.scala 65:25]
+    node _GEN_26 = mux(io_seed_valid, io_seed_bits_10, _GEN_10) @[PRNG.scala 65:25]
+    node _GEN_27 = mux(io_seed_valid, io_seed_bits_11, _GEN_11) @[PRNG.scala 65:25]
+    node _GEN_28 = mux(io_seed_valid, io_seed_bits_12, _GEN_12) @[PRNG.scala 65:25]
+    node _GEN_29 = mux(io_seed_valid, io_seed_bits_13, _GEN_13) @[PRNG.scala 65:25]
+    node _GEN_30 = mux(io_seed_valid, io_seed_bits_14, _GEN_14) @[PRNG.scala 65:25]
+    node _GEN_31 = mux(io_seed_valid, io_seed_bits_15, _GEN_15) @[PRNG.scala 65:25]
     node _T__0 = UInt<1>("h1") @[PRNG.scala 38:28 PRNG.scala 38:28]
     node _T__1 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
     node _T__2 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
@@ -250,6 +297,12 @@ circuit sloving_maze_by_RL :
     node _T__7 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
     node _T__8 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
     node _T__9 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__10 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__11 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__12 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__13 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__14 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
+    node _T__15 = UInt<1>("h0") @[PRNG.scala 38:28 PRNG.scala 38:28]
     io_out_0 <= state_0 @[PRNG.scala 69:10]
     io_out_1 <= state_1 @[PRNG.scala 69:10]
     io_out_2 <= state_2 @[PRNG.scala 69:10]
@@ -260,61 +313,71 @@ circuit sloving_maze_by_RL :
     io_out_7 <= state_7 @[PRNG.scala 69:10]
     io_out_8 <= state_8 @[PRNG.scala 69:10]
     io_out_9 <= state_9 @[PRNG.scala 69:10]
-    state_0 <= mux(reset, _T__0, _GEN_10) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_1 <= mux(reset, _T__1, _GEN_11) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_2 <= mux(reset, _T__2, _GEN_12) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_3 <= mux(reset, _T__3, _GEN_13) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_4 <= mux(reset, _T__4, _GEN_14) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_5 <= mux(reset, _T__5, _GEN_15) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_6 <= mux(reset, _T__6, _GEN_16) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_7 <= mux(reset, _T__7, _GEN_17) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_8 <= mux(reset, _T__8, _GEN_18) @[PRNG.scala 62:11 PRNG.scala 66:11]
-    state_9 <= mux(reset, _T__9, _GEN_19) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    io_out_10 <= state_10 @[PRNG.scala 69:10]
+    io_out_11 <= state_11 @[PRNG.scala 69:10]
+    io_out_12 <= state_12 @[PRNG.scala 69:10]
+    io_out_13 <= state_13 @[PRNG.scala 69:10]
+    io_out_14 <= state_14 @[PRNG.scala 69:10]
+    io_out_15 <= state_15 @[PRNG.scala 69:10]
+    state_0 <= mux(reset, _T__0, _GEN_16) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_1 <= mux(reset, _T__1, _GEN_17) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_2 <= mux(reset, _T__2, _GEN_18) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_3 <= mux(reset, _T__3, _GEN_19) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_4 <= mux(reset, _T__4, _GEN_20) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_5 <= mux(reset, _T__5, _GEN_21) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_6 <= mux(reset, _T__6, _GEN_22) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_7 <= mux(reset, _T__7, _GEN_23) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_8 <= mux(reset, _T__8, _GEN_24) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_9 <= mux(reset, _T__9, _GEN_25) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_10 <= mux(reset, _T__10, _GEN_26) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_11 <= mux(reset, _T__11, _GEN_27) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_12 <= mux(reset, _T__12, _GEN_28) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_13 <= mux(reset, _T__13, _GEN_29) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_14 <= mux(reset, _T__14, _GEN_30) @[PRNG.scala 62:11 PRNG.scala 66:11]
+    state_15 <= mux(reset, _T__15, _GEN_31) @[PRNG.scala 62:11 PRNG.scala 66:11]
 
   module takingAction :
     input clock : Clock
     input reset : UInt<1>
     input io_x : UInt<3>
     input io_y : UInt<3>
-    input io_episode : UInt<9>
+    input io_episode : UInt<10>
     output io_new_state : UInt<6>
     input io_action_at_Qmax : UInt<2>
     output io_act : UInt<2>
     input io_reset_Action_fms : UInt<1>
     output io_move_to_confirming_Reward : UInt<1>
+    output io_exploit : UInt<1>
   
-    inst action_fms of Action_FMS @[taking_Action.scala 19:24]
-    inst action of Action @[taking_Action.scala 20:20]
+    inst action_fms of Action_FMS @[taking_Action.scala 18:24]
+    inst action of Action @[taking_Action.scala 19:20]
     inst MaxPeriodFibonacciLFSR of MaxPeriodFibonacciLFSR @[PRNG.scala 82:22]
-    inst MaxPeriodFibonacciLFSR_1 of MaxPeriodFibonacciLFSR @[PRNG.scala 82:22]
     reg epsilon : UInt<10>, clock with :
-      reset => (UInt<1>("h0"), epsilon) @[taking_Action.scala 21:24]
-    node _T = mul(io_episode, UInt<5>("h11")) @[taking_Action.scala 24:34]
-    node _T_1 = div(_T, UInt<3>("h5")) @[taking_Action.scala 24:41]
-    node _T_2 = sub(UInt<11>("h400"), _T_1) @[taking_Action.scala 24:21]
-    node _T_3 = tail(_T_2, 1) @[taking_Action.scala 24:21]
+      reset => (UInt<1>("h0"), epsilon) @[taking_Action.scala 20:24]
+    node _T = mul(io_episode, UInt<5>("h11")) @[taking_Action.scala 22:29]
+    node _T_1 = div(_T, UInt<3>("h5")) @[taking_Action.scala 22:34]
+    node _T_2 = sub(UInt<10>("h3ff"), _T_1) @[taking_Action.scala 22:18]
+    node _T_3 = tail(_T_2, 1) @[taking_Action.scala 22:18]
+    node exploit = gt(io_episode, UInt<8>("he6")) @[taking_Action.scala 23:26]
     node _T_4 = cat(MaxPeriodFibonacciLFSR.io_out_1, MaxPeriodFibonacciLFSR.io_out_0) @[PRNG.scala 86:17]
-    node _T_5 = cat(MaxPeriodFibonacciLFSR.io_out_4, MaxPeriodFibonacciLFSR.io_out_3) @[PRNG.scala 86:17]
-    node _T_6 = cat(_T_5, MaxPeriodFibonacciLFSR.io_out_2) @[PRNG.scala 86:17]
-    node _T_7 = cat(_T_6, _T_4) @[PRNG.scala 86:17]
-    node _T_8 = cat(MaxPeriodFibonacciLFSR.io_out_6, MaxPeriodFibonacciLFSR.io_out_5) @[PRNG.scala 86:17]
-    node _T_9 = cat(MaxPeriodFibonacciLFSR.io_out_9, MaxPeriodFibonacciLFSR.io_out_8) @[PRNG.scala 86:17]
-    node _T_10 = cat(_T_9, MaxPeriodFibonacciLFSR.io_out_7) @[PRNG.scala 86:17]
-    node _T_11 = cat(_T_10, _T_8) @[PRNG.scala 86:17]
-    node _T_12 = cat(_T_11, _T_7) @[PRNG.scala 86:17]
-    node exploit = leq(epsilon, _T_12) @[taking_Action.scala 25:23]
-    node _T_13 = cat(MaxPeriodFibonacciLFSR_1.io_out_1, MaxPeriodFibonacciLFSR_1.io_out_0) @[PRNG.scala 86:17]
-    node _T_14 = cat(MaxPeriodFibonacciLFSR_1.io_out_4, MaxPeriodFibonacciLFSR_1.io_out_3) @[PRNG.scala 86:17]
-    node _T_15 = cat(_T_14, MaxPeriodFibonacciLFSR_1.io_out_2) @[PRNG.scala 86:17]
-    node _T_16 = cat(_T_15, _T_13) @[PRNG.scala 86:17]
-    node _T_17 = cat(MaxPeriodFibonacciLFSR_1.io_out_6, MaxPeriodFibonacciLFSR_1.io_out_5) @[PRNG.scala 86:17]
-    node _T_18 = cat(MaxPeriodFibonacciLFSR_1.io_out_9, MaxPeriodFibonacciLFSR_1.io_out_8) @[PRNG.scala 86:17]
-    node _T_19 = cat(_T_18, MaxPeriodFibonacciLFSR_1.io_out_7) @[PRNG.scala 86:17]
-    node _T_20 = cat(_T_19, _T_17) @[PRNG.scala 86:17]
-    node _T_21 = cat(_T_20, _T_16) @[PRNG.scala 86:17]
+    node _T_5 = cat(MaxPeriodFibonacciLFSR.io_out_3, MaxPeriodFibonacciLFSR.io_out_2) @[PRNG.scala 86:17]
+    node _T_6 = cat(_T_5, _T_4) @[PRNG.scala 86:17]
+    node _T_7 = cat(MaxPeriodFibonacciLFSR.io_out_5, MaxPeriodFibonacciLFSR.io_out_4) @[PRNG.scala 86:17]
+    node _T_8 = cat(MaxPeriodFibonacciLFSR.io_out_7, MaxPeriodFibonacciLFSR.io_out_6) @[PRNG.scala 86:17]
+    node _T_9 = cat(_T_8, _T_7) @[PRNG.scala 86:17]
+    node _T_10 = cat(_T_9, _T_6) @[PRNG.scala 86:17]
+    node _T_11 = cat(MaxPeriodFibonacciLFSR.io_out_9, MaxPeriodFibonacciLFSR.io_out_8) @[PRNG.scala 86:17]
+    node _T_12 = cat(MaxPeriodFibonacciLFSR.io_out_11, MaxPeriodFibonacciLFSR.io_out_10) @[PRNG.scala 86:17]
+    node _T_13 = cat(_T_12, _T_11) @[PRNG.scala 86:17]
+    node _T_14 = cat(MaxPeriodFibonacciLFSR.io_out_13, MaxPeriodFibonacciLFSR.io_out_12) @[PRNG.scala 86:17]
+    node _T_15 = cat(MaxPeriodFibonacciLFSR.io_out_15, MaxPeriodFibonacciLFSR.io_out_14) @[PRNG.scala 86:17]
+    node _T_16 = cat(_T_15, _T_14) @[PRNG.scala 86:17]
+    node _T_17 = cat(_T_16, _T_13) @[PRNG.scala 86:17]
+    node _T_18 = cat(_T_17, _T_10) @[PRNG.scala 86:17]
     io_new_state <= action.io_new_state @[taking_Action.scala 40:15]
     io_act <= action.io_act @[taking_Action.scala 39:9]
     io_move_to_confirming_Reward <= action_fms.io_move_to_confirming_Reward @[taking_Action.scala 41:31]
+    io_exploit <= exploit @[taking_Action.scala 24:13]
     action_fms.clock <= clock
     action_fms.reset <= reset
     action_fms.io_reset_Action_fms <= io_reset_Action_fms @[taking_Action.scala 27:33]
@@ -324,11 +387,11 @@ circuit sloving_maze_by_RL :
     action.reset <= reset
     action.io_x <= io_x @[taking_Action.scala 35:14]
     action.io_y <= io_y @[taking_Action.scala 36:14]
-    action.io_rand2 <= _T_21 @[taking_Action.scala 34:18]
+    action.io_rand2 <= _T_18 @[taking_Action.scala 33:18]
     action.io_action_at_Qmax <= io_action_at_Qmax @[taking_Action.scala 37:27]
-    action.io_exploit <= exploit @[taking_Action.scala 33:20]
+    action.io_exploit <= exploit @[taking_Action.scala 32:20]
     action.io_keep_action <= action_fms.io_keep_action @[taking_Action.scala 30:28]
-    epsilon <= mux(reset, UInt<10>("h0"), bits(_T_3, 9, 0)) @[taking_Action.scala 24:11]
+    epsilon <= mux(reset, UInt<10>("h0"), bits(_T_3, 9, 0)) @[taking_Action.scala 22:10]
     MaxPeriodFibonacciLFSR.clock <= clock
     MaxPeriodFibonacciLFSR.reset <= reset
     MaxPeriodFibonacciLFSR.io_seed_valid <= UInt<1>("h0") @[PRNG.scala 83:24]
@@ -342,59 +405,53 @@ circuit sloving_maze_by_RL :
     MaxPeriodFibonacciLFSR.io_seed_bits_7 is invalid
     MaxPeriodFibonacciLFSR.io_seed_bits_8 is invalid
     MaxPeriodFibonacciLFSR.io_seed_bits_9 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_10 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_11 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_12 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_13 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_14 is invalid
+    MaxPeriodFibonacciLFSR.io_seed_bits_15 is invalid
     MaxPeriodFibonacciLFSR.io_increment <= UInt<1>("h1") @[PRNG.scala 85:23]
-    MaxPeriodFibonacciLFSR_1.clock <= clock
-    MaxPeriodFibonacciLFSR_1.reset <= reset
-    MaxPeriodFibonacciLFSR_1.io_seed_valid <= UInt<1>("h0") @[PRNG.scala 83:24]
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_0 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_1 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_2 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_3 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_4 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_5 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_6 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_7 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_8 is invalid
-    MaxPeriodFibonacciLFSR_1.io_seed_bits_9 is invalid
-    MaxPeriodFibonacciLFSR_1.io_increment <= UInt<1>("h1") @[PRNG.scala 85:23]
 
   module Q_function :
     input clock : Clock
     input reset : UInt<1>
-    input io_Q_s_a : SInt<21>
-    input io_Q_prime_max : SInt<21>
-    output io_Q_updated : SInt<21>
+    input io_Q_s_a : SInt<16>
+    input io_Q_prime_max : SInt<16>
+    output io_Q_updated : SInt<16>
     input io_cal : UInt<1>
     input io_reward : SInt<9>
     output io_wrEna : UInt<1>
   
-    reg Q_s_a : SInt<21>, clock with :
-      reset => (UInt<1>("h0"), Q_s_a) @[Q_function.scala 13:20]
-    reg reward : SInt<8>, clock with :
-      reset => (UInt<1>("h0"), reward) @[Q_function.scala 14:21]
-    node _T = add(reward, Q_s_a) @[Q_function.scala 19:31]
-    node _T_1 = tail(_T, 1) @[Q_function.scala 19:31]
-    node _T_2 = asSInt(_T_1) @[Q_function.scala 19:31]
-    node _T_3 = mul(asSInt(UInt<4>("h5")), _T_2) @[Q_function.scala 19:23]
-    node _T_4 = mul(asSInt(UInt<4>("h4")), io_Q_prime_max) @[Q_function.scala 19:43]
-    node _T_5 = add(_T_3, _T_4) @[Q_function.scala 19:39]
-    node _T_6 = tail(_T_5, 1) @[Q_function.scala 19:39]
-    node _T_7 = asSInt(_T_6) @[Q_function.scala 19:39]
-    node _GEN_0 = mux(io_cal, _T_7, asSInt(UInt<1>("h0"))) @[Q_function.scala 18:15]
-    node _GEN_1 = mux(io_cal, UInt<1>("h1"), UInt<1>("h0")) @[Q_function.scala 18:15]
-    io_Q_updated <= asSInt(bits(_GEN_0, 20, 0)) @[Q_function.scala 19:18 Q_function.scala 22:17]
-    io_wrEna <= _GEN_1 @[Q_function.scala 20:13 Q_function.scala 23:13]
-    Q_s_a <= mux(reset, asSInt(UInt<21>("h0")), io_Q_s_a) @[Q_function.scala 15:8]
-    reward <= mux(reset, asSInt(UInt<8>("h0")), asSInt(bits(io_reward, 7, 0))) @[Q_function.scala 17:9]
+    reg Q_s_a : SInt<16>, clock with :
+      reset => (UInt<1>("h0"), Q_s_a) @[Q_function.scala 16:20]
+    reg reward : SInt<9>, clock with :
+      reset => (UInt<1>("h0"), reward) @[Q_function.scala 17:21]
+    node _T = mul(reward, asSInt(UInt<9>("h80"))) @[Q_function.scala 23:33]
+    node _T_1 = add(Q_s_a, _T) @[Q_function.scala 23:26]
+    node _T_2 = tail(_T_1, 1) @[Q_function.scala 23:26]
+    node _T_3 = asSInt(_T_2) @[Q_function.scala 23:26]
+    node _T_4 = div(_T_3, asSInt(UInt<3>("h2"))) @[Q_function.scala 23:40]
+    node _T_5 = mul(io_Q_prime_max, asSInt(UInt<4>("h4"))) @[Q_function.scala 23:61]
+    node _T_6 = div(_T_5, asSInt(UInt<5>("ha"))) @[Q_function.scala 23:65]
+    node _T_7 = add(_T_4, _T_6) @[Q_function.scala 23:45]
+    node _T_8 = tail(_T_7, 1) @[Q_function.scala 23:45]
+    node _T_9 = asSInt(_T_8) @[Q_function.scala 23:45]
+    node _GEN_0 = mux(io_cal, _T_9, asSInt(UInt<1>("h0"))) @[Q_function.scala 22:15]
+    node _GEN_1 = mux(io_cal, UInt<1>("h1"), UInt<1>("h0")) @[Q_function.scala 22:15]
+    io_Q_updated <= asSInt(bits(_GEN_0, 15, 0)) @[Q_function.scala 23:18 Q_function.scala 26:17]
+    io_wrEna <= _GEN_1 @[Q_function.scala 24:13 Q_function.scala 27:13]
+    Q_s_a <= mux(reset, asSInt(UInt<16>("h0")), io_Q_s_a) @[Q_function.scala 18:8]
+    reward <= mux(reset, asSInt(UInt<9>("h0")), io_reward) @[Q_function.scala 20:9]
 
   module Max4 :
     input clock : Clock
     input reset : UInt<1>
-    input io_ins0 : SInt<21>
-    input io_ins1 : SInt<21>
-    input io_ins2 : SInt<21>
-    input io_ins3 : SInt<21>
-    output io_Q_max : SInt<21>
+    input io_ins0 : SInt<16>
+    input io_ins1 : SInt<16>
+    input io_ins2 : SInt<16>
+    input io_ins3 : SInt<16>
+    output io_Q_max : SInt<16>
   
     node ins_0 = io_ins0 @[Q_table.scala 82:15 Q_table.scala 83:9]
     node ins_1 = io_ins1 @[Q_table.scala 82:15 Q_table.scala 84:9]
@@ -411,12 +468,12 @@ circuit sloving_maze_by_RL :
   module Action_at_Qmax :
     input clock : Clock
     input reset : UInt<1>
-    input io_ins0 : SInt<21>
-    input io_ins1 : SInt<21>
-    input io_ins2 : SInt<21>
-    input io_ins3 : SInt<21>
+    input io_ins0 : SInt<16>
+    input io_ins1 : SInt<16>
+    input io_ins2 : SInt<16>
+    input io_ins3 : SInt<16>
     output io_action_at_Qmax : UInt<2>
-    input io_Q_max_at_state_s : SInt<21>
+    input io_Q_max_at_state_s : SInt<16>
   
     node ins_0 = io_ins0 @[Q_table.scala 98:15 Q_table.scala 99:9]
     node _T = eq(ins_0, io_Q_max_at_state_s) @[Q_table.scala 103:42]
@@ -438,9 +495,9 @@ circuit sloving_maze_by_RL :
     input io_new_state : UInt<6>
     input io_act : UInt<2>
     input io_wrEna : UInt<1>
-    input io_Q_updated : SInt<21>
-    output io_Q_s_a : SInt<21>
-    output io_Q_prime_max : SInt<21>
+    input io_Q_updated : SInt<16>
+    output io_Q_s_a : SInt<16>
+    output io_Q_prime_max : SInt<16>
     output io_action_at_Qmax : UInt<2>
     input io_get_Q_prime_max : UInt<1>
     input io_write_data_into_a_txtfile : UInt<1>
@@ -450,44 +507,44 @@ circuit sloving_maze_by_RL :
     inst max4 of Max4 @[Q_table.scala 19:18]
     inst index_of_Q_max of Action_at_Qmax @[Q_table.scala 20:28]
     mem Q_s_a0 : @[Q_table.scala 22:25]
-      data-type => SInt<21>
+      data-type => SInt<16>
       depth => 25
       read-latency => 1
       write-latency => 1
       reader => _T_4
-      reader => _T_21
-      reader => _T_29
-      reader => _T_31
-      reader => _T_33
-      reader => _T_35
+      reader => _T_20
+      reader => _T_28
+      reader => _T_30
+      reader => _T_32
+      reader => _T_34
       writer => _T_2
-      writer => _T_17
       read-under-write => undefined
     mem Q_s_a1 : @[Q_table.scala 23:25]
-      data-type => SInt<21>
+      data-type => SInt<16>
       depth => 25
       read-latency => 1
       write-latency => 1
       reader => _T_9
-      reader => _T_14
-      reader => _T_23
-      reader => _T_25
+      reader => _T_22
+      reader => _T_24
       writer => _T_7
       read-under-write => undefined
     mem Q_s_a2 : @[Q_table.scala 24:25]
-      data-type => SInt<21>
+      data-type => SInt<16>
       depth => 25
       read-latency => 1
       write-latency => 1
+      reader => _T_14
       writer => _T_12
       read-under-write => undefined
     mem Q_s_a3 : @[Q_table.scala 25:25]
-      data-type => SInt<21>
+      data-type => SInt<16>
       depth => 25
       read-latency => 1
       write-latency => 1
-      reader => _T_19
-      reader => _T_27
+      reader => _T_18
+      reader => _T_26
+      writer => _T_16
       read-under-write => undefined
     reg state_addr : UInt<6>, clock with :
       reset => (UInt<1>("h0"), state_addr) @[Q_table.scala 26:25]
@@ -516,178 +573,168 @@ circuit sloving_maze_by_RL :
     node _T_13 = bits(stateRead, 4, 0) @[Q_table.scala 47:28]
     node _GEN_12 = validif(io_wrEna, _T_11) @[Q_table.scala 44:20]
     node _GEN_13 = validif(eq(io_wrEna, UInt<1>("h0")), _T_13) @[Q_table.scala 44:20]
-    node _GEN_14 = mux(io_wrEna, asSInt(UInt<1>("h0")), Q_s_a1._T_14.data) @[Q_table.scala 44:20]
-    node _T_15 = eq(act, UInt<2>("h3")) @[Q_table.scala 49:17]
-    node _T_16 = bits(state_addr, 4, 0)
-    node _T_18 = bits(stateRead, 4, 0) @[Q_table.scala 53:28]
-    node _GEN_15 = validif(io_wrEna, _T_16) @[Q_table.scala 50:19]
-    node _GEN_16 = validif(eq(io_wrEna, UInt<1>("h0")), _T_18) @[Q_table.scala 50:19]
-    node _GEN_17 = mux(io_wrEna, asSInt(UInt<1>("h0")), Q_s_a3._T_19.data) @[Q_table.scala 50:19]
-    node _GEN_18 = validif(_T_15, _GEN_15) @[Q_table.scala 49:24]
-    node _GEN_19 = validif(_T_15, _GEN_1) @[Q_table.scala 49:24]
-    node _GEN_20 = mux(_T_15, _GEN_2, UInt<1>("h0")) @[Q_table.scala 49:24]
-    node _GEN_21 = validif(_T_15, _GEN_3) @[Q_table.scala 49:24]
-    node _GEN_22 = validif(_T_15, _GEN_4) @[Q_table.scala 49:24]
-    node _GEN_23 = mux(_T_15, _GEN_5, UInt<1>("h0")) @[Q_table.scala 49:24]
-    node _GEN_24 = validif(_T_15, _GEN_16) @[Q_table.scala 49:24]
-    node _GEN_25 = validif(_T_15, _GEN_7) @[Q_table.scala 49:24]
-    node _GEN_26 = mux(_T_15, _GEN_17, asSInt(UInt<1>("h0"))) @[Q_table.scala 49:24]
-    node _GEN_27 = validif(_T_10, _GEN_12) @[Q_table.scala 43:24]
-    node _GEN_28 = validif(_T_10, _GEN_1) @[Q_table.scala 43:24]
-    node _GEN_29 = mux(_T_10, _GEN_2, UInt<1>("h0")) @[Q_table.scala 43:24]
-    node _GEN_30 = validif(_T_10, _GEN_3) @[Q_table.scala 43:24]
-    node _GEN_31 = validif(_T_10, _GEN_4) @[Q_table.scala 43:24]
-    node _GEN_32 = mux(_T_10, _GEN_5, UInt<1>("h0")) @[Q_table.scala 43:24]
-    node _GEN_33 = validif(_T_10, _GEN_13) @[Q_table.scala 43:24]
-    node _GEN_34 = validif(_T_10, _GEN_7) @[Q_table.scala 43:24]
-    node _GEN_35 = mux(_T_10, _GEN_14, _GEN_26) @[Q_table.scala 43:24]
-    node _GEN_36 = validif(eq(_T_10, UInt<1>("h0")), _GEN_18) @[Q_table.scala 43:24]
-    node _GEN_37 = validif(eq(_T_10, UInt<1>("h0")), _GEN_19) @[Q_table.scala 43:24]
-    node _GEN_38 = mux(_T_10, UInt<1>("h0"), _GEN_20) @[Q_table.scala 43:24]
-    node _GEN_39 = validif(eq(_T_10, UInt<1>("h0")), _GEN_21) @[Q_table.scala 43:24]
-    node _GEN_40 = validif(eq(_T_10, UInt<1>("h0")), _GEN_22) @[Q_table.scala 43:24]
-    node _GEN_41 = mux(_T_10, UInt<1>("h0"), _GEN_23) @[Q_table.scala 43:24]
-    node _GEN_42 = validif(eq(_T_10, UInt<1>("h0")), _GEN_24) @[Q_table.scala 43:24]
-    node _GEN_43 = validif(eq(_T_10, UInt<1>("h0")), _GEN_25) @[Q_table.scala 43:24]
-    node _GEN_44 = validif(_T_5, _GEN_9) @[Q_table.scala 37:24]
-    node _GEN_45 = validif(_T_5, _GEN_1) @[Q_table.scala 37:24]
-    node _GEN_46 = mux(_T_5, _GEN_2, UInt<1>("h0")) @[Q_table.scala 37:24]
-    node _GEN_47 = validif(_T_5, _GEN_3) @[Q_table.scala 37:24]
-    node _GEN_48 = validif(_T_5, _GEN_4) @[Q_table.scala 37:24]
-    node _GEN_49 = mux(_T_5, _GEN_5, UInt<1>("h0")) @[Q_table.scala 37:24]
-    node _GEN_50 = validif(_T_5, _GEN_10) @[Q_table.scala 37:24]
-    node _GEN_51 = validif(_T_5, _GEN_7) @[Q_table.scala 37:24]
-    node _GEN_52 = mux(_T_5, _GEN_11, _GEN_35) @[Q_table.scala 37:24]
-    node _GEN_53 = validif(eq(_T_5, UInt<1>("h0")), _GEN_27) @[Q_table.scala 37:24]
-    node _GEN_54 = validif(eq(_T_5, UInt<1>("h0")), _GEN_28) @[Q_table.scala 37:24]
-    node _GEN_55 = mux(_T_5, UInt<1>("h0"), _GEN_29) @[Q_table.scala 37:24]
-    node _GEN_56 = validif(eq(_T_5, UInt<1>("h0")), _GEN_30) @[Q_table.scala 37:24]
-    node _GEN_57 = validif(eq(_T_5, UInt<1>("h0")), _GEN_31) @[Q_table.scala 37:24]
-    node _GEN_58 = mux(_T_5, UInt<1>("h0"), _GEN_32) @[Q_table.scala 37:24]
-    node _GEN_59 = validif(eq(_T_5, UInt<1>("h0")), _GEN_33) @[Q_table.scala 37:24]
-    node _GEN_60 = validif(eq(_T_5, UInt<1>("h0")), _GEN_34) @[Q_table.scala 37:24]
-    node _GEN_61 = validif(eq(_T_5, UInt<1>("h0")), _GEN_36) @[Q_table.scala 37:24]
-    node _GEN_62 = validif(eq(_T_5, UInt<1>("h0")), _GEN_37) @[Q_table.scala 37:24]
-    node _GEN_63 = mux(_T_5, UInt<1>("h0"), _GEN_38) @[Q_table.scala 37:24]
-    node _GEN_64 = validif(eq(_T_5, UInt<1>("h0")), _GEN_39) @[Q_table.scala 37:24]
-    node _GEN_65 = validif(eq(_T_5, UInt<1>("h0")), _GEN_40) @[Q_table.scala 37:24]
-    node _GEN_66 = mux(_T_5, UInt<1>("h0"), _GEN_41) @[Q_table.scala 37:24]
-    node _GEN_67 = validif(eq(_T_5, UInt<1>("h0")), _GEN_42) @[Q_table.scala 37:24]
-    node _GEN_68 = validif(eq(_T_5, UInt<1>("h0")), _GEN_43) @[Q_table.scala 37:24]
-    node _GEN_69 = validif(_T, _GEN_0) @[Q_table.scala 31:18]
-    node _GEN_70 = validif(_T, _GEN_1) @[Q_table.scala 31:18]
-    node _GEN_71 = mux(_T, _GEN_2, UInt<1>("h0")) @[Q_table.scala 31:18]
-    node _GEN_72 = validif(_T, _GEN_3) @[Q_table.scala 31:18]
-    node _GEN_73 = validif(_T, _GEN_4) @[Q_table.scala 31:18]
-    node _GEN_74 = mux(_T, _GEN_5, UInt<1>("h0")) @[Q_table.scala 31:18]
-    node _GEN_75 = validif(_T, _GEN_6) @[Q_table.scala 31:18]
-    node _GEN_76 = validif(_T, _GEN_7) @[Q_table.scala 31:18]
-    node _GEN_77 = mux(_T, _GEN_8, _GEN_52) @[Q_table.scala 31:18]
-    node _GEN_78 = validif(eq(_T, UInt<1>("h0")), _GEN_44) @[Q_table.scala 31:18]
-    node _GEN_79 = validif(eq(_T, UInt<1>("h0")), _GEN_45) @[Q_table.scala 31:18]
-    node _GEN_80 = mux(_T, UInt<1>("h0"), _GEN_46) @[Q_table.scala 31:18]
-    node _GEN_81 = validif(eq(_T, UInt<1>("h0")), _GEN_47) @[Q_table.scala 31:18]
-    node _GEN_82 = validif(eq(_T, UInt<1>("h0")), _GEN_48) @[Q_table.scala 31:18]
-    node _GEN_83 = mux(_T, UInt<1>("h0"), _GEN_49) @[Q_table.scala 31:18]
-    node _GEN_84 = validif(eq(_T, UInt<1>("h0")), _GEN_50) @[Q_table.scala 31:18]
-    node _GEN_85 = validif(eq(_T, UInt<1>("h0")), _GEN_51) @[Q_table.scala 31:18]
+    node _GEN_14 = mux(io_wrEna, asSInt(UInt<1>("h0")), Q_s_a2._T_14.data) @[Q_table.scala 44:20]
+    node _T_15 = bits(state_addr, 4, 0)
+    node _T_17 = bits(stateRead, 4, 0) @[Q_table.scala 53:28]
+    node _GEN_15 = validif(io_wrEna, _T_15) @[Q_table.scala 50:19]
+    node _GEN_16 = validif(eq(io_wrEna, UInt<1>("h0")), _T_17) @[Q_table.scala 50:19]
+    node _GEN_17 = mux(io_wrEna, asSInt(UInt<1>("h0")), Q_s_a3._T_18.data) @[Q_table.scala 50:19]
+    node _GEN_18 = validif(_T_10, _GEN_12) @[Q_table.scala 43:24]
+    node _GEN_19 = validif(_T_10, _GEN_1) @[Q_table.scala 43:24]
+    node _GEN_20 = mux(_T_10, _GEN_2, UInt<1>("h0")) @[Q_table.scala 43:24]
+    node _GEN_21 = validif(_T_10, _GEN_3) @[Q_table.scala 43:24]
+    node _GEN_22 = validif(_T_10, _GEN_4) @[Q_table.scala 43:24]
+    node _GEN_23 = mux(_T_10, _GEN_5, UInt<1>("h0")) @[Q_table.scala 43:24]
+    node _GEN_24 = validif(_T_10, _GEN_13) @[Q_table.scala 43:24]
+    node _GEN_25 = validif(_T_10, _GEN_7) @[Q_table.scala 43:24]
+    node _GEN_26 = mux(_T_10, _GEN_14, _GEN_17) @[Q_table.scala 43:24]
+    node _GEN_27 = validif(eq(_T_10, UInt<1>("h0")), _GEN_15) @[Q_table.scala 43:24]
+    node _GEN_28 = validif(eq(_T_10, UInt<1>("h0")), _GEN_1) @[Q_table.scala 43:24]
+    node _GEN_29 = mux(_T_10, UInt<1>("h0"), _GEN_2) @[Q_table.scala 43:24]
+    node _GEN_30 = validif(eq(_T_10, UInt<1>("h0")), _GEN_3) @[Q_table.scala 43:24]
+    node _GEN_31 = validif(eq(_T_10, UInt<1>("h0")), _GEN_4) @[Q_table.scala 43:24]
+    node _GEN_32 = mux(_T_10, UInt<1>("h0"), _GEN_5) @[Q_table.scala 43:24]
+    node _GEN_33 = validif(eq(_T_10, UInt<1>("h0")), _GEN_16) @[Q_table.scala 43:24]
+    node _GEN_34 = validif(eq(_T_10, UInt<1>("h0")), _GEN_7) @[Q_table.scala 43:24]
+    node _GEN_35 = validif(_T_5, _GEN_9) @[Q_table.scala 37:24]
+    node _GEN_36 = validif(_T_5, _GEN_1) @[Q_table.scala 37:24]
+    node _GEN_37 = mux(_T_5, _GEN_2, UInt<1>("h0")) @[Q_table.scala 37:24]
+    node _GEN_38 = validif(_T_5, _GEN_3) @[Q_table.scala 37:24]
+    node _GEN_39 = validif(_T_5, _GEN_4) @[Q_table.scala 37:24]
+    node _GEN_40 = mux(_T_5, _GEN_5, UInt<1>("h0")) @[Q_table.scala 37:24]
+    node _GEN_41 = validif(_T_5, _GEN_10) @[Q_table.scala 37:24]
+    node _GEN_42 = validif(_T_5, _GEN_7) @[Q_table.scala 37:24]
+    node _GEN_43 = mux(_T_5, _GEN_11, _GEN_26) @[Q_table.scala 37:24]
+    node _GEN_44 = validif(eq(_T_5, UInt<1>("h0")), _GEN_18) @[Q_table.scala 37:24]
+    node _GEN_45 = validif(eq(_T_5, UInt<1>("h0")), _GEN_19) @[Q_table.scala 37:24]
+    node _GEN_46 = mux(_T_5, UInt<1>("h0"), _GEN_20) @[Q_table.scala 37:24]
+    node _GEN_47 = validif(eq(_T_5, UInt<1>("h0")), _GEN_21) @[Q_table.scala 37:24]
+    node _GEN_48 = validif(eq(_T_5, UInt<1>("h0")), _GEN_22) @[Q_table.scala 37:24]
+    node _GEN_49 = mux(_T_5, UInt<1>("h0"), _GEN_23) @[Q_table.scala 37:24]
+    node _GEN_50 = validif(eq(_T_5, UInt<1>("h0")), _GEN_24) @[Q_table.scala 37:24]
+    node _GEN_51 = validif(eq(_T_5, UInt<1>("h0")), _GEN_25) @[Q_table.scala 37:24]
+    node _GEN_52 = validif(eq(_T_5, UInt<1>("h0")), _GEN_27) @[Q_table.scala 37:24]
+    node _GEN_53 = validif(eq(_T_5, UInt<1>("h0")), _GEN_28) @[Q_table.scala 37:24]
+    node _GEN_54 = mux(_T_5, UInt<1>("h0"), _GEN_29) @[Q_table.scala 37:24]
+    node _GEN_55 = validif(eq(_T_5, UInt<1>("h0")), _GEN_30) @[Q_table.scala 37:24]
+    node _GEN_56 = validif(eq(_T_5, UInt<1>("h0")), _GEN_31) @[Q_table.scala 37:24]
+    node _GEN_57 = mux(_T_5, UInt<1>("h0"), _GEN_32) @[Q_table.scala 37:24]
+    node _GEN_58 = validif(eq(_T_5, UInt<1>("h0")), _GEN_33) @[Q_table.scala 37:24]
+    node _GEN_59 = validif(eq(_T_5, UInt<1>("h0")), _GEN_34) @[Q_table.scala 37:24]
+    node _GEN_60 = validif(_T, _GEN_0) @[Q_table.scala 31:18]
+    node _GEN_61 = validif(_T, _GEN_1) @[Q_table.scala 31:18]
+    node _GEN_62 = mux(_T, _GEN_2, UInt<1>("h0")) @[Q_table.scala 31:18]
+    node _GEN_63 = validif(_T, _GEN_3) @[Q_table.scala 31:18]
+    node _GEN_64 = validif(_T, _GEN_4) @[Q_table.scala 31:18]
+    node _GEN_65 = mux(_T, _GEN_5, UInt<1>("h0")) @[Q_table.scala 31:18]
+    node _GEN_66 = validif(_T, _GEN_6) @[Q_table.scala 31:18]
+    node _GEN_67 = validif(_T, _GEN_7) @[Q_table.scala 31:18]
+    node _GEN_68 = mux(_T, _GEN_8, _GEN_43) @[Q_table.scala 31:18]
+    node _GEN_69 = validif(eq(_T, UInt<1>("h0")), _GEN_35) @[Q_table.scala 31:18]
+    node _GEN_70 = validif(eq(_T, UInt<1>("h0")), _GEN_36) @[Q_table.scala 31:18]
+    node _GEN_71 = mux(_T, UInt<1>("h0"), _GEN_37) @[Q_table.scala 31:18]
+    node _GEN_72 = validif(eq(_T, UInt<1>("h0")), _GEN_38) @[Q_table.scala 31:18]
+    node _GEN_73 = validif(eq(_T, UInt<1>("h0")), _GEN_39) @[Q_table.scala 31:18]
+    node _GEN_74 = mux(_T, UInt<1>("h0"), _GEN_40) @[Q_table.scala 31:18]
+    node _GEN_75 = validif(eq(_T, UInt<1>("h0")), _GEN_41) @[Q_table.scala 31:18]
+    node _GEN_76 = validif(eq(_T, UInt<1>("h0")), _GEN_42) @[Q_table.scala 31:18]
+    node _GEN_77 = validif(eq(_T, UInt<1>("h0")), _GEN_44) @[Q_table.scala 31:18]
+    node _GEN_78 = validif(eq(_T, UInt<1>("h0")), _GEN_45) @[Q_table.scala 31:18]
+    node _GEN_79 = mux(_T, UInt<1>("h0"), _GEN_46) @[Q_table.scala 31:18]
+    node _GEN_80 = validif(eq(_T, UInt<1>("h0")), _GEN_47) @[Q_table.scala 31:18]
+    node _GEN_81 = validif(eq(_T, UInt<1>("h0")), _GEN_48) @[Q_table.scala 31:18]
+    node _GEN_82 = mux(_T, UInt<1>("h0"), _GEN_49) @[Q_table.scala 31:18]
+    node _GEN_83 = validif(eq(_T, UInt<1>("h0")), _GEN_50) @[Q_table.scala 31:18]
+    node _GEN_84 = validif(eq(_T, UInt<1>("h0")), _GEN_51) @[Q_table.scala 31:18]
+    node _GEN_85 = validif(eq(_T, UInt<1>("h0")), _GEN_52) @[Q_table.scala 31:18]
     node _GEN_86 = validif(eq(_T, UInt<1>("h0")), _GEN_53) @[Q_table.scala 31:18]
-    node _GEN_87 = validif(eq(_T, UInt<1>("h0")), _GEN_54) @[Q_table.scala 31:18]
-    node _GEN_88 = mux(_T, UInt<1>("h0"), _GEN_55) @[Q_table.scala 31:18]
+    node _GEN_87 = mux(_T, UInt<1>("h0"), _GEN_54) @[Q_table.scala 31:18]
+    node _GEN_88 = validif(eq(_T, UInt<1>("h0")), _GEN_55) @[Q_table.scala 31:18]
     node _GEN_89 = validif(eq(_T, UInt<1>("h0")), _GEN_56) @[Q_table.scala 31:18]
-    node _GEN_90 = validif(eq(_T, UInt<1>("h0")), _GEN_57) @[Q_table.scala 31:18]
-    node _GEN_91 = mux(_T, UInt<1>("h0"), _GEN_58) @[Q_table.scala 31:18]
+    node _GEN_90 = mux(_T, UInt<1>("h0"), _GEN_57) @[Q_table.scala 31:18]
+    node _GEN_91 = validif(eq(_T, UInt<1>("h0")), _GEN_58) @[Q_table.scala 31:18]
     node _GEN_92 = validif(eq(_T, UInt<1>("h0")), _GEN_59) @[Q_table.scala 31:18]
-    node _GEN_93 = validif(eq(_T, UInt<1>("h0")), _GEN_60) @[Q_table.scala 31:18]
-    node _GEN_94 = validif(eq(_T, UInt<1>("h0")), _GEN_61) @[Q_table.scala 31:18]
-    node _GEN_95 = validif(eq(_T, UInt<1>("h0")), _GEN_62) @[Q_table.scala 31:18]
-    node _GEN_96 = mux(_T, UInt<1>("h0"), _GEN_63) @[Q_table.scala 31:18]
-    node _GEN_97 = validif(eq(_T, UInt<1>("h0")), _GEN_64) @[Q_table.scala 31:18]
-    node _GEN_98 = validif(eq(_T, UInt<1>("h0")), _GEN_65) @[Q_table.scala 31:18]
-    node _GEN_99 = mux(_T, UInt<1>("h0"), _GEN_66) @[Q_table.scala 31:18]
-    node _GEN_100 = validif(eq(_T, UInt<1>("h0")), _GEN_67) @[Q_table.scala 31:18]
-    node _GEN_101 = validif(eq(_T, UInt<1>("h0")), _GEN_68) @[Q_table.scala 31:18]
     node new_state_or_state = mux(io_get_Q_prime_max, io_new_state, io_state) @[Q_table.scala 58:29]
-    node _T_20 = bits(new_state_or_state, 4, 0) @[Q_table.scala 59:28]
-    node _T_22 = bits(new_state_or_state, 4, 0) @[Q_table.scala 60:28]
-    node _T_24 = bits(new_state_or_state, 4, 0) @[Q_table.scala 61:28]
-    node _T_26 = bits(new_state_or_state, 4, 0) @[Q_table.scala 62:28]
-    node _T_28 = bits(new_state_or_state, 4, 0) @[Q_table.scala 65:38]
-    node _T_30 = bits(new_state_or_state, 4, 0) @[Q_table.scala 66:38]
-    node _T_32 = bits(new_state_or_state, 4, 0) @[Q_table.scala 67:38]
-    node _T_34 = bits(new_state_or_state, 4, 0) @[Q_table.scala 68:38]
-    io_Q_s_a <= _GEN_77 @[Q_table.scala 28:11 Q_table.scala 35:15 Q_table.scala 41:15 Q_table.scala 47:15 Q_table.scala 53:15]
+    node _T_19 = bits(new_state_or_state, 4, 0) @[Q_table.scala 59:28]
+    node _T_21 = bits(new_state_or_state, 4, 0) @[Q_table.scala 60:28]
+    node _T_23 = bits(new_state_or_state, 4, 0) @[Q_table.scala 61:28]
+    node _T_25 = bits(new_state_or_state, 4, 0) @[Q_table.scala 62:28]
+    node _T_27 = bits(new_state_or_state, 4, 0) @[Q_table.scala 65:38]
+    node _T_29 = bits(new_state_or_state, 4, 0) @[Q_table.scala 66:38]
+    node _T_31 = bits(new_state_or_state, 4, 0) @[Q_table.scala 67:38]
+    node _T_33 = bits(new_state_or_state, 4, 0) @[Q_table.scala 68:38]
+    io_Q_s_a <= _GEN_68 @[Q_table.scala 28:11 Q_table.scala 35:15 Q_table.scala 41:15 Q_table.scala 47:15 Q_table.scala 53:15]
     io_Q_prime_max <= max4.io_Q_max @[Q_table.scala 63:17]
     io_action_at_Qmax <= index_of_Q_max.io_action_at_Qmax @[Q_table.scala 70:20]
     max4.clock <= clock
     max4.reset <= reset
-    max4.io_ins0 <= Q_s_a0._T_21.data @[Q_table.scala 59:15]
-    max4.io_ins1 <= Q_s_a1._T_23.data @[Q_table.scala 60:15]
-    max4.io_ins2 <= Q_s_a1._T_25.data @[Q_table.scala 61:15]
-    max4.io_ins3 <= Q_s_a3._T_27.data @[Q_table.scala 62:15]
+    max4.io_ins0 <= Q_s_a0._T_20.data @[Q_table.scala 59:15]
+    max4.io_ins1 <= Q_s_a1._T_22.data @[Q_table.scala 60:15]
+    max4.io_ins2 <= Q_s_a1._T_24.data @[Q_table.scala 61:15]
+    max4.io_ins3 <= Q_s_a3._T_26.data @[Q_table.scala 62:15]
     index_of_Q_max.clock <= clock
     index_of_Q_max.reset <= reset
-    index_of_Q_max.io_ins0 <= Q_s_a0._T_29.data @[Q_table.scala 65:25]
-    index_of_Q_max.io_ins1 <= Q_s_a0._T_31.data @[Q_table.scala 66:25]
-    index_of_Q_max.io_ins2 <= Q_s_a0._T_33.data @[Q_table.scala 67:25]
-    index_of_Q_max.io_ins3 <= Q_s_a0._T_35.data @[Q_table.scala 68:25]
+    index_of_Q_max.io_ins0 <= Q_s_a0._T_28.data @[Q_table.scala 65:25]
+    index_of_Q_max.io_ins1 <= Q_s_a0._T_30.data @[Q_table.scala 66:25]
+    index_of_Q_max.io_ins2 <= Q_s_a0._T_32.data @[Q_table.scala 67:25]
+    index_of_Q_max.io_ins3 <= Q_s_a0._T_34.data @[Q_table.scala 68:25]
     index_of_Q_max.io_Q_max_at_state_s <= max4.io_Q_max @[Q_table.scala 69:37]
-    Q_s_a0._T_4.addr <= _GEN_75 @[Q_table.scala 35:28]
-    Q_s_a0._T_4.en <= _GEN_74 @[Q_table.scala 22:25 Q_table.scala 35:28]
-    Q_s_a0._T_4.clk <= _GEN_76 @[Q_table.scala 35:28]
-    Q_s_a0._T_21.addr <= _T_20 @[Q_table.scala 59:28]
-    Q_s_a0._T_21.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 59:28]
-    Q_s_a0._T_21.clk <= clock @[Q_table.scala 59:28]
-    Q_s_a0._T_29.addr <= _T_28 @[Q_table.scala 65:38]
-    Q_s_a0._T_29.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 65:38]
-    Q_s_a0._T_29.clk <= clock @[Q_table.scala 65:38]
-    Q_s_a0._T_31.addr <= _T_30 @[Q_table.scala 66:38]
-    Q_s_a0._T_31.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 66:38]
-    Q_s_a0._T_31.clk <= clock @[Q_table.scala 66:38]
-    Q_s_a0._T_33.addr <= _T_32 @[Q_table.scala 67:38]
-    Q_s_a0._T_33.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 67:38]
-    Q_s_a0._T_33.clk <= clock @[Q_table.scala 67:38]
-    Q_s_a0._T_35.addr <= _T_34 @[Q_table.scala 68:38]
-    Q_s_a0._T_35.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 68:38]
-    Q_s_a0._T_35.clk <= clock @[Q_table.scala 68:38]
-    Q_s_a0._T_2.addr <= _GEN_69
-    Q_s_a0._T_2.en <= _GEN_71 @[Q_table.scala 22:25]
-    Q_s_a0._T_2.clk <= _GEN_70
-    Q_s_a0._T_2.data <= _GEN_73
-    Q_s_a0._T_2.mask <= _GEN_72
-    Q_s_a0._T_17.addr <= _GEN_94
-    Q_s_a0._T_17.en <= _GEN_96 @[Q_table.scala 22:25]
-    Q_s_a0._T_17.clk <= _GEN_95
-    Q_s_a0._T_17.data <= _GEN_98
-    Q_s_a0._T_17.mask <= _GEN_97
-    Q_s_a1._T_9.addr <= _GEN_84 @[Q_table.scala 41:28]
-    Q_s_a1._T_9.en <= _GEN_83 @[Q_table.scala 23:25 Q_table.scala 41:28]
-    Q_s_a1._T_9.clk <= _GEN_85 @[Q_table.scala 41:28]
-    Q_s_a1._T_14.addr <= _GEN_92 @[Q_table.scala 47:28]
-    Q_s_a1._T_14.en <= _GEN_91 @[Q_table.scala 23:25 Q_table.scala 47:28]
-    Q_s_a1._T_14.clk <= _GEN_93 @[Q_table.scala 47:28]
-    Q_s_a1._T_23.addr <= _T_22 @[Q_table.scala 60:28]
-    Q_s_a1._T_23.en <= UInt<1>("h1") @[Q_table.scala 23:25 Q_table.scala 60:28]
-    Q_s_a1._T_23.clk <= clock @[Q_table.scala 60:28]
-    Q_s_a1._T_25.addr <= _T_24 @[Q_table.scala 61:28]
-    Q_s_a1._T_25.en <= UInt<1>("h1") @[Q_table.scala 23:25 Q_table.scala 61:28]
-    Q_s_a1._T_25.clk <= clock @[Q_table.scala 61:28]
-    Q_s_a1._T_7.addr <= _GEN_78
-    Q_s_a1._T_7.en <= _GEN_80 @[Q_table.scala 23:25]
-    Q_s_a1._T_7.clk <= _GEN_79
-    Q_s_a1._T_7.data <= _GEN_82
-    Q_s_a1._T_7.mask <= _GEN_81
-    Q_s_a2._T_12.addr <= _GEN_86
-    Q_s_a2._T_12.en <= _GEN_88 @[Q_table.scala 24:25]
-    Q_s_a2._T_12.clk <= _GEN_87
-    Q_s_a2._T_12.data <= _GEN_90
-    Q_s_a2._T_12.mask <= _GEN_89
-    Q_s_a3._T_19.addr <= _GEN_100 @[Q_table.scala 53:28]
-    Q_s_a3._T_19.en <= _GEN_99 @[Q_table.scala 25:25 Q_table.scala 53:28]
-    Q_s_a3._T_19.clk <= _GEN_101 @[Q_table.scala 53:28]
-    Q_s_a3._T_27.addr <= _T_26 @[Q_table.scala 62:28]
-    Q_s_a3._T_27.en <= UInt<1>("h1") @[Q_table.scala 25:25 Q_table.scala 62:28]
-    Q_s_a3._T_27.clk <= clock @[Q_table.scala 62:28]
+    Q_s_a0._T_4.addr <= _GEN_66 @[Q_table.scala 35:28]
+    Q_s_a0._T_4.en <= _GEN_65 @[Q_table.scala 22:25 Q_table.scala 35:28]
+    Q_s_a0._T_4.clk <= _GEN_67 @[Q_table.scala 35:28]
+    Q_s_a0._T_20.addr <= _T_19 @[Q_table.scala 59:28]
+    Q_s_a0._T_20.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 59:28]
+    Q_s_a0._T_20.clk <= clock @[Q_table.scala 59:28]
+    Q_s_a0._T_28.addr <= _T_27 @[Q_table.scala 65:38]
+    Q_s_a0._T_28.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 65:38]
+    Q_s_a0._T_28.clk <= clock @[Q_table.scala 65:38]
+    Q_s_a0._T_30.addr <= _T_29 @[Q_table.scala 66:38]
+    Q_s_a0._T_30.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 66:38]
+    Q_s_a0._T_30.clk <= clock @[Q_table.scala 66:38]
+    Q_s_a0._T_32.addr <= _T_31 @[Q_table.scala 67:38]
+    Q_s_a0._T_32.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 67:38]
+    Q_s_a0._T_32.clk <= clock @[Q_table.scala 67:38]
+    Q_s_a0._T_34.addr <= _T_33 @[Q_table.scala 68:38]
+    Q_s_a0._T_34.en <= UInt<1>("h1") @[Q_table.scala 22:25 Q_table.scala 68:38]
+    Q_s_a0._T_34.clk <= clock @[Q_table.scala 68:38]
+    Q_s_a0._T_2.addr <= _GEN_60
+    Q_s_a0._T_2.en <= _GEN_62 @[Q_table.scala 22:25]
+    Q_s_a0._T_2.clk <= _GEN_61
+    Q_s_a0._T_2.data <= _GEN_64
+    Q_s_a0._T_2.mask <= _GEN_63
+    Q_s_a1._T_9.addr <= _GEN_75 @[Q_table.scala 41:28]
+    Q_s_a1._T_9.en <= _GEN_74 @[Q_table.scala 23:25 Q_table.scala 41:28]
+    Q_s_a1._T_9.clk <= _GEN_76 @[Q_table.scala 41:28]
+    Q_s_a1._T_22.addr <= _T_21 @[Q_table.scala 60:28]
+    Q_s_a1._T_22.en <= UInt<1>("h1") @[Q_table.scala 23:25 Q_table.scala 60:28]
+    Q_s_a1._T_22.clk <= clock @[Q_table.scala 60:28]
+    Q_s_a1._T_24.addr <= _T_23 @[Q_table.scala 61:28]
+    Q_s_a1._T_24.en <= UInt<1>("h1") @[Q_table.scala 23:25 Q_table.scala 61:28]
+    Q_s_a1._T_24.clk <= clock @[Q_table.scala 61:28]
+    Q_s_a1._T_7.addr <= _GEN_69
+    Q_s_a1._T_7.en <= _GEN_71 @[Q_table.scala 23:25]
+    Q_s_a1._T_7.clk <= _GEN_70
+    Q_s_a1._T_7.data <= _GEN_73
+    Q_s_a1._T_7.mask <= _GEN_72
+    Q_s_a2._T_14.addr <= _GEN_83 @[Q_table.scala 47:28]
+    Q_s_a2._T_14.en <= _GEN_82 @[Q_table.scala 24:25 Q_table.scala 47:28]
+    Q_s_a2._T_14.clk <= _GEN_84 @[Q_table.scala 47:28]
+    Q_s_a2._T_12.addr <= _GEN_77
+    Q_s_a2._T_12.en <= _GEN_79 @[Q_table.scala 24:25]
+    Q_s_a2._T_12.clk <= _GEN_78
+    Q_s_a2._T_12.data <= _GEN_81
+    Q_s_a2._T_12.mask <= _GEN_80
+    Q_s_a3._T_18.addr <= _GEN_91 @[Q_table.scala 53:28]
+    Q_s_a3._T_18.en <= _GEN_90 @[Q_table.scala 25:25 Q_table.scala 53:28]
+    Q_s_a3._T_18.clk <= _GEN_92 @[Q_table.scala 53:28]
+    Q_s_a3._T_26.addr <= _T_25 @[Q_table.scala 62:28]
+    Q_s_a3._T_26.en <= UInt<1>("h1") @[Q_table.scala 25:25 Q_table.scala 62:28]
+    Q_s_a3._T_26.clk <= clock @[Q_table.scala 62:28]
+    Q_s_a3._T_16.addr <= _GEN_85
+    Q_s_a3._T_16.en <= _GEN_87 @[Q_table.scala 25:25]
+    Q_s_a3._T_16.clk <= _GEN_86
+    Q_s_a3._T_16.data <= _GEN_89
+    Q_s_a3._T_16.mask <= _GEN_88
     state_addr <= mux(reset, UInt<6>("h0"), io_state) @[Q_table.scala 27:13]
 
   module ConfirmReward :
@@ -697,27 +744,27 @@ circuit sloving_maze_by_RL :
     input io_step : UInt<4>
     output io_reward : SInt<9>
   
-    node _T = eq(io_new_state, UInt<5>("h18")) @[Blocks.scala 82:20]
-    node _T_1 = eq(io_step, UInt<4>("he")) @[Blocks.scala 83:21]
-    node _T_2 = eq(io_new_state, UInt<3>("h4")) @[Blocks.scala 85:26]
-    node _T_3 = eq(io_new_state, UInt<3>("h6")) @[Blocks.scala 85:48]
-    node _T_4 = or(_T_2, _T_3) @[Blocks.scala 85:33]
-    node _T_5 = eq(io_new_state, UInt<3>("h7")) @[Blocks.scala 85:69]
-    node _T_6 = or(_T_4, _T_5) @[Blocks.scala 85:55]
-    node _T_7 = eq(io_new_state, UInt<4>("hd")) @[Blocks.scala 85:91]
-    node _T_8 = or(_T_6, _T_7) @[Blocks.scala 85:76]
-    node _T_9 = eq(io_new_state, UInt<5>("h10")) @[Blocks.scala 85:114]
-    node _T_10 = or(_T_8, _T_9) @[Blocks.scala 85:99]
-    node _T_11 = eq(io_new_state, UInt<5>("h12")) @[Blocks.scala 85:137]
-    node _T_12 = or(_T_10, _T_11) @[Blocks.scala 85:122]
-    node _T_13 = eq(io_new_state, UInt<5>("h13")) @[Blocks.scala 85:160]
-    node _T_14 = or(_T_12, _T_13) @[Blocks.scala 85:145]
-    node _T_15 = eq(io_new_state, UInt<5>("h15")) @[Blocks.scala 85:183]
-    node _T_16 = or(_T_14, _T_15) @[Blocks.scala 85:168]
-    node _GEN_0 = mux(_T_16, asSInt(UInt<9>("h138")), asSInt(UInt<1>("h0"))) @[Blocks.scala 85:192]
-    node _GEN_1 = mux(_T_1, asSInt(UInt<7>("h4e")), _GEN_0) @[Blocks.scala 83:29]
-    node _GEN_2 = mux(_T, asSInt(UInt<8>("h64")), _GEN_1) @[Blocks.scala 82:28]
-    io_reward <= _GEN_2 @[Blocks.scala 82:38 Blocks.scala 84:14 Blocks.scala 85:203 Blocks.scala 87:14]
+    node _T = eq(io_new_state, UInt<5>("h18")) @[Blocks.scala 70:20]
+    node _T_1 = eq(io_new_state, UInt<3>("h4")) @[Blocks.scala 71:26]
+    node _T_2 = eq(io_new_state, UInt<3>("h6")) @[Blocks.scala 71:48]
+    node _T_3 = or(_T_1, _T_2) @[Blocks.scala 71:33]
+    node _T_4 = eq(io_new_state, UInt<3>("h7")) @[Blocks.scala 71:69]
+    node _T_5 = or(_T_3, _T_4) @[Blocks.scala 71:55]
+    node _T_6 = eq(io_new_state, UInt<4>("hd")) @[Blocks.scala 71:91]
+    node _T_7 = or(_T_5, _T_6) @[Blocks.scala 71:76]
+    node _T_8 = eq(io_new_state, UInt<5>("h10")) @[Blocks.scala 71:114]
+    node _T_9 = or(_T_7, _T_8) @[Blocks.scala 71:99]
+    node _T_10 = eq(io_new_state, UInt<5>("h12")) @[Blocks.scala 71:137]
+    node _T_11 = or(_T_9, _T_10) @[Blocks.scala 71:122]
+    node _T_12 = eq(io_new_state, UInt<5>("h13")) @[Blocks.scala 71:160]
+    node _T_13 = or(_T_11, _T_12) @[Blocks.scala 71:145]
+    node _T_14 = eq(io_new_state, UInt<5>("h15")) @[Blocks.scala 71:183]
+    node _T_15 = or(_T_13, _T_14) @[Blocks.scala 71:168]
+    node _T_16 = eq(io_step, UInt<4>("he")) @[Blocks.scala 72:21]
+    node _GEN_0 = mux(_T_16, asSInt(UInt<7>("h4e")), asSInt(UInt<1>("h0"))) @[Blocks.scala 72:29]
+    node _GEN_1 = mux(_T_15, asSInt(UInt<9>("h138")), _GEN_0) @[Blocks.scala 71:192]
+    node _GEN_2 = mux(_T, asSInt(UInt<8>("h64")), _GEN_1) @[Blocks.scala 70:28]
+    io_reward <= _GEN_2 @[Blocks.scala 70:38 Blocks.scala 71:203 Blocks.scala 73:14 Blocks.scala 75:14]
 
   module resetFMS :
     input clock : Clock
@@ -746,32 +793,31 @@ circuit sloving_maze_by_RL :
     output io_load_new_state : UInt<1>
     output io_reset_Action_fms : UInt<1>
     output io_get_Q_prime_max : UInt<1>
-    output io_generate_rand2 : UInt<1>
   
-    inst reset_fms of resetFMS @[AgentsBrain.scala 44:23]
-    reg master_fms : UInt<3>, clock with :
-      reset => (UInt<1>("h0"), master_fms) @[AgentsBrain.scala 42:25]
-    node _T = eq(UInt<3>("h0"), master_fms) @[Conditional.scala 37:30]
-    node _GEN_0 = mux(io_done_learning, UInt<3>("h4"), UInt<3>("h1")) @[AgentsBrain.scala 54:35]
-    node _GEN_1 = mux(io_done_learning, UInt<1>("h0"), UInt<1>("h1")) @[AgentsBrain.scala 54:35]
-    node _GEN_2 = mux(io_iterate, UInt<3>("h0"), _GEN_0) @[AgentsBrain.scala 52:23]
-    node _GEN_3 = mux(io_iterate, UInt<1>("h0"), _GEN_1) @[AgentsBrain.scala 52:23]
-    node _T_1 = eq(UInt<3>("h1"), master_fms) @[Conditional.scala 37:30]
-    node _GEN_4 = mux(io_move_to_confirming_Reward, UInt<3>("h2"), master_fms) @[AgentsBrain.scala 64:42]
-    node _GEN_5 = mux(io_move_to_confirming_Reward, UInt<1>("h1"), UInt<1>("h0")) @[AgentsBrain.scala 64:42]
-    node _T_2 = eq(UInt<3>("h2"), master_fms) @[Conditional.scala 37:30]
-    node _T_3 = eq(UInt<3>("h3"), master_fms) @[Conditional.scala 37:30]
-    node _T_4 = eq(UInt<3>("h4"), master_fms) @[Conditional.scala 37:30]
-    node _GEN_6 = mux(_T_4, UInt<1>("h1"), UInt<1>("h0")) @[Conditional.scala 39:67]
-    node _GEN_7 = mux(_T_3, UInt<1>("h1"), UInt<1>("h0")) @[Conditional.scala 39:67]
-    node _GEN_8 = mux(_T_3, UInt<3>("h0"), master_fms) @[Conditional.scala 39:67]
-    node _GEN_9 = mux(_T_3, UInt<1>("h0"), _GEN_6) @[Conditional.scala 39:67]
-    node _GEN_10 = mux(_T_2, UInt<3>("h3"), _GEN_8) @[Conditional.scala 39:67]
-    node _GEN_11 = mux(_T_2, UInt<1>("h0"), _GEN_7) @[Conditional.scala 39:67]
-    node _GEN_12 = mux(_T_2, UInt<1>("h0"), _GEN_9) @[Conditional.scala 39:67]
+    inst reset_fms of resetFMS @[AgentsBrain.scala 43:23]
+    reg master_FMS : UInt<3>, clock with :
+      reset => (UInt<1>("h0"), master_FMS) @[AgentsBrain.scala 41:25]
+    node _T = eq(UInt<3>("h0"), master_FMS) @[Conditional.scala 37:30]
+    node _GEN_0 = mux(io_done_learning, UInt<3>("h4"), UInt<3>("h1")) @[AgentsBrain.scala 52:35]
+    node _GEN_1 = mux(io_done_learning, UInt<1>("h0"), UInt<1>("h1")) @[AgentsBrain.scala 52:35]
+    node _GEN_2 = mux(io_iterate, UInt<3>("h0"), _GEN_0) @[AgentsBrain.scala 50:23]
+    node _GEN_3 = mux(io_iterate, UInt<1>("h0"), _GEN_1) @[AgentsBrain.scala 50:23]
+    node _T_1 = eq(UInt<3>("h1"), master_FMS) @[Conditional.scala 37:30]
+    node _GEN_4 = mux(io_move_to_confirming_Reward, UInt<3>("h2"), master_FMS) @[AgentsBrain.scala 63:42]
+    node _T_2 = eq(UInt<3>("h2"), master_FMS) @[Conditional.scala 37:30]
+    node _T_3 = eq(UInt<3>("h3"), master_FMS) @[Conditional.scala 37:30]
+    node _T_4 = eq(UInt<3>("h4"), master_FMS) @[Conditional.scala 37:30]
+    node _GEN_5 = mux(_T_4, UInt<1>("h1"), UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_6 = mux(_T_3, UInt<1>("h1"), UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_7 = mux(_T_3, UInt<3>("h0"), master_FMS) @[Conditional.scala 39:67]
+    node _GEN_8 = mux(_T_3, UInt<1>("h0"), _GEN_5) @[Conditional.scala 39:67]
+    node _GEN_9 = mux(_T_2, UInt<3>("h3"), _GEN_7) @[Conditional.scala 39:67]
+    node _GEN_10 = mux(_T_2, UInt<1>("h1"), UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_11 = mux(_T_2, UInt<1>("h0"), _GEN_6) @[Conditional.scala 39:67]
+    node _GEN_12 = mux(_T_2, UInt<1>("h0"), _GEN_8) @[Conditional.scala 39:67]
     node _GEN_13 = mux(_T_1, reset_fms.io_reset, UInt<1>("h0")) @[Conditional.scala 39:67]
-    node _GEN_14 = mux(_T_1, _GEN_4, _GEN_10) @[Conditional.scala 39:67]
-    node _GEN_15 = mux(_T_1, _GEN_5, UInt<1>("h0")) @[Conditional.scala 39:67]
+    node _GEN_14 = mux(_T_1, _GEN_4, _GEN_9) @[Conditional.scala 39:67]
+    node _GEN_15 = mux(_T_1, UInt<1>("h0"), _GEN_10) @[Conditional.scala 39:67]
     node _GEN_16 = mux(_T_1, UInt<1>("h0"), _GEN_11) @[Conditional.scala 39:67]
     node _GEN_17 = mux(_T_1, UInt<1>("h0"), _GEN_12) @[Conditional.scala 39:67]
     node _GEN_18 = mux(_T, _GEN_2, _GEN_14) @[Conditional.scala 40:58]
@@ -780,17 +826,16 @@ circuit sloving_maze_by_RL :
     node _GEN_21 = mux(_T, UInt<1>("h0"), _GEN_15) @[Conditional.scala 40:58]
     node _GEN_22 = mux(_T, UInt<1>("h0"), _GEN_16) @[Conditional.scala 40:58]
     node _GEN_23 = mux(_T, UInt<1>("h0"), _GEN_17) @[Conditional.scala 40:58]
-    node transition = _GEN_19 @[AgentsBrain.scala 57:19]
-    io_Path_found <= _GEN_23 @[AgentsBrain.scala 35:17 AgentsBrain.scala 78:20]
-    io_cal <= _GEN_22 @[AgentsBrain.scala 36:9 AgentsBrain.scala 73:13]
-    io_load_new_state <= _GEN_22 @[AgentsBrain.scala 38:20 AgentsBrain.scala 75:24]
-    io_reset_Action_fms <= _GEN_20 @[AgentsBrain.scala 47:22 AgentsBrain.scala 48:22 AgentsBrain.scala 62:26]
-    io_get_Q_prime_max <= _GEN_21 @[AgentsBrain.scala 37:21 AgentsBrain.scala 66:27]
-    io_generate_rand2 <= _GEN_20 @[AgentsBrain.scala 39:20 AgentsBrain.scala 63:24]
-    master_fms <= mux(reset, UInt<3>("h0"), _GEN_18) @[AgentsBrain.scala 53:20 AgentsBrain.scala 55:20 AgentsBrain.scala 58:19 AgentsBrain.scala 65:20 AgentsBrain.scala 70:18 AgentsBrain.scala 74:17]
+    node transition = _GEN_19 @[AgentsBrain.scala 55:19]
+    io_Path_found <= _GEN_23 @[AgentsBrain.scala 35:17 AgentsBrain.scala 77:20]
+    io_cal <= _GEN_22 @[AgentsBrain.scala 36:9 AgentsBrain.scala 72:13]
+    io_load_new_state <= _GEN_22 @[AgentsBrain.scala 38:20 AgentsBrain.scala 74:24]
+    io_reset_Action_fms <= _GEN_20 @[AgentsBrain.scala 46:22 AgentsBrain.scala 47:22 AgentsBrain.scala 61:26]
+    io_get_Q_prime_max <= _GEN_21 @[AgentsBrain.scala 37:21 AgentsBrain.scala 69:25]
+    master_FMS <= mux(reset, UInt<3>("h0"), _GEN_18) @[AgentsBrain.scala 51:20 AgentsBrain.scala 53:20 AgentsBrain.scala 56:19 AgentsBrain.scala 64:20 AgentsBrain.scala 68:18 AgentsBrain.scala 73:17]
     reset_fms.clock <= clock
     reset_fms.reset <= reset
-    reset_fms.io_transition <= transition @[AgentsBrain.scala 46:26]
+    reset_fms.io_transition <= transition @[AgentsBrain.scala 45:26]
 
   module sloving_maze_by_RL :
     input clock : Clock
@@ -800,7 +845,7 @@ circuit sloving_maze_by_RL :
     input io_ROW : UInt<3>
     input io_state_read : UInt<6>
     input io_act_read : UInt<2>
-    output io_Q_value : SInt<21>
+    output io_Q_value : SInt<16>
     input io_write_data_into_a_txtfile : UInt<1>
   
     inst agent of Agent @[sloving_maze_by_RL.scala 15:19]
@@ -809,44 +854,45 @@ circuit sloving_maze_by_RL :
     inst Q_table of Qtable @[sloving_maze_by_RL.scala 18:21]
     inst Reward of ConfirmReward @[sloving_maze_by_RL.scala 19:20]
     inst masterFMS of MasterFMS @[sloving_maze_by_RL.scala 20:23]
-    io_Path_found <= masterFMS.io_Path_found @[sloving_maze_by_RL.scala 58:16]
+    io_Path_found <= masterFMS.io_Path_found @[sloving_maze_by_RL.scala 59:16]
     io_Q_value <= Q_table.io_Q_s_a @[sloving_maze_by_RL.scala 21:13]
     agent.clock <= clock
     agent.reset <= reset
-    agent.io_ROW <= io_ROW @[sloving_maze_by_RL.scala 27:15]
-    agent.io_COL <= io_COL @[sloving_maze_by_RL.scala 28:15]
-    agent.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 35:29]
-    agent.io_load_new_state <= masterFMS.io_load_new_state @[sloving_maze_by_RL.scala 57:26]
+    agent.io_ROW <= io_ROW @[sloving_maze_by_RL.scala 28:15]
+    agent.io_COL <= io_COL @[sloving_maze_by_RL.scala 29:15]
+    agent.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 36:29]
+    agent.io_load_new_state <= masterFMS.io_load_new_state @[sloving_maze_by_RL.scala 58:26]
+    agent.io_exploit <= taking_action.io_exploit @[sloving_maze_by_RL.scala 25:19]
     taking_action.clock <= clock
     taking_action.reset <= reset
-    taking_action.io_x <= agent.io_x @[sloving_maze_by_RL.scala 31:13]
-    taking_action.io_y <= agent.io_y @[sloving_maze_by_RL.scala 32:13]
-    taking_action.io_episode <= agent.io_episode @[sloving_maze_by_RL.scala 33:19]
-    taking_action.io_action_at_Qmax <= Q_table.io_action_at_Qmax @[sloving_maze_by_RL.scala 38:34]
-    taking_action.io_reset_Action_fms <= masterFMS.io_reset_Action_fms @[sloving_maze_by_RL.scala 52:32]
+    taking_action.io_x <= agent.io_x @[sloving_maze_by_RL.scala 32:13]
+    taking_action.io_y <= agent.io_y @[sloving_maze_by_RL.scala 33:13]
+    taking_action.io_episode <= agent.io_episode @[sloving_maze_by_RL.scala 34:19]
+    taking_action.io_action_at_Qmax <= Q_table.io_action_at_Qmax @[sloving_maze_by_RL.scala 39:34]
+    taking_action.io_reset_Action_fms <= masterFMS.io_reset_Action_fms @[sloving_maze_by_RL.scala 53:32]
     Q_func.clock <= clock
     Q_func.reset <= reset
-    Q_func.io_Q_s_a <= Q_table.io_Q_s_a @[sloving_maze_by_RL.scala 45:18]
-    Q_func.io_Q_prime_max <= Q_table.io_Q_prime_max @[sloving_maze_by_RL.scala 44:24]
-    Q_func.io_cal <= masterFMS.io_cal @[sloving_maze_by_RL.scala 47:16]
-    Q_func.io_reward <= Reward.io_reward @[sloving_maze_by_RL.scala 46:19]
+    Q_func.io_Q_s_a <= Q_table.io_Q_s_a @[sloving_maze_by_RL.scala 46:18]
+    Q_func.io_Q_prime_max <= Q_table.io_Q_prime_max @[sloving_maze_by_RL.scala 45:24]
+    Q_func.io_cal <= masterFMS.io_cal @[sloving_maze_by_RL.scala 48:16]
+    Q_func.io_reward <= Reward.io_reward @[sloving_maze_by_RL.scala 47:19]
     Q_table.clock <= clock
     Q_table.reset <= reset
-    Q_table.io_state <= agent.io_state @[sloving_maze_by_RL.scala 43:19]
-    Q_table.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 36:29]
-    Q_table.io_act <= taking_action.io_act @[sloving_maze_by_RL.scala 37:23]
-    Q_table.io_wrEna <= Q_func.io_wrEna @[sloving_maze_by_RL.scala 48:18]
-    Q_table.io_Q_updated <= Q_func.io_Q_updated @[sloving_maze_by_RL.scala 49:22]
-    Q_table.io_get_Q_prime_max <= masterFMS.io_get_Q_prime_max @[sloving_maze_by_RL.scala 56:31]
+    Q_table.io_state <= agent.io_state @[sloving_maze_by_RL.scala 44:19]
+    Q_table.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 37:29]
+    Q_table.io_act <= taking_action.io_act @[sloving_maze_by_RL.scala 38:23]
+    Q_table.io_wrEna <= Q_func.io_wrEna @[sloving_maze_by_RL.scala 49:18]
+    Q_table.io_Q_updated <= Q_func.io_Q_updated @[sloving_maze_by_RL.scala 50:22]
+    Q_table.io_get_Q_prime_max <= masterFMS.io_get_Q_prime_max @[sloving_maze_by_RL.scala 57:31]
     Q_table.io_write_data_into_a_txtfile <= io_write_data_into_a_txtfile @[sloving_maze_by_RL.scala 24:39]
     Q_table.io_act_read <= io_act_read @[sloving_maze_by_RL.scala 23:22]
     Q_table.io_state_read <= io_state_read @[sloving_maze_by_RL.scala 22:24]
     Reward.clock <= clock
     Reward.reset <= reset
-    Reward.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 40:22]
-    Reward.io_step <= agent.io_step @[sloving_maze_by_RL.scala 41:17]
+    Reward.io_new_state <= taking_action.io_new_state @[sloving_maze_by_RL.scala 41:22]
+    Reward.io_step <= agent.io_step @[sloving_maze_by_RL.scala 42:17]
     masterFMS.clock <= clock
     masterFMS.reset <= reset
-    masterFMS.io_iterate <= agent.io_iterate @[sloving_maze_by_RL.scala 54:23]
-    masterFMS.io_done_learning <= agent.io_done_learning @[sloving_maze_by_RL.scala 53:29]
-    masterFMS.io_move_to_confirming_Reward <= taking_action.io_move_to_confirming_Reward @[sloving_maze_by_RL.scala 55:41]
+    masterFMS.io_iterate <= agent.io_iterate @[sloving_maze_by_RL.scala 55:23]
+    masterFMS.io_done_learning <= agent.io_done_learning @[sloving_maze_by_RL.scala 54:29]
+    masterFMS.io_move_to_confirming_Reward <= taking_action.io_move_to_confirming_Reward @[sloving_maze_by_RL.scala 56:41]

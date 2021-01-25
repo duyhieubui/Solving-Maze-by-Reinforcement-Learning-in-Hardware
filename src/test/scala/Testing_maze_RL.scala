@@ -12,36 +12,24 @@ class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
   poke(dut.io.ROW,5)
   poke(dut.io.COL,5)
   step(4)
-//  for(act<-0 until 4){
-//    for(state<-0 until 25){
-//      //poke(dut.io.write_data_into_a_txtfile,1)
-//      poke(dut.io.sel,1)
-//      poke(dut.io.state_read,state)
-//      poke(dut.io.act_read,act)
-//      poke(dut.io.randomData,state)
-//      step(1)
-//    }
-//  }
-  //poke(dut.io.write_data_into_a_txtfile,0)
-//  poke(dut.io.sel,0)
-//  step(1)
+
   var idd=0
   val while_loop = new Breaks;
   while_loop.breakable {
       for(id<-0 until 80000){
         //poke(dut.io.rand1,rand1(idd).toInt)
-        //poke(dut.io.rand2,rand2(idd).toInt)
-        poke(dut.io.write_data_into_a_txtfile,0)
-        idd=idd+1
-        if(idd==79900){
-          idd=1
-        }
-        step(1)
-        if(peek(dut.io.Path_found)==1){
-          while_loop.break()
-        }
+//       poke(dut.io.rand2,rand2(idd).toInt)
+      poke(dut.io.write_data_into_a_txtfile, 0)
+       idd=idd+1
+      if(idd==79900){
+       idd=1
+      }
+      step(1)
+      if (peek(dut.io.Path_found) == 1) {
+        while_loop.break()
+      }
     }
-  }
+    }
   print("is tht done")
     val Q_table = new File("C:/Users/leduc/Q_table_hardware.text")
     val writer = new BufferedWriter(new FileWriter(Q_table))
@@ -65,7 +53,7 @@ class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
           writer.write("\t"+peek(dut.io.Q_value).toString())
         }
         else{
-          writer.write("\t"+peek(dut.io.Q_value).toString()+"\n")
+          writer.write("\t"+peek(dut.io.Q_value).toByte.toString()+"\n")
         }
       }
     }
@@ -85,6 +73,3 @@ object solvingMazeTester extends App {
     new solvingMazeTester(c)
   }
 }
-
-
-

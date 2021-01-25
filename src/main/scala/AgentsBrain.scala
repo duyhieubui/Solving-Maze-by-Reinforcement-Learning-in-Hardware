@@ -30,48 +30,47 @@ class MasterFMS extends Module{
     val load_new_state=Output(Bool())
     val reset_Action_fms=Output(Bool())
     val get_Q_prime_max=Output(Bool())
-    val generate_rand2=Output(Bool())
+   // val generate_rand2=Output(Bool())
   })
   io.Path_found :=false.B
   io.cal:=false.B
   io.get_Q_prime_max:=false.B
   io.load_new_state:=false.B
-  io.generate_rand2:=false.B
-
+  //io.generate_rand2:=false.B
   val agent::choosing_Action::get_Reward::compute_Q_value::routing::Nil=Enum(5)
-  val master_fms=RegInit(agent)
+  val master_FMS=RegInit(agent)
   // resetFMS
   val reset_fms=Module( new resetFMS())
   val transition = WireDefault (false.B)
   reset_fms.io.transition:=transition
   io.reset_Action_fms:=reset_fms.io.reset
   io.reset_Action_fms:=false.B
-
-  switch(master_fms) {
+  switch(master_FMS) {
     is(agent) {
       when(io.iterate){
-        master_fms := agent
+        master_FMS := agent
       }.elsewhen(io.done_learning){    // when learning is done, move to path finding block
-        master_fms := routing
+        master_FMS := routing
       }otherwise {
         transition:=true.B
-        master_fms:=choosing_Action
+        master_FMS:=choosing_Action
       }
+      //io.generate_rand2:=true.B
     }
     is(choosing_Action) {
       io.reset_Action_fms:=reset_fms.io.reset
-      io.generate_rand2:=reset_fms.io.reset     // before the action fms returns to its initial state, a random number is
+                                                 // before the action fms returns to its initial state, a random number is
       when(io.move_to_confirming_Reward) {      // generated. When the generate_rand2 signal goes low, it keeps the generated value
-        master_fms := get_Reward
-        io.get_Q_prime_max:=true.B
+        master_FMS := get_Reward
       }
     }
     is(get_Reward){
-      master_fms := compute_Q_value
+      master_FMS := compute_Q_value
+      io.get_Q_prime_max:=true.B
     }
     is(compute_Q_value) {
       io.cal:=true.B
-      master_fms:=agent
+      master_FMS:=agent
       io.load_new_state:=true.B
     }
     is(routing) {

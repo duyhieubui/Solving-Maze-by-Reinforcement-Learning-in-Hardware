@@ -9,7 +9,7 @@ class sloving_maze_by_RL extends Module{
     val ROW=Input(UInt(3.W))
     val state_read=Input(UInt(6.W))
     val act_read=Input(UInt(2.W))
-    val Q_value=Output(SInt(21.W))
+    val Q_value=Output(SInt(16.W))
     val write_data_into_a_txtfile=Input(Bool())
   })
   val agent=Module(new Agent())
@@ -22,6 +22,7 @@ class sloving_maze_by_RL extends Module{
   Q_table.io.state_read<>io.state_read
   Q_table.io.act_read<>io.act_read
   Q_table.io.write_data_into_a_txtfile<>io.write_data_into_a_txtfile
+  agent.io.exploit<>taking_action.io.exploit
   // connect components together
   //connect the inputs the system
   agent.io.ROW<>io.ROW

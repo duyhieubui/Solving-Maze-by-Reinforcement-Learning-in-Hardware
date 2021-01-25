@@ -6,9 +6,9 @@ class Qtable extends Module {
     val new_state=Input(UInt(6.W))  // the next state to determine Q' max
     val act=Input(UInt(2.W))
     val wrEna=Input(Bool())
-    val Q_updated=Input(SInt(21.W))  // the output computed from the Q function (ALU)
-    val Q_s_a=Output(SInt(21.W)) // the current Q value
-    val Q_prime_max=Output(SInt(21.W)) // the maximum Q value at state s, regardless of any actions
+    val Q_updated=Input(SInt(16.W))  // the output computed from the Q function (ALU)
+    val Q_s_a=Output(SInt(16.W)) // the current Q value
+    val Q_prime_max=Output(SInt(16.W)) // the maximum Q value at state s, regardless of any actions
     val action_at_Qmax=Output(UInt(2.W)) //the index of the maximum element
     val get_Q_prime_max=Input(Bool())
     val write_data_into_a_txtfile=Input(Bool())
@@ -19,10 +19,10 @@ class Qtable extends Module {
   val max4=Module(new Max4())
   val index_of_Q_max=Module(new Action_at_Qmax())
   //creat the Q_table
-  val Q_s_a0=SyncReadMem(25,SInt(21.W))
-  val Q_s_a1=SyncReadMem(25,SInt(21.W))
-  val Q_s_a2=SyncReadMem(25,SInt(21.W))
-  val Q_s_a3=SyncReadMem(25,SInt(21.W))
+  val Q_s_a0=SyncReadMem(25,SInt(16.W))
+  val Q_s_a1=SyncReadMem(25,SInt(16.W))
+  val Q_s_a2=SyncReadMem(25,SInt(16.W))
+  val Q_s_a3=SyncReadMem(25,SInt(16.W))
   val state_addr=RegInit(0.U(6.W))    // create a register to store the address of the current state for the sake of writing data
   state_addr:=io.state   // this is used to store the address for updating Q value.
   io.Q_s_a:=0.S
@@ -44,11 +44,11 @@ class Qtable extends Module {
     when(io.wrEna) {
       Q_s_a2.write(state_addr, io.Q_updated)
     }otherwise{
-      io.Q_s_a:=Q_s_a1.read(stateRead)
+      io.Q_s_a:=Q_s_a2.read(stateRead)
     }
-  }.elsewhen(act===3.U){
+  }otherwise{
     when(io.wrEna){
-      Q_s_a0.write(state_addr,io.Q_updated)
+      Q_s_a3.write(state_addr,io.Q_updated)
     }otherwise{
       io.Q_s_a:=Q_s_a3.read(stateRead)
     }
@@ -71,15 +71,15 @@ class Qtable extends Module {
 }
 class Max4 extends Module{
   val io=IO(new Bundle{
-    val ins0=Input(SInt(21.W))
-    val ins1=Input(SInt(21.W))
-    val ins2=Input(SInt(21.W))
-    val ins3=Input(SInt(21.W))
-    val Q_max=Output(SInt(21.W))
+    val ins0=Input(SInt(16.W))
+    val ins1=Input(SInt(16.W))
+    val ins2=Input(SInt(16.W))
+    val ins3=Input(SInt(16.W))
+    val Q_max=Output(SInt(16.W))
   })
 
   private def Max2(x: SInt, y: SInt) = Mux(x > y, x, y)
-  val ins=Wire(Vec(4,SInt(21.W)))
+  val ins=Wire(Vec(4,SInt(16.W)))
   ins(0):=io.ins0
   ins(1):=io.ins1
   ins(2):=io.ins2
@@ -88,14 +88,14 @@ class Max4 extends Module{
 }
 class Action_at_Qmax extends Module{
   val io=IO(new Bundle{
-    val ins0=Input(SInt(21.W))
-    val ins1=Input(SInt(21.W))
-    val ins2=Input(SInt(21.W))
-    val ins3=Input(SInt(21.W))
+    val ins0=Input(SInt(16.W))
+    val ins1=Input(SInt(16.W))
+    val ins2=Input(SInt(16.W))
+    val ins3=Input(SInt(16.W))
     val action_at_Qmax=Output(UInt(2.W))
-    val Q_max_at_state_s=Input(SInt(21.W))
+    val Q_max_at_state_s=Input(SInt(16.W))
   })
-  val ins=Wire(Vec(4,SInt(21.W)))
+  val ins=Wire(Vec(4,SInt(16.W)))
   ins(0):=io.ins0
   ins(1):=io.ins1
   ins(2):=io.ins2

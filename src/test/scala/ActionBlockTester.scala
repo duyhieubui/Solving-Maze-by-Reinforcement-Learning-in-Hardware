@@ -35,8 +35,8 @@ class ActionBlockTester(dut:takingAction) extends PeekPokeTester(dut) {
             poke(dut.io.x, x)
             poke(dut.io.y, y)
             poke(dut.io.episode, episode)
-            poke(dut.io.rand1, rand11(id).toInt)
-            poke(dut.io.rand2, rand22(id).toInt)
+            //poke(dut.io.rand1, rand11(id).toInt)
+            //poke(dut.io.rand2, rand22(id).toInt)
             step(1)
             id=id+1
             }

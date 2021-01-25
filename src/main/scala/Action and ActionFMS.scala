@@ -71,8 +71,8 @@ class Action extends Module {
   when(io.keep_action===false.B){
     when(io.exploit){
       act := action_at_Qmax
-    }otherwise {
-      when(io.rand2 <= 250.U) {
+    }otherwise{
+      when(io.rand2 <= 250.U){
         act := 0.U
       }.elsewhen((250.U < io.rand2) && (io.rand2 <= 500.U) === true.B) {
         act := 1.U //
@@ -98,7 +98,6 @@ class Action extends Module {
   }
   when(x_new === 7.U || x_new === 5.U || y_new === 7.U || y_new === 5.U){
     io.validAction:=false.B
-
   }otherwise{
     new_state:=x_new+5.U*y_new
     io.validAction:=true.B

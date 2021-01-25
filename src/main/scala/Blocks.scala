@@ -8,21 +8,21 @@ class Agent extends Module{
     val x=Output(UInt(3.W))
     val y=Output(UInt(3.W))
     val state=Output(UInt(6.W))
-    val episode=Output(UInt(9.W))
+    val episode=Output(UInt(10.W))
     val done_learning=Output(Bool())
     val load_new_state=Input(Bool())
     val step=Output(UInt(4.W))
+    val exploit=Input(Bool())
     val t=Output(Bool())    // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
     // to reset the current state to the initial state
   })
   val ROW=RegInit(0.U(3.W))   // in length. Ex: maze(5,5) means ROW=5, COL=5
   val COL=RegInit(0.U(3.W))
   val state=RegInit(0.U(6.W))
-  val episode=RegInit(0.U(9.W))
+  val episode=RegInit(0.U(10.W))
   val start_again=state===24.U
   val step = RegInit(0.U(4.W))
-  // delay reset signal by 2 clock cycles so that by the time the Agent moves to
-  // the choosingAction stage.
+
   ROW:=io.ROW
   COL:=io.COL
   val t=(step===15.U)       //if step=14. start again
@@ -32,15 +32,17 @@ class Agent extends Module{
   when(iterate===true.B){
     state:=0.U
     episode:=episode+1.U
-    when(step===15.U){
+    //when(step===15.U){
       step:=0.U
-    }
+    //}
   }otherwise{
     when(io.load_new_state){
       state := io.new_state
       io.done_learning := false.B
       step:=step+1.U
       when(step===15.U){
+        step:=0.U
+      }.elsewhen(io.exploit){
         step:=0.U
       }
     }
@@ -58,20 +60,6 @@ class Agent extends Module{
   io.episode:=episode
   io.step:=step
 }
-class IterateTheLearningProcess extends Module {
-  val io = IO(new Bundle {
-    val state = Input(UInt(6.W))
-    val start_again = Output(Bool())
-    val t=Output(Bool())
-    val iterate=Output(Bool())
-  })
-  // -if the agent reaches the state 25, generate a signal to reset the state of the agent
-  // to the starting point
-  when(io.state === 24.U){
-    io.start_again :=true.B
-  }
-  io.iterate:=io.start_again||io.t
-}
 class ConfirmReward extends Module{
   val io=IO(new Bundle{
     val new_state=Input(UInt(6.W))
@@ -80,11 +68,11 @@ class ConfirmReward extends Module{
   })
   //val reward=RegInit(0.S(8.W))
   when(io.new_state===24.U){io.reward:=100.S
+  }.elsewhen(io.new_state===4.U || io.new_state===6.U ||io.new_state===7.U || io.new_state===13.U || io.new_state===16.U || io.new_state===18.U || io.new_state===19.U || io.new_state===21.U ){ io.reward:= (-200).S
   }.elsewhen(io.step===14.U){     // when t=15, iterate is true
     io.reward:=(-50).S
-  }.elsewhen(io.new_state===4.U || io.new_state===6.U ||io.new_state===7.U || io.new_state===13.U || io.new_state===16.U || io.new_state===18.U || io.new_state===19.U || io.new_state===21.U ){ io.reward:= (-200).S
   }.otherwise{
-    io.reward:=0.S
+    io.reward:=(0).S
   }
 }
 

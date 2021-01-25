@@ -7,7 +7,7 @@ module Agent(
   output [2:0] io_x,
   output [2:0] io_y,
   output [5:0] io_state,
-  output [8:0] io_episode,
+  output [9:0] io_episode,
   output       io_done_learning,
   input        io_load_new_state,
   output [3:0] io_step
@@ -16,14 +16,14 @@ module Agent(
   reg [31:0] _RAND_0;
   reg [5:0] state; // @[Blocks.scala 20:20]
   reg [31:0] _RAND_1;
-  reg [8:0] episode; // @[Blocks.scala 21:22]
+  reg [9:0] episode; // @[Blocks.scala 21:22]
   reg [31:0] _RAND_2;
   wire  start_again; // @[Blocks.scala 22:24]
   reg [3:0] step; // @[Blocks.scala 23:21]
   reg [31:0] _RAND_3;
   wire  t; // @[Blocks.scala 28:14]
   wire  iterate; // @[Blocks.scala 29:26]
-  wire [8:0] _T_2; // @[Blocks.scala 34:21]
+  wire [9:0] _T_2; // @[Blocks.scala 34:21]
   wire [3:0] _T_5; // @[Blocks.scala 42:17]
   wire [5:0] _GEN_8; // @[Blocks.scala 55:14]
   wire [5:0] _T_9; // @[Blocks.scala 56:14]
@@ -31,7 +31,7 @@ module Agent(
   assign start_again = state == 6'h18; // @[Blocks.scala 22:24]
   assign t = step == 4'hf; // @[Blocks.scala 28:14]
   assign iterate = start_again | t; // @[Blocks.scala 29:26]
-  assign _T_2 = episode + 9'h1; // @[Blocks.scala 34:21]
+  assign _T_2 = episode + 10'h1; // @[Blocks.scala 34:21]
   assign _T_5 = step + 4'h1; // @[Blocks.scala 42:17]
   assign _GEN_8 = {{3'd0}, COL}; // @[Blocks.scala 55:14]
   assign _T_9 = state / _GEN_8; // @[Blocks.scala 56:14]
@@ -41,7 +41,7 @@ module Agent(
   assign io_y = _T_9[2:0]; // @[Blocks.scala 56:7]
   assign io_state = state; // @[Blocks.scala 57:11]
   assign io_episode = episode; // @[Blocks.scala 58:13]
-  assign io_done_learning = episode == 9'h12c; // @[Blocks.scala 41:24 Blocks.scala 50:21 Blocks.scala 52:21]
+  assign io_done_learning = episode == 10'h12c; // @[Blocks.scala 41:24 Blocks.scala 50:21 Blocks.scala 52:21]
   assign io_step = step; // @[Blocks.scala 59:10]
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
 `define RANDOMIZE
@@ -84,7 +84,7 @@ initial begin
   `endif // RANDOMIZE_REG_INIT
   `ifdef RANDOMIZE_REG_INIT
   _RAND_2 = {1{`RANDOM}};
-  episode = _RAND_2[8:0];
+  episode = _RAND_2[9:0];
   `endif // RANDOMIZE_REG_INIT
   `ifdef RANDOMIZE_REG_INIT
   _RAND_3 = {1{`RANDOM}};
@@ -107,7 +107,7 @@ end // initial
       state <= io_new_state;
     end
     if (reset) begin
-      episode <= 9'h0;
+      episode <= 10'h0;
     end else if (iterate) begin
       episode <= _T_2;
     end
@@ -270,9 +270,9 @@ module Action(
   wire  _T_25; // @[Action and ActionFMS.scala 99:39]
   wire  _T_26; // @[Action and ActionFMS.scala 99:65]
   wire  _T_27; // @[Action and ActionFMS.scala 99:56]
-  wire [5:0] _T_28; // @[Action and ActionFMS.scala 103:25]
-  wire [5:0] _GEN_13; // @[Action and ActionFMS.scala 103:21]
-  wire [5:0] _T_30; // @[Action and ActionFMS.scala 103:21]
+  wire [5:0] _T_28; // @[Action and ActionFMS.scala 102:25]
+  wire [5:0] _GEN_13; // @[Action and ActionFMS.scala 102:21]
+  wire [5:0] _T_30; // @[Action and ActionFMS.scala 102:21]
   assign _T = io_keep_action == 1'h0; // @[Action and ActionFMS.scala 71:22]
   assign _T_1 = io_rand2 <= 10'hfa; // @[Action and ActionFMS.scala 75:21]
   assign _T_2 = 10'hfa < io_rand2; // @[Action and ActionFMS.scala 77:25]
@@ -295,12 +295,12 @@ module Action(
   assign _T_25 = _T_23 | _T_24; // @[Action and ActionFMS.scala 99:39]
   assign _T_26 = y_new == 3'h5; // @[Action and ActionFMS.scala 99:65]
   assign _T_27 = _T_25 | _T_26; // @[Action and ActionFMS.scala 99:56]
-  assign _T_28 = 3'h5 * y_new; // @[Action and ActionFMS.scala 103:25]
-  assign _GEN_13 = {{3'd0}, x_new}; // @[Action and ActionFMS.scala 103:21]
-  assign _T_30 = _GEN_13 + _T_28; // @[Action and ActionFMS.scala 103:21]
-  assign io_new_state = new_state; // @[Action and ActionFMS.scala 107:15]
-  assign io_act = act; // @[Action and ActionFMS.scala 106:9]
-  assign io_validAction = _T_27 ? 1'h0 : 1'h1; // @[Action and ActionFMS.scala 100:19 Action and ActionFMS.scala 104:19]
+  assign _T_28 = 3'h5 * y_new; // @[Action and ActionFMS.scala 102:25]
+  assign _GEN_13 = {{3'd0}, x_new}; // @[Action and ActionFMS.scala 102:21]
+  assign _T_30 = _GEN_13 + _T_28; // @[Action and ActionFMS.scala 102:21]
+  assign io_new_state = new_state; // @[Action and ActionFMS.scala 106:15]
+  assign io_act = act; // @[Action and ActionFMS.scala 105:9]
+  assign io_validAction = _T_27 ? 1'h0 : 1'h1; // @[Action and ActionFMS.scala 100:19 Action and ActionFMS.scala 103:19]
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
 `define RANDOMIZE
 `endif
@@ -405,181 +405,13 @@ end // initial
     end
   end
 endmodule
-module MaxPeriodFibonacciLFSR(
-  input   clock,
-  input   reset,
-  output  io_out_0,
-  output  io_out_1,
-  output  io_out_2,
-  output  io_out_3,
-  output  io_out_4,
-  output  io_out_5,
-  output  io_out_6,
-  output  io_out_7,
-  output  io_out_8,
-  output  io_out_9
-);
-  reg  state_0; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_0;
-  reg  state_1; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_1;
-  reg  state_2; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_2;
-  reg  state_3; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_3;
-  reg  state_4; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_4;
-  reg  state_5; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_5;
-  reg  state_6; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_6;
-  reg  state_7; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_7;
-  reg  state_8; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_8;
-  reg  state_9; // @[PRNG.scala 47:50]
-  reg [31:0] _RAND_9;
-  wire  _T_1; // @[LFSR.scala 15:41]
-  assign _T_1 = state_9 ^ state_6; // @[LFSR.scala 15:41]
-  assign io_out_0 = state_0; // @[PRNG.scala 69:10]
-  assign io_out_1 = state_1; // @[PRNG.scala 69:10]
-  assign io_out_2 = state_2; // @[PRNG.scala 69:10]
-  assign io_out_3 = state_3; // @[PRNG.scala 69:10]
-  assign io_out_4 = state_4; // @[PRNG.scala 69:10]
-  assign io_out_5 = state_5; // @[PRNG.scala 69:10]
-  assign io_out_6 = state_6; // @[PRNG.scala 69:10]
-  assign io_out_7 = state_7; // @[PRNG.scala 69:10]
-  assign io_out_8 = state_8; // @[PRNG.scala 69:10]
-  assign io_out_9 = state_9; // @[PRNG.scala 69:10]
-`ifdef RANDOMIZE_GARBAGE_ASSIGN
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_INVALID_ASSIGN
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_REG_INIT
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_MEM_INIT
-`define RANDOMIZE
-`endif
-`ifndef RANDOM
-`define RANDOM $random
-`endif
-`ifdef RANDOMIZE_MEM_INIT
-  integer initvar;
-`endif
-`ifndef SYNTHESIS
-initial begin
-  `ifdef RANDOMIZE
-    `ifdef INIT_RANDOM
-      `INIT_RANDOM
-    `endif
-    `ifndef VERILATOR
-      `ifdef RANDOMIZE_DELAY
-        #`RANDOMIZE_DELAY begin end
-      `else
-        #0.002 begin end
-      `endif
-    `endif
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_0 = {1{`RANDOM}};
-  state_0 = _RAND_0[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_1 = {1{`RANDOM}};
-  state_1 = _RAND_1[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_2 = {1{`RANDOM}};
-  state_2 = _RAND_2[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_3 = {1{`RANDOM}};
-  state_3 = _RAND_3[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_4 = {1{`RANDOM}};
-  state_4 = _RAND_4[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_5 = {1{`RANDOM}};
-  state_5 = _RAND_5[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_6 = {1{`RANDOM}};
-  state_6 = _RAND_6[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_7 = {1{`RANDOM}};
-  state_7 = _RAND_7[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_8 = {1{`RANDOM}};
-  state_8 = _RAND_8[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_9 = {1{`RANDOM}};
-  state_9 = _RAND_9[0:0];
-  `endif // RANDOMIZE_REG_INIT
-  `endif // RANDOMIZE
-end // initial
-`endif // SYNTHESIS
-  always @(posedge clock) begin
-    state_0 <= reset | _T_1;
-    if (reset) begin
-      state_1 <= 1'h0;
-    end else begin
-      state_1 <= state_0;
-    end
-    if (reset) begin
-      state_2 <= 1'h0;
-    end else begin
-      state_2 <= state_1;
-    end
-    if (reset) begin
-      state_3 <= 1'h0;
-    end else begin
-      state_3 <= state_2;
-    end
-    if (reset) begin
-      state_4 <= 1'h0;
-    end else begin
-      state_4 <= state_3;
-    end
-    if (reset) begin
-      state_5 <= 1'h0;
-    end else begin
-      state_5 <= state_4;
-    end
-    if (reset) begin
-      state_6 <= 1'h0;
-    end else begin
-      state_6 <= state_5;
-    end
-    if (reset) begin
-      state_7 <= 1'h0;
-    end else begin
-      state_7 <= state_6;
-    end
-    if (reset) begin
-      state_8 <= 1'h0;
-    end else begin
-      state_8 <= state_7;
-    end
-    if (reset) begin
-      state_9 <= 1'h0;
-    end else begin
-      state_9 <= state_8;
-    end
-  end
-endmodule
 module takingAction(
   input        clock,
   input        reset,
   input  [2:0] io_x,
   input  [2:0] io_y,
-  input  [8:0] io_episode,
+  input  [9:0] io_rand2,
+  input  [9:0] io_episode,
   output [5:0] io_new_state,
   input  [1:0] io_action_at_Qmax,
   output [1:0] io_act,
@@ -604,38 +436,6 @@ module takingAction(
   wire  action_io_exploit; // @[taking_Action.scala 20:20]
   wire  action_io_validAction; // @[taking_Action.scala 20:20]
   wire  action_io_keep_action; // @[taking_Action.scala 20:20]
-  wire  MaxPeriodFibonacciLFSR_clock; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_reset; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_0; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_1; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_2; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_3; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_4; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_5; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_6; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_7; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_8; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_io_out_9; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_clock; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_reset; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_0; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_1; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_2; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_3; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_4; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_5; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_6; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_7; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_8; // @[PRNG.scala 82:22]
-  wire  MaxPeriodFibonacciLFSR_1_io_out_9; // @[PRNG.scala 82:22]
-  reg [9:0] epsilon; // @[taking_Action.scala 21:24]
-  reg [31:0] _RAND_0;
-  wire [13:0] _T; // @[taking_Action.scala 24:34]
-  wire [13:0] _T_1; // @[taking_Action.scala 24:41]
-  wire [13:0] _T_3; // @[taking_Action.scala 24:21]
-  wire [9:0] _T_12; // @[PRNG.scala 86:17]
-  wire [4:0] _T_16; // @[PRNG.scala 86:17]
-  wire [4:0] _T_20; // @[PRNG.scala 86:17]
   Action_FMS action_fms ( // @[taking_Action.scala 19:24]
     .clock(action_fms_clock),
     .reset(action_fms_reset),
@@ -658,142 +458,63 @@ module takingAction(
     .io_validAction(action_io_validAction),
     .io_keep_action(action_io_keep_action)
   );
-  MaxPeriodFibonacciLFSR MaxPeriodFibonacciLFSR ( // @[PRNG.scala 82:22]
-    .clock(MaxPeriodFibonacciLFSR_clock),
-    .reset(MaxPeriodFibonacciLFSR_reset),
-    .io_out_0(MaxPeriodFibonacciLFSR_io_out_0),
-    .io_out_1(MaxPeriodFibonacciLFSR_io_out_1),
-    .io_out_2(MaxPeriodFibonacciLFSR_io_out_2),
-    .io_out_3(MaxPeriodFibonacciLFSR_io_out_3),
-    .io_out_4(MaxPeriodFibonacciLFSR_io_out_4),
-    .io_out_5(MaxPeriodFibonacciLFSR_io_out_5),
-    .io_out_6(MaxPeriodFibonacciLFSR_io_out_6),
-    .io_out_7(MaxPeriodFibonacciLFSR_io_out_7),
-    .io_out_8(MaxPeriodFibonacciLFSR_io_out_8),
-    .io_out_9(MaxPeriodFibonacciLFSR_io_out_9)
-  );
-  MaxPeriodFibonacciLFSR MaxPeriodFibonacciLFSR_1 ( // @[PRNG.scala 82:22]
-    .clock(MaxPeriodFibonacciLFSR_1_clock),
-    .reset(MaxPeriodFibonacciLFSR_1_reset),
-    .io_out_0(MaxPeriodFibonacciLFSR_1_io_out_0),
-    .io_out_1(MaxPeriodFibonacciLFSR_1_io_out_1),
-    .io_out_2(MaxPeriodFibonacciLFSR_1_io_out_2),
-    .io_out_3(MaxPeriodFibonacciLFSR_1_io_out_3),
-    .io_out_4(MaxPeriodFibonacciLFSR_1_io_out_4),
-    .io_out_5(MaxPeriodFibonacciLFSR_1_io_out_5),
-    .io_out_6(MaxPeriodFibonacciLFSR_1_io_out_6),
-    .io_out_7(MaxPeriodFibonacciLFSR_1_io_out_7),
-    .io_out_8(MaxPeriodFibonacciLFSR_1_io_out_8),
-    .io_out_9(MaxPeriodFibonacciLFSR_1_io_out_9)
-  );
-  assign _T = io_episode * 9'h11; // @[taking_Action.scala 24:34]
-  assign _T_1 = _T / 14'h5; // @[taking_Action.scala 24:41]
-  assign _T_3 = 14'h400 - _T_1; // @[taking_Action.scala 24:21]
-  assign _T_12 = {MaxPeriodFibonacciLFSR_io_out_9,MaxPeriodFibonacciLFSR_io_out_8,MaxPeriodFibonacciLFSR_io_out_7,MaxPeriodFibonacciLFSR_io_out_6,MaxPeriodFibonacciLFSR_io_out_5,MaxPeriodFibonacciLFSR_io_out_4,MaxPeriodFibonacciLFSR_io_out_3,MaxPeriodFibonacciLFSR_io_out_2,MaxPeriodFibonacciLFSR_io_out_1,MaxPeriodFibonacciLFSR_io_out_0}; // @[PRNG.scala 86:17]
-  assign _T_16 = {MaxPeriodFibonacciLFSR_1_io_out_4,MaxPeriodFibonacciLFSR_1_io_out_3,MaxPeriodFibonacciLFSR_1_io_out_2,MaxPeriodFibonacciLFSR_1_io_out_1,MaxPeriodFibonacciLFSR_1_io_out_0}; // @[PRNG.scala 86:17]
-  assign _T_20 = {MaxPeriodFibonacciLFSR_1_io_out_9,MaxPeriodFibonacciLFSR_1_io_out_8,MaxPeriodFibonacciLFSR_1_io_out_7,MaxPeriodFibonacciLFSR_1_io_out_6,MaxPeriodFibonacciLFSR_1_io_out_5}; // @[PRNG.scala 86:17]
-  assign io_new_state = action_io_new_state; // @[taking_Action.scala 40:15]
-  assign io_act = action_io_act; // @[taking_Action.scala 39:9]
-  assign io_move_to_confirming_Reward = action_fms_io_move_to_confirming_Reward; // @[taking_Action.scala 41:31]
+  assign io_new_state = action_io_new_state; // @[taking_Action.scala 44:15]
+  assign io_act = action_io_act; // @[taking_Action.scala 43:9]
+  assign io_move_to_confirming_Reward = action_fms_io_move_to_confirming_Reward; // @[taking_Action.scala 45:31]
   assign action_fms_clock = clock;
   assign action_fms_reset = reset;
-  assign action_fms_io_reset_Action_fms = io_reset_Action_fms; // @[taking_Action.scala 27:33]
-  assign action_fms_io_exploit = epsilon <= _T_12; // @[taking_Action.scala 28:24]
-  assign action_fms_io_validAction = action_io_validAction; // @[taking_Action.scala 29:28]
+  assign action_fms_io_reset_Action_fms = io_reset_Action_fms; // @[taking_Action.scala 29:33]
+  assign action_fms_io_exploit = io_episode < 10'h5a; // @[taking_Action.scala 30:24]
+  assign action_fms_io_validAction = action_io_validAction; // @[taking_Action.scala 31:28]
   assign action_clock = clock;
   assign action_reset = reset;
-  assign action_io_x = io_x; // @[taking_Action.scala 35:14]
-  assign action_io_y = io_y; // @[taking_Action.scala 36:14]
-  assign action_io_rand2 = {_T_20,_T_16}; // @[taking_Action.scala 34:18]
-  assign action_io_action_at_Qmax = io_action_at_Qmax; // @[taking_Action.scala 37:27]
-  assign action_io_exploit = epsilon <= _T_12; // @[taking_Action.scala 33:20]
-  assign action_io_keep_action = action_fms_io_keep_action; // @[taking_Action.scala 30:28]
-  assign MaxPeriodFibonacciLFSR_clock = clock;
-  assign MaxPeriodFibonacciLFSR_reset = reset;
-  assign MaxPeriodFibonacciLFSR_1_clock = clock;
-  assign MaxPeriodFibonacciLFSR_1_reset = reset;
-`ifdef RANDOMIZE_GARBAGE_ASSIGN
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_INVALID_ASSIGN
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_REG_INIT
-`define RANDOMIZE
-`endif
-`ifdef RANDOMIZE_MEM_INIT
-`define RANDOMIZE
-`endif
-`ifndef RANDOM
-`define RANDOM $random
-`endif
-`ifdef RANDOMIZE_MEM_INIT
-  integer initvar;
-`endif
-`ifndef SYNTHESIS
-initial begin
-  `ifdef RANDOMIZE
-    `ifdef INIT_RANDOM
-      `INIT_RANDOM
-    `endif
-    `ifndef VERILATOR
-      `ifdef RANDOMIZE_DELAY
-        #`RANDOMIZE_DELAY begin end
-      `else
-        #0.002 begin end
-      `endif
-    `endif
-  `ifdef RANDOMIZE_REG_INIT
-  _RAND_0 = {1{`RANDOM}};
-  epsilon = _RAND_0[9:0];
-  `endif // RANDOMIZE_REG_INIT
-  `endif // RANDOMIZE
-end // initial
-`endif // SYNTHESIS
-  always @(posedge clock) begin
-    if (reset) begin
-      epsilon <= 10'h0;
-    end else begin
-      epsilon <= _T_3[9:0];
-    end
-  end
+  assign action_io_x = io_x; // @[taking_Action.scala 39:14]
+  assign action_io_y = io_y; // @[taking_Action.scala 40:14]
+  assign action_io_rand2 = io_rand2; // @[taking_Action.scala 37:18]
+  assign action_io_action_at_Qmax = io_action_at_Qmax; // @[taking_Action.scala 41:27]
+  assign action_io_exploit = io_episode < 10'h5a; // @[taking_Action.scala 35:20]
+  assign action_io_keep_action = action_fms_io_keep_action; // @[taking_Action.scala 32:28]
 endmodule
 module Q_function(
   input         clock,
   input         reset,
-  input  [20:0] io_Q_s_a,
-  input  [20:0] io_Q_prime_max,
-  output [20:0] io_Q_updated,
+  input  [15:0] io_Q_s_a,
+  input  [15:0] io_Q_prime_max,
+  output [15:0] io_Q_updated,
   input         io_cal,
   input  [8:0]  io_reward,
   output        io_wrEna
 );
-  reg [20:0] Q_s_a; // @[Q_function.scala 13:20]
+  reg [15:0] Q_s_a; // @[Q_function.scala 16:20]
   reg [31:0] _RAND_0;
-  reg [7:0] reward; // @[Q_function.scala 14:21]
+  reg [8:0] reward; // @[Q_function.scala 17:21]
   reg [31:0] _RAND_1;
-  wire [20:0] _GEN_2; // @[Q_function.scala 19:31]
-  wire [20:0] _T_1; // @[Q_function.scala 19:31]
-  wire [20:0] _T_2; // @[Q_function.scala 19:31]
-  wire [24:0] _T_3; // @[Q_function.scala 19:23]
-  wire [24:0] _T_4; // @[Q_function.scala 19:43]
-  wire [24:0] _T_6; // @[Q_function.scala 19:39]
-  wire [24:0] _T_7; // @[Q_function.scala 19:39]
-  wire [24:0] _GEN_0; // @[Q_function.scala 18:15]
-  wire [20:0] _GEN_3; // @[Q_function.scala 19:18 Q_function.scala 22:17]
-  wire [7:0] _GEN_4; // @[Q_function.scala 17:9]
-  assign _GEN_2 = {{13{reward[7]}},reward}; // @[Q_function.scala 19:31]
-  assign _T_1 = $signed(_GEN_2) + $signed(Q_s_a); // @[Q_function.scala 19:31]
-  assign _T_2 = $signed(_T_1); // @[Q_function.scala 19:31]
-  assign _T_3 = $signed(21'sh5) * $signed(_T_2); // @[Q_function.scala 19:23]
-  assign _T_4 = $signed(21'sh4) * $signed(io_Q_prime_max); // @[Q_function.scala 19:43]
-  assign _T_6 = $signed(_T_3) + $signed(_T_4); // @[Q_function.scala 19:39]
-  assign _T_7 = $signed(_T_6); // @[Q_function.scala 19:39]
-  assign _GEN_0 = io_cal ? $signed(_T_7) : $signed(25'sh0); // @[Q_function.scala 18:15]
-  assign _GEN_3 = _GEN_0[20:0]; // @[Q_function.scala 19:18 Q_function.scala 22:17]
-  assign io_Q_updated = $signed(_GEN_3); // @[Q_function.scala 19:18 Q_function.scala 22:17]
-  assign io_wrEna = io_cal; // @[Q_function.scala 20:13 Q_function.scala 23:13]
-  assign _GEN_4 = io_reward[7:0]; // @[Q_function.scala 17:9]
+  wire [17:0] _T; // @[Q_function.scala 23:33]
+  wire [17:0] _GEN_2; // @[Q_function.scala 23:26]
+  wire [17:0] _T_2; // @[Q_function.scala 23:26]
+  wire [17:0] _T_3; // @[Q_function.scala 23:26]
+  wire [18:0] _T_4; // @[Q_function.scala 23:40]
+  wire [19:0] _T_5; // @[Q_function.scala 23:61]
+  wire [20:0] _T_6; // @[Q_function.scala 23:65]
+  wire [20:0] _GEN_3; // @[Q_function.scala 23:45]
+  wire [20:0] _T_8; // @[Q_function.scala 23:45]
+  wire [20:0] _T_9; // @[Q_function.scala 23:45]
+  wire [20:0] _GEN_0; // @[Q_function.scala 22:15]
+  wire [15:0] _GEN_4; // @[Q_function.scala 23:18 Q_function.scala 26:17]
+  assign _T = $signed(reward) * $signed(9'sh80); // @[Q_function.scala 23:33]
+  assign _GEN_2 = {{2{Q_s_a[15]}},Q_s_a}; // @[Q_function.scala 23:26]
+  assign _T_2 = $signed(_GEN_2) + $signed(_T); // @[Q_function.scala 23:26]
+  assign _T_3 = $signed(_T_2); // @[Q_function.scala 23:26]
+  assign _T_4 = $signed(_T_3) / $signed(18'sh2); // @[Q_function.scala 23:40]
+  assign _T_5 = $signed(io_Q_prime_max) * $signed(16'sh4); // @[Q_function.scala 23:61]
+  assign _T_6 = $signed(_T_5) / $signed(20'sha); // @[Q_function.scala 23:65]
+  assign _GEN_3 = {{2{_T_4[18]}},_T_4}; // @[Q_function.scala 23:45]
+  assign _T_8 = $signed(_GEN_3) + $signed(_T_6); // @[Q_function.scala 23:45]
+  assign _T_9 = $signed(_T_8); // @[Q_function.scala 23:45]
+  assign _GEN_0 = io_cal ? $signed(_T_9) : $signed(21'sh0); // @[Q_function.scala 22:15]
+  assign _GEN_4 = _GEN_0[15:0]; // @[Q_function.scala 23:18 Q_function.scala 26:17]
+  assign io_Q_updated = $signed(_GEN_4); // @[Q_function.scala 23:18 Q_function.scala 26:17]
+  assign io_wrEna = io_cal; // @[Q_function.scala 24:13 Q_function.scala 27:13]
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
 `define RANDOMIZE
 `endif
@@ -827,39 +548,39 @@ initial begin
     `endif
   `ifdef RANDOMIZE_REG_INIT
   _RAND_0 = {1{`RANDOM}};
-  Q_s_a = _RAND_0[20:0];
+  Q_s_a = _RAND_0[15:0];
   `endif // RANDOMIZE_REG_INIT
   `ifdef RANDOMIZE_REG_INIT
   _RAND_1 = {1{`RANDOM}};
-  reward = _RAND_1[7:0];
+  reward = _RAND_1[8:0];
   `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
 `endif // SYNTHESIS
   always @(posedge clock) begin
     if (reset) begin
-      Q_s_a <= 21'sh0;
+      Q_s_a <= 16'sh0;
     end else begin
       Q_s_a <= io_Q_s_a;
     end
     if (reset) begin
-      reward <= 8'sh0;
+      reward <= 9'sh0;
     end else begin
-      reward <= $signed(_GEN_4);
+      reward <= io_reward;
     end
   end
 endmodule
 module Max4(
-  input  [20:0] io_ins0,
-  input  [20:0] io_ins1,
-  input  [20:0] io_ins2,
-  input  [20:0] io_ins3,
-  output [20:0] io_Q_max
+  input  [15:0] io_ins0,
+  input  [15:0] io_ins1,
+  input  [15:0] io_ins2,
+  input  [15:0] io_ins3,
+  output [15:0] io_Q_max
 );
   wire  _T; // @[Q_table.scala 81:46]
-  wire [20:0] _T_1; // @[Q_table.scala 81:43]
+  wire [15:0] _T_1; // @[Q_table.scala 81:43]
   wire  _T_2; // @[Q_table.scala 81:46]
-  wire [20:0] _T_3; // @[Q_table.scala 81:43]
+  wire [15:0] _T_3; // @[Q_table.scala 81:43]
   wire  _T_4; // @[Q_table.scala 81:46]
   assign _T = $signed(io_ins0) > $signed(io_ins1); // @[Q_table.scala 81:46]
   assign _T_1 = _T ? $signed(io_ins0) : $signed(io_ins1); // @[Q_table.scala 81:43]
@@ -869,20 +590,26 @@ module Max4(
   assign io_Q_max = _T_4 ? $signed(_T_3) : $signed(io_ins3); // @[Q_table.scala 87:11]
 endmodule
 module Action_at_Qmax(
-  input  [20:0] io_ins0,
-  input  [20:0] io_ins1,
-  input  [20:0] io_ins2,
+  input  [15:0] io_ins0,
+  input  [15:0] io_ins1,
+  input  [15:0] io_ins2,
   output [1:0]  io_action_at_Qmax,
   input  [20:0] io_Q_max_at_state_s
 );
+  wire [20:0] _GEN_0; // @[Q_table.scala 103:42]
   wire  _T; // @[Q_table.scala 103:42]
+  wire [20:0] _GEN_1; // @[Q_table.scala 103:42]
   wire  _T_1; // @[Q_table.scala 103:42]
+  wire [20:0] _GEN_2; // @[Q_table.scala 103:42]
   wire  _T_2; // @[Q_table.scala 103:42]
   wire [1:0] _T_4; // @[Q_table.scala 103:36]
   wire [1:0] _T_5; // @[Q_table.scala 103:36]
-  assign _T = $signed(io_ins0) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
-  assign _T_1 = $signed(io_ins1) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
-  assign _T_2 = $signed(io_ins2) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
+  assign _GEN_0 = {{5{io_ins0[15]}},io_ins0}; // @[Q_table.scala 103:42]
+  assign _T = $signed(_GEN_0) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
+  assign _GEN_1 = {{5{io_ins1[15]}},io_ins1}; // @[Q_table.scala 103:42]
+  assign _T_1 = $signed(_GEN_1) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
+  assign _GEN_2 = {{5{io_ins2[15]}},io_ins2}; // @[Q_table.scala 103:42]
+  assign _T_2 = $signed(_GEN_2) == $signed(io_Q_max_at_state_s); // @[Q_table.scala 103:42]
   assign _T_4 = _T_2 ? 2'h2 : 2'h3; // @[Q_table.scala 103:36]
   assign _T_5 = _T_1 ? 2'h1 : _T_4; // @[Q_table.scala 103:36]
   assign io_action_at_Qmax = _T ? 2'h0 : _T_5; // @[Q_table.scala 103:20]
@@ -894,53 +621,49 @@ module Qtable(
   input  [5:0]  io_new_state,
   input  [1:0]  io_act,
   input         io_wrEna,
-  input  [20:0] io_Q_updated,
-  output [20:0] io_Q_s_a,
-  output [20:0] io_Q_prime_max,
+  input  [15:0] io_Q_updated,
+  output [15:0] io_Q_s_a,
+  output [15:0] io_Q_prime_max,
   output [1:0]  io_action_at_Qmax,
   input         io_get_Q_prime_max,
   input         io_write_data_into_a_txtfile,
   input  [1:0]  io_act_read,
   input  [5:0]  io_state_read
 );
-  wire [20:0] max4_io_ins0; // @[Q_table.scala 19:18]
-  wire [20:0] max4_io_ins1; // @[Q_table.scala 19:18]
-  wire [20:0] max4_io_ins2; // @[Q_table.scala 19:18]
-  wire [20:0] max4_io_ins3; // @[Q_table.scala 19:18]
-  wire [20:0] max4_io_Q_max; // @[Q_table.scala 19:18]
-  wire [20:0] index_of_Q_max_io_ins0; // @[Q_table.scala 20:28]
-  wire [20:0] index_of_Q_max_io_ins1; // @[Q_table.scala 20:28]
-  wire [20:0] index_of_Q_max_io_ins2; // @[Q_table.scala 20:28]
+  wire [15:0] max4_io_ins0; // @[Q_table.scala 19:18]
+  wire [15:0] max4_io_ins1; // @[Q_table.scala 19:18]
+  wire [15:0] max4_io_ins2; // @[Q_table.scala 19:18]
+  wire [15:0] max4_io_ins3; // @[Q_table.scala 19:18]
+  wire [15:0] max4_io_Q_max; // @[Q_table.scala 19:18]
+  wire [15:0] index_of_Q_max_io_ins0; // @[Q_table.scala 20:28]
+  wire [15:0] index_of_Q_max_io_ins1; // @[Q_table.scala 20:28]
+  wire [15:0] index_of_Q_max_io_ins2; // @[Q_table.scala 20:28]
   wire [1:0] index_of_Q_max_io_action_at_Qmax; // @[Q_table.scala 20:28]
   wire [20:0] index_of_Q_max_io_Q_max_at_state_s; // @[Q_table.scala 20:28]
-  reg [20:0] Q_s_a0 [0:24]; // @[Q_table.scala 22:25]
+  reg [15:0] Q_s_a0 [0:24]; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_0;
-  wire [20:0] Q_s_a0__T_4_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_4_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_4_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_1;
-  wire [20:0] Q_s_a0__T_21_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_21_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_21_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_2;
-  wire [20:0] Q_s_a0__T_29_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_29_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_29_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_3;
-  wire [20:0] Q_s_a0__T_31_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_31_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_31_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_4;
-  wire [20:0] Q_s_a0__T_33_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_33_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_33_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_5;
-  wire [20:0] Q_s_a0__T_35_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_35_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_35_addr; // @[Q_table.scala 22:25]
   reg [31:0] _RAND_6;
-  wire [20:0] Q_s_a0__T_2_data; // @[Q_table.scala 22:25]
+  wire [15:0] Q_s_a0__T_2_data; // @[Q_table.scala 22:25]
   wire [4:0] Q_s_a0__T_2_addr; // @[Q_table.scala 22:25]
   wire  Q_s_a0__T_2_mask; // @[Q_table.scala 22:25]
   wire  Q_s_a0__T_2_en; // @[Q_table.scala 22:25]
-  wire [20:0] Q_s_a0__T_17_data; // @[Q_table.scala 22:25]
-  wire [4:0] Q_s_a0__T_17_addr; // @[Q_table.scala 22:25]
-  wire  Q_s_a0__T_17_mask; // @[Q_table.scala 22:25]
-  wire  Q_s_a0__T_17_en; // @[Q_table.scala 22:25]
   reg  Q_s_a0__T_4_en_pipe_0;
   reg [31:0] _RAND_7;
   reg [4:0] Q_s_a0__T_4_addr_pipe_0;
@@ -965,21 +688,21 @@ module Qtable(
   reg [31:0] _RAND_17;
   reg [4:0] Q_s_a0__T_35_addr_pipe_0;
   reg [31:0] _RAND_18;
-  reg [20:0] Q_s_a1 [0:24]; // @[Q_table.scala 23:25]
+  reg [15:0] Q_s_a1 [0:24]; // @[Q_table.scala 23:25]
   reg [31:0] _RAND_19;
-  wire [20:0] Q_s_a1__T_9_data; // @[Q_table.scala 23:25]
+  wire [15:0] Q_s_a1__T_9_data; // @[Q_table.scala 23:25]
   wire [4:0] Q_s_a1__T_9_addr; // @[Q_table.scala 23:25]
   reg [31:0] _RAND_20;
-  wire [20:0] Q_s_a1__T_14_data; // @[Q_table.scala 23:25]
+  wire [15:0] Q_s_a1__T_14_data; // @[Q_table.scala 23:25]
   wire [4:0] Q_s_a1__T_14_addr; // @[Q_table.scala 23:25]
   reg [31:0] _RAND_21;
-  wire [20:0] Q_s_a1__T_23_data; // @[Q_table.scala 23:25]
+  wire [15:0] Q_s_a1__T_23_data; // @[Q_table.scala 23:25]
   wire [4:0] Q_s_a1__T_23_addr; // @[Q_table.scala 23:25]
   reg [31:0] _RAND_22;
-  wire [20:0] Q_s_a1__T_25_data; // @[Q_table.scala 23:25]
+  wire [15:0] Q_s_a1__T_25_data; // @[Q_table.scala 23:25]
   wire [4:0] Q_s_a1__T_25_addr; // @[Q_table.scala 23:25]
   reg [31:0] _RAND_23;
-  wire [20:0] Q_s_a1__T_7_data; // @[Q_table.scala 23:25]
+  wire [15:0] Q_s_a1__T_7_data; // @[Q_table.scala 23:25]
   wire [4:0] Q_s_a1__T_7_addr; // @[Q_table.scala 23:25]
   wire  Q_s_a1__T_7_mask; // @[Q_table.scala 23:25]
   wire  Q_s_a1__T_7_en; // @[Q_table.scala 23:25]
@@ -999,14 +722,18 @@ module Qtable(
   reg [31:0] _RAND_30;
   reg [4:0] Q_s_a1__T_25_addr_pipe_0;
   reg [31:0] _RAND_31;
-  reg [20:0] Q_s_a3 [0:24]; // @[Q_table.scala 25:25]
+  reg [15:0] Q_s_a3 [0:24]; // @[Q_table.scala 25:25]
   reg [31:0] _RAND_32;
-  wire [20:0] Q_s_a3__T_19_data; // @[Q_table.scala 25:25]
+  wire [15:0] Q_s_a3__T_19_data; // @[Q_table.scala 25:25]
   wire [4:0] Q_s_a3__T_19_addr; // @[Q_table.scala 25:25]
   reg [31:0] _RAND_33;
-  wire [20:0] Q_s_a3__T_27_data; // @[Q_table.scala 25:25]
+  wire [15:0] Q_s_a3__T_27_data; // @[Q_table.scala 25:25]
   wire [4:0] Q_s_a3__T_27_addr; // @[Q_table.scala 25:25]
   reg [31:0] _RAND_34;
+  wire [15:0] Q_s_a3__T_17_data; // @[Q_table.scala 25:25]
+  wire [4:0] Q_s_a3__T_17_addr; // @[Q_table.scala 25:25]
+  wire  Q_s_a3__T_17_mask; // @[Q_table.scala 25:25]
+  wire  Q_s_a3__T_17_en; // @[Q_table.scala 25:25]
   reg  Q_s_a3__T_19_en_pipe_0;
   reg [31:0] _RAND_35;
   reg [4:0] Q_s_a3__T_19_addr_pipe_0;
@@ -1021,23 +748,23 @@ module Qtable(
   wire [5:0] stateRead; // @[Q_table.scala 30:20]
   wire  _T; // @[Q_table.scala 31:11]
   wire  _GEN_5; // @[Q_table.scala 32:20]
-  wire [20:0] _GEN_8; // @[Q_table.scala 32:20]
+  wire [15:0] _GEN_8; // @[Q_table.scala 32:20]
   wire  _T_5; // @[Q_table.scala 37:17]
-  wire [20:0] _GEN_11; // @[Q_table.scala 38:20]
+  wire [15:0] _GEN_11; // @[Q_table.scala 38:20]
   wire  _T_10; // @[Q_table.scala 43:17]
-  wire [20:0] _GEN_14; // @[Q_table.scala 44:20]
+  wire [15:0] _GEN_14; // @[Q_table.scala 44:20]
   wire  _T_15; // @[Q_table.scala 49:17]
-  wire [20:0] _GEN_17; // @[Q_table.scala 50:19]
+  wire [15:0] _GEN_17; // @[Q_table.scala 50:19]
   wire  _GEN_20; // @[Q_table.scala 49:24]
   wire  _GEN_23; // @[Q_table.scala 49:24]
-  wire [20:0] _GEN_26; // @[Q_table.scala 49:24]
+  wire [15:0] _GEN_26; // @[Q_table.scala 49:24]
   wire  _GEN_32; // @[Q_table.scala 43:24]
-  wire [20:0] _GEN_35; // @[Q_table.scala 43:24]
+  wire [15:0] _GEN_35; // @[Q_table.scala 43:24]
   wire  _GEN_38; // @[Q_table.scala 43:24]
   wire  _GEN_41; // @[Q_table.scala 43:24]
   wire  _GEN_46; // @[Q_table.scala 37:24]
   wire  _GEN_49; // @[Q_table.scala 37:24]
-  wire [20:0] _GEN_52; // @[Q_table.scala 37:24]
+  wire [15:0] _GEN_52; // @[Q_table.scala 37:24]
   wire  _GEN_58; // @[Q_table.scala 37:24]
   wire  _GEN_63; // @[Q_table.scala 37:24]
   wire  _GEN_66; // @[Q_table.scala 37:24]
@@ -1060,69 +787,65 @@ module Qtable(
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_4_data = Q_s_a0[Q_s_a0__T_4_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_4_data = Q_s_a0__T_4_addr >= 5'h19 ? _RAND_1[20:0] : Q_s_a0[Q_s_a0__T_4_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_4_data = Q_s_a0__T_4_addr >= 5'h19 ? _RAND_1[15:0] : Q_s_a0[Q_s_a0__T_4_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_21_addr = Q_s_a0__T_21_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_21_data = Q_s_a0[Q_s_a0__T_21_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_21_data = Q_s_a0__T_21_addr >= 5'h19 ? _RAND_2[20:0] : Q_s_a0[Q_s_a0__T_21_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_21_data = Q_s_a0__T_21_addr >= 5'h19 ? _RAND_2[15:0] : Q_s_a0[Q_s_a0__T_21_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_29_addr = Q_s_a0__T_29_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_29_data = Q_s_a0[Q_s_a0__T_29_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_29_data = Q_s_a0__T_29_addr >= 5'h19 ? _RAND_3[20:0] : Q_s_a0[Q_s_a0__T_29_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_29_data = Q_s_a0__T_29_addr >= 5'h19 ? _RAND_3[15:0] : Q_s_a0[Q_s_a0__T_29_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_31_addr = Q_s_a0__T_31_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_31_data = Q_s_a0[Q_s_a0__T_31_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_31_data = Q_s_a0__T_31_addr >= 5'h19 ? _RAND_4[20:0] : Q_s_a0[Q_s_a0__T_31_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_31_data = Q_s_a0__T_31_addr >= 5'h19 ? _RAND_4[15:0] : Q_s_a0[Q_s_a0__T_31_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_33_addr = Q_s_a0__T_33_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_33_data = Q_s_a0[Q_s_a0__T_33_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_33_data = Q_s_a0__T_33_addr >= 5'h19 ? _RAND_5[20:0] : Q_s_a0[Q_s_a0__T_33_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_33_data = Q_s_a0__T_33_addr >= 5'h19 ? _RAND_5[15:0] : Q_s_a0[Q_s_a0__T_33_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_35_addr = Q_s_a0__T_35_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_35_data = Q_s_a0[Q_s_a0__T_35_addr]; // @[Q_table.scala 22:25]
   `else
-  assign Q_s_a0__T_35_data = Q_s_a0__T_35_addr >= 5'h19 ? _RAND_6[20:0] : Q_s_a0[Q_s_a0__T_35_addr]; // @[Q_table.scala 22:25]
+  assign Q_s_a0__T_35_data = Q_s_a0__T_35_addr >= 5'h19 ? _RAND_6[15:0] : Q_s_a0[Q_s_a0__T_35_addr]; // @[Q_table.scala 22:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a0__T_2_data = io_Q_updated;
   assign Q_s_a0__T_2_addr = state_addr[4:0];
   assign Q_s_a0__T_2_mask = 1'h1;
   assign Q_s_a0__T_2_en = _T & io_wrEna;
-  assign Q_s_a0__T_17_data = io_Q_updated;
-  assign Q_s_a0__T_17_addr = state_addr[4:0];
-  assign Q_s_a0__T_17_mask = 1'h1;
-  assign Q_s_a0__T_17_en = _T ? 1'h0 : _GEN_63;
   assign Q_s_a1__T_9_addr = Q_s_a1__T_9_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_9_data = Q_s_a1[Q_s_a1__T_9_addr]; // @[Q_table.scala 23:25]
   `else
-  assign Q_s_a1__T_9_data = Q_s_a1__T_9_addr >= 5'h19 ? _RAND_20[20:0] : Q_s_a1[Q_s_a1__T_9_addr]; // @[Q_table.scala 23:25]
+  assign Q_s_a1__T_9_data = Q_s_a1__T_9_addr >= 5'h19 ? _RAND_20[15:0] : Q_s_a1[Q_s_a1__T_9_addr]; // @[Q_table.scala 23:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_14_addr = Q_s_a1__T_14_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_14_data = Q_s_a1[Q_s_a1__T_14_addr]; // @[Q_table.scala 23:25]
   `else
-  assign Q_s_a1__T_14_data = Q_s_a1__T_14_addr >= 5'h19 ? _RAND_21[20:0] : Q_s_a1[Q_s_a1__T_14_addr]; // @[Q_table.scala 23:25]
+  assign Q_s_a1__T_14_data = Q_s_a1__T_14_addr >= 5'h19 ? _RAND_21[15:0] : Q_s_a1[Q_s_a1__T_14_addr]; // @[Q_table.scala 23:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_23_addr = Q_s_a1__T_23_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_23_data = Q_s_a1[Q_s_a1__T_23_addr]; // @[Q_table.scala 23:25]
   `else
-  assign Q_s_a1__T_23_data = Q_s_a1__T_23_addr >= 5'h19 ? _RAND_22[20:0] : Q_s_a1[Q_s_a1__T_23_addr]; // @[Q_table.scala 23:25]
+  assign Q_s_a1__T_23_data = Q_s_a1__T_23_addr >= 5'h19 ? _RAND_22[15:0] : Q_s_a1[Q_s_a1__T_23_addr]; // @[Q_table.scala 23:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_25_addr = Q_s_a1__T_25_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_25_data = Q_s_a1[Q_s_a1__T_25_addr]; // @[Q_table.scala 23:25]
   `else
-  assign Q_s_a1__T_25_data = Q_s_a1__T_25_addr >= 5'h19 ? _RAND_23[20:0] : Q_s_a1[Q_s_a1__T_25_addr]; // @[Q_table.scala 23:25]
+  assign Q_s_a1__T_25_data = Q_s_a1__T_25_addr >= 5'h19 ? _RAND_23[15:0] : Q_s_a1[Q_s_a1__T_25_addr]; // @[Q_table.scala 23:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a1__T_7_data = io_Q_updated;
   assign Q_s_a1__T_7_addr = state_addr[4:0];
@@ -1132,28 +855,32 @@ module Qtable(
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a3__T_19_data = Q_s_a3[Q_s_a3__T_19_addr]; // @[Q_table.scala 25:25]
   `else
-  assign Q_s_a3__T_19_data = Q_s_a3__T_19_addr >= 5'h19 ? _RAND_33[20:0] : Q_s_a3[Q_s_a3__T_19_addr]; // @[Q_table.scala 25:25]
+  assign Q_s_a3__T_19_data = Q_s_a3__T_19_addr >= 5'h19 ? _RAND_33[15:0] : Q_s_a3[Q_s_a3__T_19_addr]; // @[Q_table.scala 25:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a3__T_27_addr = Q_s_a3__T_27_addr_pipe_0;
   `ifndef RANDOMIZE_GARBAGE_ASSIGN
   assign Q_s_a3__T_27_data = Q_s_a3[Q_s_a3__T_27_addr]; // @[Q_table.scala 25:25]
   `else
-  assign Q_s_a3__T_27_data = Q_s_a3__T_27_addr >= 5'h19 ? _RAND_34[20:0] : Q_s_a3[Q_s_a3__T_27_addr]; // @[Q_table.scala 25:25]
+  assign Q_s_a3__T_27_data = Q_s_a3__T_27_addr >= 5'h19 ? _RAND_34[15:0] : Q_s_a3[Q_s_a3__T_27_addr]; // @[Q_table.scala 25:25]
   `endif // RANDOMIZE_GARBAGE_ASSIGN
+  assign Q_s_a3__T_17_data = io_Q_updated;
+  assign Q_s_a3__T_17_addr = state_addr[4:0];
+  assign Q_s_a3__T_17_mask = 1'h1;
+  assign Q_s_a3__T_17_en = _T ? 1'h0 : _GEN_63;
   assign act = io_write_data_into_a_txtfile ? io_act_read : io_act; // @[Q_table.scala 29:14]
   assign stateRead = io_write_data_into_a_txtfile ? io_state_read : io_state; // @[Q_table.scala 30:20]
   assign _T = act == 2'h0; // @[Q_table.scala 31:11]
   assign _GEN_5 = io_wrEna ? 1'h0 : 1'h1; // @[Q_table.scala 32:20]
-  assign _GEN_8 = io_wrEna ? $signed(21'sh0) : $signed(Q_s_a0__T_4_data); // @[Q_table.scala 32:20]
+  assign _GEN_8 = io_wrEna ? $signed(16'sh0) : $signed(Q_s_a0__T_4_data); // @[Q_table.scala 32:20]
   assign _T_5 = act == 2'h1; // @[Q_table.scala 37:17]
-  assign _GEN_11 = io_wrEna ? $signed(21'sh0) : $signed(Q_s_a1__T_9_data); // @[Q_table.scala 38:20]
+  assign _GEN_11 = io_wrEna ? $signed(16'sh0) : $signed(Q_s_a1__T_9_data); // @[Q_table.scala 38:20]
   assign _T_10 = act == 2'h2; // @[Q_table.scala 43:17]
-  assign _GEN_14 = io_wrEna ? $signed(21'sh0) : $signed(Q_s_a1__T_14_data); // @[Q_table.scala 44:20]
+  assign _GEN_14 = io_wrEna ? $signed(16'sh0) : $signed(Q_s_a1__T_14_data); // @[Q_table.scala 44:20]
   assign _T_15 = act == 2'h3; // @[Q_table.scala 49:17]
-  assign _GEN_17 = io_wrEna ? $signed(21'sh0) : $signed(Q_s_a3__T_19_data); // @[Q_table.scala 50:19]
+  assign _GEN_17 = io_wrEna ? $signed(16'sh0) : $signed(Q_s_a3__T_19_data); // @[Q_table.scala 50:19]
   assign _GEN_20 = _T_15 & io_wrEna; // @[Q_table.scala 49:24]
   assign _GEN_23 = _T_15 & _GEN_5; // @[Q_table.scala 49:24]
-  assign _GEN_26 = _T_15 ? $signed(_GEN_17) : $signed(21'sh0); // @[Q_table.scala 49:24]
+  assign _GEN_26 = _T_15 ? $signed(_GEN_17) : $signed(16'sh0); // @[Q_table.scala 49:24]
   assign _GEN_32 = _T_10 & _GEN_5; // @[Q_table.scala 43:24]
   assign _GEN_35 = _T_10 ? $signed(_GEN_14) : $signed(_GEN_26); // @[Q_table.scala 43:24]
   assign _GEN_38 = _T_10 ? 1'h0 : _GEN_20; // @[Q_table.scala 43:24]
@@ -1175,7 +902,7 @@ module Qtable(
   assign index_of_Q_max_io_ins0 = Q_s_a0__T_29_data; // @[Q_table.scala 65:25]
   assign index_of_Q_max_io_ins1 = Q_s_a0__T_31_data; // @[Q_table.scala 66:25]
   assign index_of_Q_max_io_ins2 = Q_s_a0__T_33_data; // @[Q_table.scala 67:25]
-  assign index_of_Q_max_io_Q_max_at_state_s = max4_io_Q_max; // @[Q_table.scala 69:37]
+  assign index_of_Q_max_io_Q_max_at_state_s = {{5{max4_io_Q_max[15]}},max4_io_Q_max}; // @[Q_table.scala 69:37]
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
 `define RANDOMIZE
 `endif
@@ -1210,7 +937,7 @@ initial begin
   _RAND_0 = {1{`RANDOM}};
   `ifdef RANDOMIZE_MEM_INIT
   for (initvar = 0; initvar < 25; initvar = initvar+1)
-    Q_s_a0[initvar] = _RAND_0[20:0];
+    Q_s_a0[initvar] = _RAND_0[15:0];
   `endif // RANDOMIZE_MEM_INIT
   _RAND_1 = {1{`RANDOM}};
   _RAND_2 = {1{`RANDOM}};
@@ -1269,7 +996,7 @@ initial begin
   _RAND_19 = {1{`RANDOM}};
   `ifdef RANDOMIZE_MEM_INIT
   for (initvar = 0; initvar < 25; initvar = initvar+1)
-    Q_s_a1[initvar] = _RAND_19[20:0];
+    Q_s_a1[initvar] = _RAND_19[15:0];
   `endif // RANDOMIZE_MEM_INIT
   _RAND_20 = {1{`RANDOM}};
   _RAND_21 = {1{`RANDOM}};
@@ -1310,7 +1037,7 @@ initial begin
   _RAND_32 = {1{`RANDOM}};
   `ifdef RANDOMIZE_MEM_INIT
   for (initvar = 0; initvar < 25; initvar = initvar+1)
-    Q_s_a3[initvar] = _RAND_32[20:0];
+    Q_s_a3[initvar] = _RAND_32[15:0];
   `endif // RANDOMIZE_MEM_INIT
   _RAND_33 = {1{`RANDOM}};
   _RAND_34 = {1{`RANDOM}};
@@ -1340,9 +1067,6 @@ end // initial
   always @(posedge clock) begin
     if(Q_s_a0__T_2_en & Q_s_a0__T_2_mask) begin
       Q_s_a0[Q_s_a0__T_2_addr] <= Q_s_a0__T_2_data; // @[Q_table.scala 22:25]
-    end
-    if(Q_s_a0__T_17_en & Q_s_a0__T_17_mask) begin
-      Q_s_a0[Q_s_a0__T_17_addr] <= Q_s_a0__T_17_data; // @[Q_table.scala 22:25]
     end
     Q_s_a0__T_4_en_pipe_0 <= _T & _GEN_5;
     if (_T & _GEN_5) begin
@@ -1383,6 +1107,9 @@ end // initial
     Q_s_a1__T_23_addr_pipe_0 <= new_state_or_state[4:0];
     Q_s_a1__T_25_en_pipe_0 <= 1'h1;
     Q_s_a1__T_25_addr_pipe_0 <= new_state_or_state[4:0];
+    if(Q_s_a3__T_17_en & Q_s_a3__T_17_mask) begin
+      Q_s_a3[Q_s_a3__T_17_addr] <= Q_s_a3__T_17_data; // @[Q_table.scala 25:25]
+    end
     if (_T) begin
       Q_s_a3__T_19_en_pipe_0 <= 1'h0;
     end else if (_T_5) begin
@@ -1535,7 +1262,7 @@ module MasterFMS(
   wire  _T_2; // @[Conditional.scala 37:30]
   wire  _T_3; // @[Conditional.scala 37:30]
   wire  _T_4; // @[Conditional.scala 37:30]
-  wire  _GEN_9; // @[Conditional.scala 39:67]
+  wire  _GEN_8; // @[Conditional.scala 39:67]
   wire  _GEN_11; // @[Conditional.scala 39:67]
   wire  _GEN_12; // @[Conditional.scala 39:67]
   wire  _GEN_13; // @[Conditional.scala 39:67]
@@ -1555,18 +1282,18 @@ module MasterFMS(
   assign _T_2 = 3'h2 == master_fms; // @[Conditional.scala 37:30]
   assign _T_3 = 3'h3 == master_fms; // @[Conditional.scala 37:30]
   assign _T_4 = 3'h4 == master_fms; // @[Conditional.scala 37:30]
-  assign _GEN_9 = _T_3 ? 1'h0 : _T_4; // @[Conditional.scala 39:67]
+  assign _GEN_8 = _T_3 ? 1'h0 : _T_4; // @[Conditional.scala 39:67]
   assign _GEN_11 = _T_2 ? 1'h0 : _T_3; // @[Conditional.scala 39:67]
-  assign _GEN_12 = _T_2 ? 1'h0 : _GEN_9; // @[Conditional.scala 39:67]
+  assign _GEN_12 = _T_2 ? 1'h0 : _GEN_8; // @[Conditional.scala 39:67]
   assign _GEN_13 = _T_1 & reset_fms_io_reset; // @[Conditional.scala 39:67]
-  assign _GEN_15 = _T_1 & io_move_to_confirming_Reward; // @[Conditional.scala 39:67]
+  assign _GEN_15 = _T_1 ? 1'h0 : _T_2; // @[Conditional.scala 39:67]
   assign _GEN_16 = _T_1 ? 1'h0 : _GEN_11; // @[Conditional.scala 39:67]
   assign _GEN_17 = _T_1 ? 1'h0 : _GEN_12; // @[Conditional.scala 39:67]
   assign io_Path_found = _T ? 1'h0 : _GEN_17; // @[AgentsBrain.scala 35:17 AgentsBrain.scala 78:20]
   assign io_cal = _T ? 1'h0 : _GEN_16; // @[AgentsBrain.scala 36:9 AgentsBrain.scala 73:13]
   assign io_load_new_state = _T ? 1'h0 : _GEN_16; // @[AgentsBrain.scala 38:20 AgentsBrain.scala 75:24]
   assign io_reset_Action_fms = _T ? 1'h0 : _GEN_13; // @[AgentsBrain.scala 47:22 AgentsBrain.scala 48:22 AgentsBrain.scala 62:26]
-  assign io_get_Q_prime_max = _T ? 1'h0 : _GEN_15; // @[AgentsBrain.scala 37:21 AgentsBrain.scala 66:27]
+  assign io_get_Q_prime_max = _T ? 1'h0 : _GEN_15; // @[AgentsBrain.scala 37:21 AgentsBrain.scala 70:25]
   assign reset_fms_clock = clock;
   assign reset_fms_reset = reset;
   assign reset_fms_io_transition = _T & _GEN_3; // @[AgentsBrain.scala 46:26]
@@ -1633,6 +1360,8 @@ endmodule
 module sloving_maze_by_RL(
   input         clock,
   input         reset,
+  input  [9:0]  io_rand1,
+  input  [9:0]  io_rand2,
   output        io_Path_found,
   input  [2:0]  io_COL,
   input  [2:0]  io_ROW,
@@ -1649,7 +1378,7 @@ module sloving_maze_by_RL(
   wire [2:0] agent_io_x; // @[sloving_maze_by_RL.scala 15:19]
   wire [2:0] agent_io_y; // @[sloving_maze_by_RL.scala 15:19]
   wire [5:0] agent_io_state; // @[sloving_maze_by_RL.scala 15:19]
-  wire [8:0] agent_io_episode; // @[sloving_maze_by_RL.scala 15:19]
+  wire [9:0] agent_io_episode; // @[sloving_maze_by_RL.scala 15:19]
   wire  agent_io_done_learning; // @[sloving_maze_by_RL.scala 15:19]
   wire  agent_io_load_new_state; // @[sloving_maze_by_RL.scala 15:19]
   wire [3:0] agent_io_step; // @[sloving_maze_by_RL.scala 15:19]
@@ -1657,7 +1386,8 @@ module sloving_maze_by_RL(
   wire  taking_action_reset; // @[sloving_maze_by_RL.scala 16:27]
   wire [2:0] taking_action_io_x; // @[sloving_maze_by_RL.scala 16:27]
   wire [2:0] taking_action_io_y; // @[sloving_maze_by_RL.scala 16:27]
-  wire [8:0] taking_action_io_episode; // @[sloving_maze_by_RL.scala 16:27]
+  wire [9:0] taking_action_io_rand2; // @[sloving_maze_by_RL.scala 16:27]
+  wire [9:0] taking_action_io_episode; // @[sloving_maze_by_RL.scala 16:27]
   wire [5:0] taking_action_io_new_state; // @[sloving_maze_by_RL.scala 16:27]
   wire [1:0] taking_action_io_action_at_Qmax; // @[sloving_maze_by_RL.scala 16:27]
   wire [1:0] taking_action_io_act; // @[sloving_maze_by_RL.scala 16:27]
@@ -1665,9 +1395,9 @@ module sloving_maze_by_RL(
   wire  taking_action_io_move_to_confirming_Reward; // @[sloving_maze_by_RL.scala 16:27]
   wire  Q_func_clock; // @[sloving_maze_by_RL.scala 17:20]
   wire  Q_func_reset; // @[sloving_maze_by_RL.scala 17:20]
-  wire [20:0] Q_func_io_Q_s_a; // @[sloving_maze_by_RL.scala 17:20]
-  wire [20:0] Q_func_io_Q_prime_max; // @[sloving_maze_by_RL.scala 17:20]
-  wire [20:0] Q_func_io_Q_updated; // @[sloving_maze_by_RL.scala 17:20]
+  wire [15:0] Q_func_io_Q_s_a; // @[sloving_maze_by_RL.scala 17:20]
+  wire [15:0] Q_func_io_Q_prime_max; // @[sloving_maze_by_RL.scala 17:20]
+  wire [15:0] Q_func_io_Q_updated; // @[sloving_maze_by_RL.scala 17:20]
   wire  Q_func_io_cal; // @[sloving_maze_by_RL.scala 17:20]
   wire [8:0] Q_func_io_reward; // @[sloving_maze_by_RL.scala 17:20]
   wire  Q_func_io_wrEna; // @[sloving_maze_by_RL.scala 17:20]
@@ -1677,9 +1407,9 @@ module sloving_maze_by_RL(
   wire [5:0] Q_table_io_new_state; // @[sloving_maze_by_RL.scala 18:21]
   wire [1:0] Q_table_io_act; // @[sloving_maze_by_RL.scala 18:21]
   wire  Q_table_io_wrEna; // @[sloving_maze_by_RL.scala 18:21]
-  wire [20:0] Q_table_io_Q_updated; // @[sloving_maze_by_RL.scala 18:21]
-  wire [20:0] Q_table_io_Q_s_a; // @[sloving_maze_by_RL.scala 18:21]
-  wire [20:0] Q_table_io_Q_prime_max; // @[sloving_maze_by_RL.scala 18:21]
+  wire [15:0] Q_table_io_Q_updated; // @[sloving_maze_by_RL.scala 18:21]
+  wire [15:0] Q_table_io_Q_s_a; // @[sloving_maze_by_RL.scala 18:21]
+  wire [15:0] Q_table_io_Q_prime_max; // @[sloving_maze_by_RL.scala 18:21]
   wire [1:0] Q_table_io_action_at_Qmax; // @[sloving_maze_by_RL.scala 18:21]
   wire  Q_table_io_get_Q_prime_max; // @[sloving_maze_by_RL.scala 18:21]
   wire  Q_table_io_write_data_into_a_txtfile; // @[sloving_maze_by_RL.scala 18:21]
@@ -1717,6 +1447,7 @@ module sloving_maze_by_RL(
     .reset(taking_action_reset),
     .io_x(taking_action_io_x),
     .io_y(taking_action_io_y),
+    .io_rand2(taking_action_io_rand2),
     .io_episode(taking_action_io_episode),
     .io_new_state(taking_action_io_new_state),
     .io_action_at_Qmax(taking_action_io_action_at_Qmax),
@@ -1768,7 +1499,7 @@ module sloving_maze_by_RL(
     .io_get_Q_prime_max(masterFMS_io_get_Q_prime_max)
   );
   assign io_Path_found = masterFMS_io_Path_found; // @[sloving_maze_by_RL.scala 58:16]
-  assign io_Q_value = Q_table_io_Q_s_a; // @[sloving_maze_by_RL.scala 21:13]
+  assign io_Q_value = {{5{Q_table_io_Q_s_a[15]}},Q_table_io_Q_s_a}; // @[sloving_maze_by_RL.scala 21:13]
   assign agent_clock = clock;
   assign agent_reset = reset;
   assign agent_io_COL = io_COL; // @[sloving_maze_by_RL.scala 28:15]
@@ -1778,6 +1509,7 @@ module sloving_maze_by_RL(
   assign taking_action_reset = reset;
   assign taking_action_io_x = agent_io_x; // @[sloving_maze_by_RL.scala 31:13]
   assign taking_action_io_y = agent_io_y; // @[sloving_maze_by_RL.scala 32:13]
+  assign taking_action_io_rand2 = io_rand2; // @[sloving_maze_by_RL.scala 30:11]
   assign taking_action_io_episode = agent_io_episode; // @[sloving_maze_by_RL.scala 33:19]
   assign taking_action_io_action_at_Qmax = Q_table_io_action_at_Qmax; // @[sloving_maze_by_RL.scala 38:34]
   assign taking_action_io_reset_Action_fms = masterFMS_io_reset_Action_fms; // @[sloving_maze_by_RL.scala 52:32]

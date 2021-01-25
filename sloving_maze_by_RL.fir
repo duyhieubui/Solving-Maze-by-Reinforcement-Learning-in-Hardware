@@ -3,12 +3,12 @@ circuit sloving_maze_by_RL :
   module Agent : 
     input clock : Clock
     input reset : Reset
-    output io : {flip ROW : UInt<3>, flip COL : UInt<3>, flip new_state : UInt<6>, iterate : UInt<1>, x : UInt<3>, y : UInt<3>, state : UInt<6>, episode : UInt<9>, done_learning : UInt<1>, flip load_new_state : UInt<1>, step : UInt<4>, t : UInt<1>}
+    output io : {flip ROW : UInt<3>, flip COL : UInt<3>, flip new_state : UInt<6>, iterate : UInt<1>, x : UInt<3>, y : UInt<3>, state : UInt<6>, episode : UInt<10>, done_learning : UInt<1>, flip load_new_state : UInt<1>, step : UInt<4>, t : UInt<1>}
     
     reg ROW : UInt<3>, clock with : (reset => (reset, UInt<3>("h00"))) @[Blocks.scala 18:18]
     reg COL : UInt<3>, clock with : (reset => (reset, UInt<3>("h00"))) @[Blocks.scala 19:18]
     reg state : UInt<6>, clock with : (reset => (reset, UInt<6>("h00"))) @[Blocks.scala 20:20]
-    reg episode : UInt<9>, clock with : (reset => (reset, UInt<9>("h00"))) @[Blocks.scala 21:22]
+    reg episode : UInt<10>, clock with : (reset => (reset, UInt<10>("h00"))) @[Blocks.scala 21:22]
     node start_again = eq(state, UInt<5>("h018")) @[Blocks.scala 22:24]
     reg step : UInt<4>, clock with : (reset => (reset, UInt<4>("h00"))) @[Blocks.scala 23:21]
     ROW <= io.ROW @[Blocks.scala 26:6]
@@ -187,126 +187,20 @@ circuit sloving_maze_by_RL :
     when _T_27 : @[Action and ActionFMS.scala 99:73]
       io.validAction <= UInt<1>("h00") @[Action and ActionFMS.scala 100:19]
       skip @[Action and ActionFMS.scala 99:73]
-    else : @[Action and ActionFMS.scala 102:4]
-      node _T_28 = mul(UInt<3>("h05"), y_new) @[Action and ActionFMS.scala 103:25]
-      node _T_29 = add(x_new, _T_28) @[Action and ActionFMS.scala 103:21]
-      node _T_30 = tail(_T_29, 1) @[Action and ActionFMS.scala 103:21]
-      new_state <= _T_30 @[Action and ActionFMS.scala 103:14]
-      io.validAction <= UInt<1>("h01") @[Action and ActionFMS.scala 104:19]
-      skip @[Action and ActionFMS.scala 102:4]
-    io.act <= act @[Action and ActionFMS.scala 106:9]
-    io.new_state <= new_state @[Action and ActionFMS.scala 107:15]
-    
-  module MaxPeriodFibonacciLFSR : 
-    input clock : Clock
-    input reset : Reset
-    output io : {flip seed : {valid : UInt<1>, bits : UInt<1>[10]}, flip increment : UInt<1>, out : UInt<1>[10]}
-    
-    wire _T : UInt<1>[10] @[PRNG.scala 38:28]
-    _T[0] <= UInt<1>("h01") @[PRNG.scala 38:28]
-    _T[1] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[2] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[3] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[4] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[5] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[6] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[7] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[8] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[9] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    reg state : UInt<1>[10], clock with : (reset => (reset, _T)) @[PRNG.scala 47:50]
-    when io.increment : @[PRNG.scala 61:23]
-      node _T_1 = xor(state[9], state[6]) @[LFSR.scala 15:41]
-      state[0] <= _T_1 @[PRNG.scala 62:11]
-      state[1] <= state[0] @[PRNG.scala 62:11]
-      state[2] <= state[1] @[PRNG.scala 62:11]
-      state[3] <= state[2] @[PRNG.scala 62:11]
-      state[4] <= state[3] @[PRNG.scala 62:11]
-      state[5] <= state[4] @[PRNG.scala 62:11]
-      state[6] <= state[5] @[PRNG.scala 62:11]
-      state[7] <= state[6] @[PRNG.scala 62:11]
-      state[8] <= state[7] @[PRNG.scala 62:11]
-      state[9] <= state[8] @[PRNG.scala 62:11]
-      skip @[PRNG.scala 61:23]
-    when io.seed.valid : @[PRNG.scala 65:25]
-      state[0] <= io.seed.bits[0] @[PRNG.scala 66:11]
-      state[1] <= io.seed.bits[1] @[PRNG.scala 66:11]
-      state[2] <= io.seed.bits[2] @[PRNG.scala 66:11]
-      state[3] <= io.seed.bits[3] @[PRNG.scala 66:11]
-      state[4] <= io.seed.bits[4] @[PRNG.scala 66:11]
-      state[5] <= io.seed.bits[5] @[PRNG.scala 66:11]
-      state[6] <= io.seed.bits[6] @[PRNG.scala 66:11]
-      state[7] <= io.seed.bits[7] @[PRNG.scala 66:11]
-      state[8] <= io.seed.bits[8] @[PRNG.scala 66:11]
-      state[9] <= io.seed.bits[9] @[PRNG.scala 66:11]
-      skip @[PRNG.scala 65:25]
-    io.out[0] <= state[0] @[PRNG.scala 69:10]
-    io.out[1] <= state[1] @[PRNG.scala 69:10]
-    io.out[2] <= state[2] @[PRNG.scala 69:10]
-    io.out[3] <= state[3] @[PRNG.scala 69:10]
-    io.out[4] <= state[4] @[PRNG.scala 69:10]
-    io.out[5] <= state[5] @[PRNG.scala 69:10]
-    io.out[6] <= state[6] @[PRNG.scala 69:10]
-    io.out[7] <= state[7] @[PRNG.scala 69:10]
-    io.out[8] <= state[8] @[PRNG.scala 69:10]
-    io.out[9] <= state[9] @[PRNG.scala 69:10]
-    
-  module MaxPeriodFibonacciLFSR_1 : 
-    input clock : Clock
-    input reset : Reset
-    output io : {flip seed : {valid : UInt<1>, bits : UInt<1>[10]}, flip increment : UInt<1>, out : UInt<1>[10]}
-    
-    wire _T : UInt<1>[10] @[PRNG.scala 38:28]
-    _T[0] <= UInt<1>("h01") @[PRNG.scala 38:28]
-    _T[1] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[2] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[3] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[4] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[5] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[6] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[7] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[8] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    _T[9] <= UInt<1>("h00") @[PRNG.scala 38:28]
-    reg state : UInt<1>[10], clock with : (reset => (reset, _T)) @[PRNG.scala 47:50]
-    when io.increment : @[PRNG.scala 61:23]
-      node _T_1 = xor(state[9], state[6]) @[LFSR.scala 15:41]
-      state[0] <= _T_1 @[PRNG.scala 62:11]
-      state[1] <= state[0] @[PRNG.scala 62:11]
-      state[2] <= state[1] @[PRNG.scala 62:11]
-      state[3] <= state[2] @[PRNG.scala 62:11]
-      state[4] <= state[3] @[PRNG.scala 62:11]
-      state[5] <= state[4] @[PRNG.scala 62:11]
-      state[6] <= state[5] @[PRNG.scala 62:11]
-      state[7] <= state[6] @[PRNG.scala 62:11]
-      state[8] <= state[7] @[PRNG.scala 62:11]
-      state[9] <= state[8] @[PRNG.scala 62:11]
-      skip @[PRNG.scala 61:23]
-    when io.seed.valid : @[PRNG.scala 65:25]
-      state[0] <= io.seed.bits[0] @[PRNG.scala 66:11]
-      state[1] <= io.seed.bits[1] @[PRNG.scala 66:11]
-      state[2] <= io.seed.bits[2] @[PRNG.scala 66:11]
-      state[3] <= io.seed.bits[3] @[PRNG.scala 66:11]
-      state[4] <= io.seed.bits[4] @[PRNG.scala 66:11]
-      state[5] <= io.seed.bits[5] @[PRNG.scala 66:11]
-      state[6] <= io.seed.bits[6] @[PRNG.scala 66:11]
-      state[7] <= io.seed.bits[7] @[PRNG.scala 66:11]
-      state[8] <= io.seed.bits[8] @[PRNG.scala 66:11]
-      state[9] <= io.seed.bits[9] @[PRNG.scala 66:11]
-      skip @[PRNG.scala 65:25]
-    io.out[0] <= state[0] @[PRNG.scala 69:10]
-    io.out[1] <= state[1] @[PRNG.scala 69:10]
-    io.out[2] <= state[2] @[PRNG.scala 69:10]
-    io.out[3] <= state[3] @[PRNG.scala 69:10]
-    io.out[4] <= state[4] @[PRNG.scala 69:10]
-    io.out[5] <= state[5] @[PRNG.scala 69:10]
-    io.out[6] <= state[6] @[PRNG.scala 69:10]
-    io.out[7] <= state[7] @[PRNG.scala 69:10]
-    io.out[8] <= state[8] @[PRNG.scala 69:10]
-    io.out[9] <= state[9] @[PRNG.scala 69:10]
+    else : @[Action and ActionFMS.scala 101:4]
+      node _T_28 = mul(UInt<3>("h05"), y_new) @[Action and ActionFMS.scala 102:25]
+      node _T_29 = add(x_new, _T_28) @[Action and ActionFMS.scala 102:21]
+      node _T_30 = tail(_T_29, 1) @[Action and ActionFMS.scala 102:21]
+      new_state <= _T_30 @[Action and ActionFMS.scala 102:14]
+      io.validAction <= UInt<1>("h01") @[Action and ActionFMS.scala 103:19]
+      skip @[Action and ActionFMS.scala 101:4]
+    io.act <= act @[Action and ActionFMS.scala 105:9]
+    io.new_state <= new_state @[Action and ActionFMS.scala 106:15]
     
   module takingAction : 
     input clock : Clock
     input reset : Reset
-    output io : {flip x : UInt<3>, flip y : UInt<3>, flip episode : UInt<9>, new_state : UInt<6>, flip action_at_Qmax : UInt<2>, act : UInt<2>, flip reset_Action_fms : UInt<1>, move_to_confirming_Reward : UInt<1>}
+    output io : {flip x : UInt<3>, flip y : UInt<3>, flip rand1 : UInt<10>, flip rand2 : UInt<10>, flip episode : UInt<10>, new_state : UInt<6>, flip action_at_Qmax : UInt<2>, act : UInt<2>, flip reset_Action_fms : UInt<1>, move_to_confirming_Reward : UInt<1>}
     
     inst action_fms of Action_FMS @[taking_Action.scala 19:24]
     action_fms.clock <= clock
@@ -315,105 +209,54 @@ circuit sloving_maze_by_RL :
     action.clock <= clock
     action.reset <= reset
     reg epsilon : UInt<10>, clock with : (reset => (reset, UInt<10>("h00"))) @[taking_Action.scala 21:24]
-    node _T = mul(io.episode, UInt<5>("h011")) @[taking_Action.scala 24:34]
-    node _T_1 = div(_T, UInt<3>("h05")) @[taking_Action.scala 24:41]
-    node _T_2 = sub(UInt<11>("h0400"), _T_1) @[taking_Action.scala 24:21]
-    node _T_3 = tail(_T_2, 1) @[taking_Action.scala 24:21]
-    epsilon <= _T_3 @[taking_Action.scala 24:11]
-    inst MaxPeriodFibonacciLFSR of MaxPeriodFibonacciLFSR @[PRNG.scala 82:22]
-    MaxPeriodFibonacciLFSR.clock <= clock
-    MaxPeriodFibonacciLFSR.reset <= reset
-    MaxPeriodFibonacciLFSR.io.seed.valid <= UInt<1>("h00") @[PRNG.scala 83:24]
-    MaxPeriodFibonacciLFSR.io.seed.bits[0] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[1] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[2] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[3] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[4] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[5] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[6] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[7] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[8] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.seed.bits[9] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR.io.increment <= UInt<1>("h01") @[PRNG.scala 85:23]
-    node _T_4 = cat(MaxPeriodFibonacciLFSR.io.out[1], MaxPeriodFibonacciLFSR.io.out[0]) @[PRNG.scala 86:17]
-    node _T_5 = cat(MaxPeriodFibonacciLFSR.io.out[4], MaxPeriodFibonacciLFSR.io.out[3]) @[PRNG.scala 86:17]
-    node _T_6 = cat(_T_5, MaxPeriodFibonacciLFSR.io.out[2]) @[PRNG.scala 86:17]
-    node _T_7 = cat(_T_6, _T_4) @[PRNG.scala 86:17]
-    node _T_8 = cat(MaxPeriodFibonacciLFSR.io.out[6], MaxPeriodFibonacciLFSR.io.out[5]) @[PRNG.scala 86:17]
-    node _T_9 = cat(MaxPeriodFibonacciLFSR.io.out[9], MaxPeriodFibonacciLFSR.io.out[8]) @[PRNG.scala 86:17]
-    node _T_10 = cat(_T_9, MaxPeriodFibonacciLFSR.io.out[7]) @[PRNG.scala 86:17]
-    node _T_11 = cat(_T_10, _T_8) @[PRNG.scala 86:17]
-    node _T_12 = cat(_T_11, _T_7) @[PRNG.scala 86:17]
-    node exploit = leq(epsilon, _T_12) @[taking_Action.scala 25:23]
-    action_fms.io.reset_Action_fms <= io.reset_Action_fms @[taking_Action.scala 27:33]
-    action_fms.io.exploit <= exploit @[taking_Action.scala 28:24]
-    action_fms.io.validAction <= action.io.validAction @[taking_Action.scala 29:28]
-    action.io.keep_action <= action_fms.io.keep_action @[taking_Action.scala 30:28]
-    action.io.exploit <= exploit @[taking_Action.scala 33:20]
-    inst MaxPeriodFibonacciLFSR_1 of MaxPeriodFibonacciLFSR_1 @[PRNG.scala 82:22]
-    MaxPeriodFibonacciLFSR_1.clock <= clock
-    MaxPeriodFibonacciLFSR_1.reset <= reset
-    MaxPeriodFibonacciLFSR_1.io.seed.valid <= UInt<1>("h00") @[PRNG.scala 83:24]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[0] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[1] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[2] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[3] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[4] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[5] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[6] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[7] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[8] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.seed.bits[9] is invalid @[PRNG.scala 84:23]
-    MaxPeriodFibonacciLFSR_1.io.increment <= UInt<1>("h01") @[PRNG.scala 85:23]
-    node _T_13 = cat(MaxPeriodFibonacciLFSR_1.io.out[1], MaxPeriodFibonacciLFSR_1.io.out[0]) @[PRNG.scala 86:17]
-    node _T_14 = cat(MaxPeriodFibonacciLFSR_1.io.out[4], MaxPeriodFibonacciLFSR_1.io.out[3]) @[PRNG.scala 86:17]
-    node _T_15 = cat(_T_14, MaxPeriodFibonacciLFSR_1.io.out[2]) @[PRNG.scala 86:17]
-    node _T_16 = cat(_T_15, _T_13) @[PRNG.scala 86:17]
-    node _T_17 = cat(MaxPeriodFibonacciLFSR_1.io.out[6], MaxPeriodFibonacciLFSR_1.io.out[5]) @[PRNG.scala 86:17]
-    node _T_18 = cat(MaxPeriodFibonacciLFSR_1.io.out[9], MaxPeriodFibonacciLFSR_1.io.out[8]) @[PRNG.scala 86:17]
-    node _T_19 = cat(_T_18, MaxPeriodFibonacciLFSR_1.io.out[7]) @[PRNG.scala 86:17]
-    node _T_20 = cat(_T_19, _T_17) @[PRNG.scala 86:17]
-    node _T_21 = cat(_T_20, _T_16) @[PRNG.scala 86:17]
-    action.io.rand2 <= _T_21 @[taking_Action.scala 34:18]
-    action.io.x <= io.x @[taking_Action.scala 35:14]
-    action.io.y <= io.y @[taking_Action.scala 36:14]
-    action.io.action_at_Qmax <= io.action_at_Qmax @[taking_Action.scala 37:27]
-    io.act <= action.io.act @[taking_Action.scala 39:9]
-    io.new_state <= action.io.new_state @[taking_Action.scala 40:15]
-    io.move_to_confirming_Reward <= action_fms.io.move_to_confirming_Reward @[taking_Action.scala 41:31]
+    node exploit = lt(io.episode, UInt<7>("h05a")) @[taking_Action.scala 26:26]
+    action_fms.io.reset_Action_fms <= io.reset_Action_fms @[taking_Action.scala 29:33]
+    action_fms.io.exploit <= exploit @[taking_Action.scala 30:24]
+    action_fms.io.validAction <= action.io.validAction @[taking_Action.scala 31:28]
+    action.io.keep_action <= action_fms.io.keep_action @[taking_Action.scala 32:28]
+    action.io.exploit <= exploit @[taking_Action.scala 35:20]
+    action.io.rand2 <= io.rand2 @[taking_Action.scala 37:18]
+    action.io.x <= io.x @[taking_Action.scala 39:14]
+    action.io.y <= io.y @[taking_Action.scala 40:14]
+    action.io.action_at_Qmax <= io.action_at_Qmax @[taking_Action.scala 41:27]
+    io.act <= action.io.act @[taking_Action.scala 43:9]
+    io.new_state <= action.io.new_state @[taking_Action.scala 44:15]
+    io.move_to_confirming_Reward <= action_fms.io.move_to_confirming_Reward @[taking_Action.scala 45:31]
     
   module Q_function : 
     input clock : Clock
     input reset : Reset
-    output io : {flip Q_s_a : SInt<21>, flip Q_prime_max : SInt<21>, Q_updated : SInt<21>, flip cal : UInt<1>, flip reward : SInt<9>, wrEna : UInt<1>}
+    output io : {flip Q_s_a : SInt<16>, flip Q_prime_max : SInt<16>, Q_updated : SInt<16>, flip cal : UInt<1>, flip reward : SInt<9>, wrEna : UInt<1>}
     
-    reg Q_s_a : SInt<21>, clock with : (reset => (reset, asSInt(UInt<21>("h00")))) @[Q_function.scala 13:20]
-    reg reward : SInt<8>, clock with : (reset => (reset, asSInt(UInt<8>("h00")))) @[Q_function.scala 14:21]
-    Q_s_a <= io.Q_s_a @[Q_function.scala 15:8]
-    reward <= io.reward @[Q_function.scala 17:9]
-    when io.cal : @[Q_function.scala 18:15]
-      node _T = add(reward, Q_s_a) @[Q_function.scala 19:31]
-      node _T_1 = tail(_T, 1) @[Q_function.scala 19:31]
-      node _T_2 = asSInt(_T_1) @[Q_function.scala 19:31]
-      node _T_3 = mul(asSInt(UInt<4>("h05")), _T_2) @[Q_function.scala 19:23]
-      node _T_4 = mul(asSInt(UInt<4>("h04")), io.Q_prime_max) @[Q_function.scala 19:43]
-      node _T_5 = add(_T_3, _T_4) @[Q_function.scala 19:39]
-      node _T_6 = tail(_T_5, 1) @[Q_function.scala 19:39]
-      node _T_7 = asSInt(_T_6) @[Q_function.scala 19:39]
-      io.Q_updated <= _T_7 @[Q_function.scala 19:18]
-      io.wrEna <= UInt<1>("h01") @[Q_function.scala 20:13]
-      skip @[Q_function.scala 18:15]
-    else : @[Q_function.scala 21:4]
-      io.Q_updated <= asSInt(UInt<1>("h00")) @[Q_function.scala 22:17]
-      io.wrEna <= UInt<1>("h00") @[Q_function.scala 23:13]
-      skip @[Q_function.scala 21:4]
+    reg Q_s_a : SInt<16>, clock with : (reset => (reset, asSInt(UInt<16>("h00")))) @[Q_function.scala 16:20]
+    reg reward : SInt<9>, clock with : (reset => (reset, asSInt(UInt<9>("h00")))) @[Q_function.scala 17:21]
+    Q_s_a <= io.Q_s_a @[Q_function.scala 18:8]
+    reward <= io.reward @[Q_function.scala 20:9]
+    when io.cal : @[Q_function.scala 22:15]
+      node _T = mul(reward, asSInt(UInt<9>("h080"))) @[Q_function.scala 23:33]
+      node _T_1 = add(Q_s_a, _T) @[Q_function.scala 23:26]
+      node _T_2 = tail(_T_1, 1) @[Q_function.scala 23:26]
+      node _T_3 = asSInt(_T_2) @[Q_function.scala 23:26]
+      node _T_4 = div(_T_3, asSInt(UInt<3>("h02"))) @[Q_function.scala 23:40]
+      node _T_5 = mul(io.Q_prime_max, asSInt(UInt<4>("h04"))) @[Q_function.scala 23:61]
+      node _T_6 = div(_T_5, asSInt(UInt<5>("h0a"))) @[Q_function.scala 23:65]
+      node _T_7 = add(_T_4, _T_6) @[Q_function.scala 23:45]
+      node _T_8 = tail(_T_7, 1) @[Q_function.scala 23:45]
+      node _T_9 = asSInt(_T_8) @[Q_function.scala 23:45]
+      io.Q_updated <= _T_9 @[Q_function.scala 23:18]
+      io.wrEna <= UInt<1>("h01") @[Q_function.scala 24:13]
+      skip @[Q_function.scala 22:15]
+    else : @[Q_function.scala 25:4]
+      io.Q_updated <= asSInt(UInt<1>("h00")) @[Q_function.scala 26:17]
+      io.wrEna <= UInt<1>("h00") @[Q_function.scala 27:13]
+      skip @[Q_function.scala 25:4]
     
   module Max4 : 
     input clock : Clock
     input reset : Reset
-    output io : {flip ins0 : SInt<21>, flip ins1 : SInt<21>, flip ins2 : SInt<21>, flip ins3 : SInt<21>, Q_max : SInt<21>}
+    output io : {flip ins0 : SInt<16>, flip ins1 : SInt<16>, flip ins2 : SInt<16>, flip ins3 : SInt<16>, Q_max : SInt<16>}
     
-    wire ins : SInt<21>[4] @[Q_table.scala 82:15]
+    wire ins : SInt<16>[4] @[Q_table.scala 82:15]
     ins[0] <= io.ins0 @[Q_table.scala 83:9]
     ins[1] <= io.ins1 @[Q_table.scala 84:9]
     ins[2] <= io.ins2 @[Q_table.scala 85:9]
@@ -429,9 +272,9 @@ circuit sloving_maze_by_RL :
   module Action_at_Qmax : 
     input clock : Clock
     input reset : Reset
-    output io : {flip ins0 : SInt<21>, flip ins1 : SInt<21>, flip ins2 : SInt<21>, flip ins3 : SInt<21>, action_at_Qmax : UInt<2>, flip Q_max_at_state_s : SInt<21>}
+    output io : {flip ins0 : SInt<16>, flip ins1 : SInt<16>, flip ins2 : SInt<16>, flip ins3 : SInt<16>, action_at_Qmax : UInt<2>, flip Q_max_at_state_s : SInt<21>}
     
-    wire ins : SInt<21>[4] @[Q_table.scala 98:15]
+    wire ins : SInt<16>[4] @[Q_table.scala 98:15]
     ins[0] <= io.ins0 @[Q_table.scala 99:9]
     ins[1] <= io.ins1 @[Q_table.scala 100:9]
     ins[2] <= io.ins2 @[Q_table.scala 101:9]
@@ -448,7 +291,7 @@ circuit sloving_maze_by_RL :
   module Qtable : 
     input clock : Clock
     input reset : Reset
-    output io : {flip state : UInt<6>, flip new_state : UInt<6>, flip act : UInt<2>, flip wrEna : UInt<1>, flip Q_updated : SInt<21>, Q_s_a : SInt<21>, Q_prime_max : SInt<21>, action_at_Qmax : UInt<2>, flip get_Q_prime_max : UInt<1>, flip write_data_into_a_txtfile : UInt<1>, flip act_read : UInt<2>, flip state_read : UInt<6>}
+    output io : {flip state : UInt<6>, flip new_state : UInt<6>, flip act : UInt<2>, flip wrEna : UInt<1>, flip Q_updated : SInt<16>, Q_s_a : SInt<16>, Q_prime_max : SInt<16>, action_at_Qmax : UInt<2>, flip get_Q_prime_max : UInt<1>, flip write_data_into_a_txtfile : UInt<1>, flip act_read : UInt<2>, flip state_read : UInt<6>}
     
     inst max4 of Max4 @[Q_table.scala 19:18]
     max4.clock <= clock
@@ -456,10 +299,10 @@ circuit sloving_maze_by_RL :
     inst index_of_Q_max of Action_at_Qmax @[Q_table.scala 20:28]
     index_of_Q_max.clock <= clock
     index_of_Q_max.reset <= reset
-    smem Q_s_a0 : SInt<21>[25] @[Q_table.scala 22:25]
-    smem Q_s_a1 : SInt<21>[25] @[Q_table.scala 23:25]
-    smem Q_s_a2 : SInt<21>[25] @[Q_table.scala 24:25]
-    smem Q_s_a3 : SInt<21>[25] @[Q_table.scala 25:25]
+    smem Q_s_a0 : SInt<16>[25] @[Q_table.scala 22:25]
+    smem Q_s_a1 : SInt<16>[25] @[Q_table.scala 23:25]
+    smem Q_s_a2 : SInt<16>[25] @[Q_table.scala 24:25]
+    smem Q_s_a3 : SInt<16>[25] @[Q_table.scala 25:25]
     reg state_addr : UInt<6>, clock with : (reset => (reset, UInt<6>("h00"))) @[Q_table.scala 26:25]
     state_addr <= io.state @[Q_table.scala 27:13]
     io.Q_s_a <= asSInt(UInt<1>("h00")) @[Q_table.scala 28:11]
@@ -511,7 +354,7 @@ circuit sloving_maze_by_RL :
           when _T_15 : @[Q_table.scala 49:24]
             when io.wrEna : @[Q_table.scala 50:19]
               node _T_16 = bits(state_addr, 4, 0)
-              write mport _T_17 = Q_s_a0[_T_16], clock
+              write mport _T_17 = Q_s_a3[_T_16], clock
               _T_17 <= io.Q_updated
               skip @[Q_table.scala 50:19]
             else : @[Q_table.scala 52:6]
@@ -646,13 +489,13 @@ circuit sloving_maze_by_RL :
         io.generate_rand2 <= reset_fms.io.reset @[AgentsBrain.scala 63:24]
         when io.move_to_confirming_Reward : @[AgentsBrain.scala 64:42]
           master_fms <= UInt<3>("h02") @[AgentsBrain.scala 65:20]
-          io.get_Q_prime_max <= UInt<1>("h01") @[AgentsBrain.scala 66:27]
           skip @[AgentsBrain.scala 64:42]
         skip @[Conditional.scala 39:67]
       else : @[Conditional.scala 39:67]
         node _T_2 = eq(UInt<3>("h02"), master_fms) @[Conditional.scala 37:30]
         when _T_2 : @[Conditional.scala 39:67]
-          master_fms <= UInt<3>("h03") @[AgentsBrain.scala 70:18]
+          master_fms <= UInt<3>("h03") @[AgentsBrain.scala 69:18]
+          io.get_Q_prime_max <= UInt<1>("h01") @[AgentsBrain.scala 70:25]
           skip @[Conditional.scala 39:67]
         else : @[Conditional.scala 39:67]
           node _T_3 = eq(UInt<3>("h03"), master_fms) @[Conditional.scala 37:30]
@@ -670,7 +513,7 @@ circuit sloving_maze_by_RL :
   module sloving_maze_by_RL : 
     input clock : Clock
     input reset : UInt<1>
-    output io : {Path_found : UInt<1>, flip COL : UInt<3>, flip ROW : UInt<3>, flip state_read : UInt<6>, flip act_read : UInt<2>, Q_value : SInt<21>, flip write_data_into_a_txtfile : UInt<1>}
+    output io : {flip rand1 : UInt<10>, flip rand2 : UInt<10>, Path_found : UInt<1>, flip COL : UInt<3>, flip ROW : UInt<3>, flip state_read : UInt<6>, flip act_read : UInt<2>, Q_value : SInt<21>, flip write_data_into_a_txtfile : UInt<1>}
     
     inst agent of Agent @[sloving_maze_by_RL.scala 15:19]
     agent.clock <= clock
@@ -696,6 +539,8 @@ circuit sloving_maze_by_RL :
     Q_table.io.write_data_into_a_txtfile <= io.write_data_into_a_txtfile @[sloving_maze_by_RL.scala 24:39]
     agent.io.ROW <= io.ROW @[sloving_maze_by_RL.scala 27:15]
     agent.io.COL <= io.COL @[sloving_maze_by_RL.scala 28:15]
+    taking_action.io.rand1 <= io.rand1 @[sloving_maze_by_RL.scala 29:11]
+    taking_action.io.rand2 <= io.rand2 @[sloving_maze_by_RL.scala 30:11]
     taking_action.io.x <= agent.io.x @[sloving_maze_by_RL.scala 31:13]
     taking_action.io.y <= agent.io.y @[sloving_maze_by_RL.scala 32:13]
     taking_action.io.episode <= agent.io.episode @[sloving_maze_by_RL.scala 33:19]
