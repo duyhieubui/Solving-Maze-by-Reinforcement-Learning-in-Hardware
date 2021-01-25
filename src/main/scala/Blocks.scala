@@ -4,7 +4,7 @@ class Agent extends Module{
     val ROW=Input(UInt(3.W))  // ROW and COL is the size of the maze(ROWxCOL)
     val COL=Input(UInt(3.W))
     val new_state=Input(UInt(6.W))  // this is the state after the agent takes a new action
-   // val iterate=Output(Bool())
+    val iterate=Output(Bool())
     val x=Output(UInt(3.W))
     val y=Output(UInt(3.W))
     val state=Output(UInt(6.W))
@@ -27,7 +27,7 @@ class Agent extends Module{
   COL:=io.COL
   val t=(step===15.U)       //if step=14. start again
   val iterate=start_again||t
-  //io.iterate:=iterate
+  io.iterate:=iterate
   //io.t:=t
   when(iterate===true.B){
     state:=0.U
