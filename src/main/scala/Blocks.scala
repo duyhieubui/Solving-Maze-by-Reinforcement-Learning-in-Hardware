@@ -4,7 +4,7 @@ class Agent extends Module{
     val ROW=Input(UInt(3.W))  // ROW and COL is the size of the maze(ROWxCOL)
     val COL=Input(UInt(3.W))
     val new_state=Input(UInt(6.W))  // this is the state after the agent takes a new action
-    val iterate=Output(Bool())
+   // val iterate=Output(Bool())
     val x=Output(UInt(3.W))
     val y=Output(UInt(3.W))
     val state=Output(UInt(6.W))
@@ -12,7 +12,7 @@ class Agent extends Module{
     val done_learning=Output(Bool())
     val load_new_state=Input(Bool())
     val step=Output(UInt(4.W))
-    val t=Output(Bool())    // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
+    //val t=Output(Bool())    // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
     // to reset the current state to the initial state
   })
   val ROW=RegInit(0.U(3.W))   // in length. Ex: maze(5,5) means ROW=5, COL=5
@@ -27,8 +27,8 @@ class Agent extends Module{
   COL:=io.COL
   val t=(step===15.U)       //if step=14. start again
   val iterate=start_again||t
-  io.iterate:=iterate
-  io.t:=t
+ //io.iterate:=iterate
+  //io.t:=t
   when(iterate===true.B){
     state:=0.U
     episode:=episode+1.U
@@ -40,9 +40,6 @@ class Agent extends Module{
       state := io.new_state
       io.done_learning := false.B
       step:=step+1.U
-      when(step===15.U){
-        step:=0.U
-      }
     }
   }
   // check when to stop training
