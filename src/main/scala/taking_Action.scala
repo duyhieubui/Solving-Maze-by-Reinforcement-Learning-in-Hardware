@@ -13,7 +13,7 @@ class takingAction extends Module {
     val act = Output(UInt(2.W))
     val reset_Action_fms=Input(Bool())
     val move_to_confirming_Reward=Output(Bool())
-    val exploit=Output(Bool())
+    //val exploit=Output(Bool())
   })
   val action_fms=Module(new Action_FMS())
   val action=Module(new Action())
@@ -21,7 +21,7 @@ class takingAction extends Module {
 
   epsilon:=1023.U-io.episode*17.U/5.U
   val exploit=(io.episode>230.U) // prior to episode 230, the agent explores the envir
-  io.exploit:=exploit
+  //io.exploit:=exploit
 
   // connect the action_FMS to Action
   action_fms.io.reset_Action_fms<>io.reset_Action_fms
