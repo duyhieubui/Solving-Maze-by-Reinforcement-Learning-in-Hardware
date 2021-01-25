@@ -55,20 +55,7 @@ class Agent extends Module{
   io.episode:=episode
   io.step:=step
 }
-class IterateTheLearningProcess extends Module {
-  val io = IO(new Bundle {
-    val state = Input(UInt(6.W))
-    val start_again = Output(Bool())
-    val t=Output(Bool())
-    val iterate=Output(Bool())
-  })
-  // -if the agent reaches the state 25, generate a signal to reset the state of the agent
-  // to the starting point
-  when(io.state === 24.U){
-    io.start_again :=true.B
-  }
-  io.iterate:=io.start_again||io.t
-}
+
 class ConfirmReward extends Module{
   val io=IO(new Bundle{
     val new_state=Input(UInt(6.W))
