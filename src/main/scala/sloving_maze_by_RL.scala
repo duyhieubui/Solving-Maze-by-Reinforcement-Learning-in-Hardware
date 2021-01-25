@@ -22,7 +22,7 @@ class sloving_maze_by_RL extends Module{
   Q_table.io.state_read<>io.state_read
   Q_table.io.act_read<>io.act_read
   Q_table.io.write_data_into_a_txtfile<>io.write_data_into_a_txtfile
-  agent.io.exploit<>taking_action.io.exploit
+  //agent.io.exploit<>taking_action.io.exploit
   // connect components together
   //connect the inputs the system
   agent.io.ROW<>io.ROW
