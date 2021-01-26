@@ -4,7 +4,6 @@ class Agent extends Module{
     val ROW=Input(UInt(3.W))  // ROW and COL is the size of the maze(ROWxCOL)
     val COL=Input(UInt(3.W))
     val new_state=Input(UInt(6.W))  // this is the state after the agent takes a new action
-    val iterate=Output(Bool())
     val x=Output(UInt(3.W))
     val y=Output(UInt(3.W))
     val state=Output(UInt(6.W))
@@ -12,9 +11,8 @@ class Agent extends Module{
     val done_learning=Output(Bool())
     val load_new_state=Input(Bool())
     val step=Output(UInt(4.W))
-    val exploit=Input(Bool())
-    val t=Output(Bool())    // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
-    // to reset the current state to the initial state
+    val iterate=Output(Bool())
+    val path_found=Output(Bool())
   })
   val ROW=RegInit(0.U(3.W))   // in length. Ex: maze(5,5) means ROW=5, COL=5
   val COL=RegInit(0.U(3.W))
@@ -25,26 +23,18 @@ class Agent extends Module{
 
   ROW:=io.ROW
   COL:=io.COL
-  val t=(step===15.U)       //if step=14. start again
-  val iterate=start_again||t
+  val t=(step===15.U)      // -if after 15 steps but the agent can't get to the goal, generate the t signal to true
+                            // to reset the current state to the initial state
+  val iterate=start_again||t  // when this signal is true, reset the action state to the inital state
   io.iterate:=iterate
-  io.t:=t
   when(iterate===true.B){
     state:=0.U
     episode:=episode+1.U
-    //when(step===15.U){
       step:=0.U
-    //}
   }otherwise{
     when(io.load_new_state){
       state := io.new_state
-      io.done_learning := false.B
       step:=step+1.U
-      when(step===15.U){
-        step:=0.U
-      }.elsewhen(io.exploit){
-        step:=0.U
-      }
     }
   }
   // check when to stop training
@@ -52,6 +42,14 @@ class Agent extends Module{
     io.done_learning:=true.B
   }otherwise{
     io.done_learning:=false.B
+  }
+  // taking one more episode to generate a "get_path sigal " to re-use the path-finding module
+  // in the action block. By doing this, it will take less hardware resources
+  when(episode===301.U){
+    io.path_found:=true.B
+  }otherwise {
+    io.path_found:=false.B
+
   }
   // find the x y coordinate of the agent
   io.x:=state%COL

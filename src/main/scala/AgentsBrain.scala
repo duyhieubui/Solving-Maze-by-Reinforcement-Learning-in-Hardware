@@ -23,20 +23,18 @@ class resetFMS extends Module{
 class MasterFMS extends Module{
   val io=IO(new Bundle{
     val iterate=Input(Bool())
-    val done_learning=Input(Bool())
     val move_to_confirming_Reward=Input(Bool())
-    val Path_found=Output(Bool())
     val cal=Output(Bool())
     val load_new_state=Output(Bool())
     val reset_Action_fms=Output(Bool())
     val get_Q_prime_max=Output(Bool())
-   // val generate_rand2=Output(Bool())
+    val DONE=Output(Bool())
+    val path_found=Input(Bool())
   })
-  io.Path_found :=false.B
+  io.DONE:=false.B
   io.cal:=false.B
   io.get_Q_prime_max:=false.B
   io.load_new_state:=false.B
-  //io.generate_rand2:=false.B
   val agent::choosing_Action::get_Reward::compute_Q_value::routing::Nil=Enum(5)
   val master_FMS=RegInit(agent)
   // resetFMS
@@ -49,18 +47,16 @@ class MasterFMS extends Module{
     is(agent) {
       when(io.iterate){
         master_FMS := agent
-      }.elsewhen(io.done_learning){    // when learning is done, move to path finding block
-        master_FMS := routing
-      }otherwise {
-        transition:=true.B
-        master_FMS:=choosing_Action
+      }.elsewhen(io.path_found){
+        master_FMS:=routing
+      }otherwise{
+          transition:=true.B
+          master_FMS:=choosing_Action
+        }
       }
-      //io.generate_rand2:=true.B
-    }
     is(choosing_Action) {
       io.reset_Action_fms:=reset_fms.io.reset
-                                                 // before the action fms returns to its initial state, a random number is
-      when(io.move_to_confirming_Reward) {      // generated. When the generate_rand2 signal goes low, it keeps the generated value
+      when(io.move_to_confirming_Reward) {
         master_FMS := get_Reward
       }
     }
@@ -74,7 +70,7 @@ class MasterFMS extends Module{
       io.load_new_state:=true.B
     }
     is(routing) {
-      io.Path_found:=true.B
+    io.DONE:=true.B
     }
   }
 }

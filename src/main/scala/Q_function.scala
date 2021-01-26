@@ -12,18 +12,12 @@ class Q_function extends Module {
     val reward=Input(SInt(9.W))
     val wrEna=Output(Bool())
   })
-  //val Q_prime_max=RegInit(0.S(21.W))
   val Q_s_a=RegInit(0.S(16.W))
   val reward=RegInit(0.S(9.W))
   Q_s_a:=io.Q_s_a
- // Q_prime_max:=io.Q_prime_max
   reward:=io.reward
-  val a=Q_s_a>>1
-  val b=reward<<6
-  val c=io.Q_prime_max<<2
-  val d=io.Q_prime_max/10.S
   when(io.cal){
-    io.Q_updated :=a+b+c+d
+    io.Q_updated :=(Q_s_a+reward*128.S)/2.S +(io.Q_prime_max*2.S/5.S )
     io.wrEna:=true.B
   }otherwise{
     io.Q_updated:=0.S

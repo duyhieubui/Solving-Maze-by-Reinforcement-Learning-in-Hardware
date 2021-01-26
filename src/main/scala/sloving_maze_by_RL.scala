@@ -2,15 +2,14 @@ import chisel3._
 import chisel3.util._
 class sloving_maze_by_RL extends Module{
   val io=IO(new Bundle{
-    //val rand1=Input(UInt(10.W))
-    //val rand2=Input(UInt(10.W))
-    val Path_found=Output(Bool())
     val COL=Input(UInt(3.W))
     val ROW=Input(UInt(3.W))
     val state_read=Input(UInt(6.W))
     val act_read=Input(UInt(2.W))
     val Q_value=Output(SInt(16.W))
     val write_data_into_a_txtfile=Input(Bool())
+    val Path=Output(UInt(6.W))
+    val DONE=Output(Bool())
   })
   val agent=Module(new Agent())
   val taking_action=Module(new takingAction())
@@ -22,7 +21,6 @@ class sloving_maze_by_RL extends Module{
   Q_table.io.state_read<>io.state_read
   Q_table.io.act_read<>io.act_read
   Q_table.io.write_data_into_a_txtfile<>io.write_data_into_a_txtfile
-  agent.io.exploit<>taking_action.io.exploit
   // connect components together
   //connect the inputs the system
   agent.io.ROW<>io.ROW
@@ -51,12 +49,20 @@ class sloving_maze_by_RL extends Module{
 
   /// connecting wires to the FMS
   masterFMS.io.reset_Action_fms<>taking_action.io.reset_Action_fms
-  masterFMS.io.done_learning<>agent.io.done_learning
+  //masterFMS.io.done_learning<>agent.io.done_learning
   masterFMS.io.iterate:=agent.io.iterate
   masterFMS.io.move_to_confirming_Reward:=taking_action.io.move_to_confirming_Reward
   masterFMS.io.get_Q_prime_max<>Q_table.io.get_Q_prime_max
   agent.io.load_new_state<>masterFMS.io.load_new_state
-  io.Path_found:=masterFMS.io.Path_found
+  agent.io.done_learning<>taking_action.io.get_path
+  masterFMS.io.path_found<>agent.io.path_found
+  when(agent.io.done_learning){
+    io.Path:=agent.io.state
+  }otherwise{
+    io.Path:=0.U
+  }
+  masterFMS.io.DONE<>io.DONE
+
 }
 
 object sloving_maze_by_RL extends App {

@@ -8,12 +8,10 @@ class Action_FMS extends Module {
     val validAction = Input(Bool())
     val move_to_confirming_Reward = Output(Bool())
     val keep_action=Output(Bool())
-    //val generate_rand2=Output(Bool())
   })
   val taking_decision :: action_at_Qmax :: random_Action :: x_y_new :: checking :: Nil = Enum(5)
   val action_FMS = RegInit(taking_decision)
   io.move_to_confirming_Reward := false.B
-  //io.generate_rand2:=false.B
   io.keep_action:=true.B
   when(io.reset_Action_fms) {
     action_FMS := taking_decision
@@ -42,7 +40,6 @@ class Action_FMS extends Module {
           action_FMS := checking
         }otherwise{
           action_FMS := taking_decision
-          //io.generate_rand2:=true.B
         }
       }
     }
@@ -59,7 +56,6 @@ class Action extends Module {
     val exploit = Input(Bool())
     val validAction = Output(Bool())
     val keep_action=Input(Bool())
-    //val generate_random_number=Output(Bool())
   })
   val act = RegInit(0.U(2.W))
   val x_new = RegInit(0.U(3.W))

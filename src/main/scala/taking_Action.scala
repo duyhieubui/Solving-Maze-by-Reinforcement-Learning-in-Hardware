@@ -5,24 +5,22 @@ class takingAction extends Module {
   val io = IO(new Bundle {
     val x = Input(UInt(3.W))
     val y = Input(UInt(3.W))
-    //val rand1 = Input(UInt(10.W)) //rand 1 rand2 ranging from 100 to below 999
-   //val rand2 = Input(UInt(10.W)) // take 3 numbers after the decimal point
-    val episode = Input(UInt(10.W)) //1000*epislon
+    val episode = Input(UInt(10.W)) //1024*epislon
     val new_state = Output(UInt(6.W))
     val action_at_Qmax = Input(UInt(2.W)) // this is the action at state s at which Q(s,a) is max
     val act = Output(UInt(2.W))
     val reset_Action_fms=Input(Bool())
     val move_to_confirming_Reward=Output(Bool())
-    val exploit=Output(Bool())
+    val get_path=Input(Bool())
   })
   val action_fms=Module(new Action_FMS())
   val action=Module(new Action())
   val epsilon = RegInit(0.U(10.W))
 
-  epsilon:=1023.U-io.episode*17.U/5.U
-  val exploit=(io.episode>230.U) // prior to episode 230, the agent explores the envir
-  io.exploit:=exploit
-
+  epsilon:=1023.U-io.episode*3.U
+  val exploit1=(epsilon<LFSR(10))   // exploit 1 is the signal for exploring the environment
+  val exploit=exploit1||io.get_path // get_path signal is coupled with exploit 1 as "exploit", the input
+                                    // of path-finding block to reuse this block
   // connect the action_FMS to Action
   action_fms.io.reset_Action_fms<>io.reset_Action_fms
   action_fms.io.exploit:=exploit    // greedy action

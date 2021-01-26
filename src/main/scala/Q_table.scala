@@ -8,14 +8,13 @@ class Qtable extends Module {
     val wrEna=Input(Bool())
     val Q_updated=Input(SInt(16.W))  // the output computed from the Q function (ALU)
     val Q_s_a=Output(SInt(16.W)) // the current Q value
-    val Q_prime_max=Output(SInt(16.W)) // the maximum Q value at state s, regardless of any actions
-    val action_at_Qmax=Output(UInt(2.W)) //the index of the maximum element
+    val Q_prime_max=Output(SInt(16.W)) // the maximum Q value at state s
+    val action_at_Qmax=Output(UInt(2.W))
     val get_Q_prime_max=Input(Bool())
-    val write_data_into_a_txtfile=Input(Bool())
+    val write_data_into_a_txtfile=Input(Bool())  // this is for reading Q values from the memory to compare with Q from software counterpart
     val act_read=Input(UInt(2.W))
     val state_read=Input(UInt(6.W))
   })
-  //val state_mix=Mux(io.write_data_into_a_txtfile,io.state_read,io.state)
   val max4=Module(new Max4())
   val index_of_Q_max=Module(new Action_at_Qmax())
   //creat the Q_table
@@ -24,10 +23,10 @@ class Qtable extends Module {
   val Q_s_a2=SyncReadMem(25,SInt(16.W))
   val Q_s_a3=SyncReadMem(25,SInt(16.W))
   val state_addr=RegInit(0.U(6.W))    // create a register to store the address of the current state for the sake of writing data
-  state_addr:=io.state   // this is used to store the address for updating Q value.
-  io.Q_s_a:=0.S
+  state_addr:=io.state              // this is used to store the address for updating Q value.
   val act=Mux(io.write_data_into_a_txtfile,io.act_read,io.act)
   val stateRead=Mux(io.write_data_into_a_txtfile,io.state_read,io.state)
+  io.Q_s_a:=0.S
   when(act===0.U){
     when(io.wrEna) {
       Q_s_a0.write(state_addr, io.Q_updated)
@@ -54,7 +53,9 @@ class Qtable extends Module {
     }
   }
   // connect wires to the max4 block
+
   // by using the mux new_state_or_state, the max4 could be reused for 2 different purposes
+  // one for getting the maximum value of Q among 4 values, one for finding the index of that maximum value.
   val new_state_or_state=Mux(io.get_Q_prime_max,io.new_state,io.state)
   max4.io.ins0<>Q_s_a0.read(new_state_or_state)
   max4.io.ins1<>Q_s_a1.read(new_state_or_state)
@@ -77,7 +78,6 @@ class Max4 extends Module{
     val ins3=Input(SInt(16.W))
     val Q_max=Output(SInt(16.W))
   })
-
   private def Max2(x: SInt, y: SInt) = Mux(x > y, x, y)
   val ins=Wire(Vec(4,SInt(16.W)))
   ins(0):=io.ins0

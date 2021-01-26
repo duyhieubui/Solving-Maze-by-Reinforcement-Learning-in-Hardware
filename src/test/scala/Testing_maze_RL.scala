@@ -25,7 +25,7 @@ class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
        idd=1
       }
       step(1)
-      if (peek(dut.io.Path_found) == 1) {
+      if (peek(dut.io.DONE) == 1) {
         while_loop.break()
       }
     }
