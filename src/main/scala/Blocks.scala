@@ -27,6 +27,7 @@ class Agent extends Module{
                             // to reset the current state to the initial state
   val iterate=start_again||t  // when this signal is true, reset the action state to the inital state
   io.iterate:=iterate
+
   when(iterate===true.B){
     state:=0.U
     episode:=episode+1.U

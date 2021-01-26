@@ -12,6 +12,7 @@ class takingAction extends Module {
     val reset_Action_fms=Input(Bool())
     val move_to_confirming_Reward=Output(Bool())
     val get_path=Input(Bool())
+
   })
   val action_fms=Module(new Action_FMS())
   val action=Module(new Action())
