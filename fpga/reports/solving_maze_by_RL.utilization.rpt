@@ -1,0 +1,45 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (lin64) Build 2405991 Thu Dec  6 23:36:41 MST 2018
+| Date         : Wed Jan 27 15:51:38 2021
+| Host         : sis-41 running 64-bit CentOS release 6.9 (Final)
+| Command      : report_utilization -hierarchical -file reports/solving_maze_by_RL.utilization.rpt
+| Design       : solving_maze_by_RL
+| Device       : 7vx485tffg1761-2
+| Design State : Routed
+---------------------------------------------------------------------------------------------------
+
+Utilization Design Information
+
+Table of Contents
+-----------------
+1. Utilization by Hierarchy
+
+1. Utilization by Hierarchy
+---------------------------
+
++------------------------------+--------------------------+------------+------------+---------+------+-----+--------+--------+--------------+
+|           Instance           |          Module          | Total LUTs | Logic LUTs | LUTRAMs | SRLs | FFs | RAMB36 | RAMB18 | DSP48 Blocks |
++------------------------------+--------------------------+------------+------------+---------+------+-----+--------+--------+--------------+
+| solving_maze_by_RL           |                    (top) |        391 |        307 |      84 |    0 | 142 |      0 |      0 |            0 |
+|   (solving_maze_by_RL)       |                    (top) |          3 |          3 |       0 |    0 |   0 |      0 |      0 |            0 |
+|   Q_func                     |               Q_function |         81 |         81 |       0 |    0 |  20 |      0 |      0 |            0 |
+|   Q_table                    |                   Qtable |        196 |        112 |      84 |    0 |  40 |      0 |      0 |            0 |
+|     (Q_table)                |                   Qtable |        121 |         37 |      84 |    0 |  40 |      0 |      0 |            0 |
+|     index_of_Q_max           |           Action_at_Qmax |         19 |         19 |       0 |    0 |   0 |      0 |      0 |            0 |
+|     max4                     |                     Max4 |         56 |         56 |       0 |    0 |   0 |      0 |      0 |            0 |
+|   Reward                     |            ConfirmReward |          7 |          7 |       0 |    0 |   0 |      0 |      0 |            0 |
+|   agent                      |                    Agent |         49 |         49 |       0 |    0 |  23 |      0 |      0 |            0 |
+|   masterFMS                  |                MasterFMS |          7 |          7 |       0 |    0 |   4 |      0 |      0 |            0 |
+|     (masterFMS)              |                MasterFMS |          6 |          6 |       0 |    0 |   3 |      0 |      0 |            0 |
+|     reset_fms                |                 resetFMS |          1 |          1 |       0 |    0 |   1 |      0 |      0 |            0 |
+|   taking_action              |             takingAction |         48 |         48 |       0 |    0 |  55 |      0 |      0 |            0 |
+|     (taking_action)          |             takingAction |         25 |         25 |       0 |    0 |  10 |      0 |      0 |            0 |
+|     MaxPeriodFibonacciLFSR   |   MaxPeriodFibonacciLFSR |          1 |          1 |       0 |    0 |  10 |      0 |      0 |            0 |
+|     MaxPeriodFibonacciLFSR_1 | MaxPeriodFibonacciLFSR_1 |          1 |          1 |       0 |    0 |  16 |      0 |      0 |            0 |
+|     action                   |                   Action |         17 |         17 |       0 |    0 |  16 |      0 |      0 |            0 |
+|     action_fms               |               Action_FMS |          4 |          4 |       0 |    0 |   3 |      0 |      0 |            0 |
++------------------------------+--------------------------+------------+------------+---------+------+-----+--------+--------+--------------+
+* Note: The sum of lower-level cells may be larger than their parent cells total, due to cross-hierarchy LUT combining
+
+

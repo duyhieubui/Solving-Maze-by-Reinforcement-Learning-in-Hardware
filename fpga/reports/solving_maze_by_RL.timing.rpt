@@ -1,0 +1,150 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (lin64) Build 2405991 Thu Dec  6 23:36:41 MST 2018
+| Date         : Wed Jan 27 15:51:38 2021
+| Host         : sis-41 running 64-bit CentOS release 6.9 (Final)
+| Command      : report_timing -nworst 1 -delay_type max -sort_by group -file reports/solving_maze_by_RL.timing.rpt
+| Design       : solving_maze_by_RL
+| Device       : 7vx485t-ffg1761
+| Speed File   : -2  PRODUCTION 1.12 2014-09-11
+--------------------------------------------------------------------------------------------------------------------
+
+Timing Report
+
+Slack (MET) :             0.080ns  (required time - arrival time)
+  Source:                 Q_table/Q_s_a0__T_20_addr_pipe_0_reg_rep[1]__0/C
+                            (rising edge-triggered cell FDRE clocked by clk  {rise@0.000ns fall@6.250ns period=12.500ns})
+  Destination:            Q_table/Q_s_a1_reg_r1_0_31_12_15/RAMB_D1/I
+                            (rising edge-triggered cell RAMD32 clocked by clk  {rise@0.000ns fall@6.250ns period=12.500ns})
+  Path Group:             clk
+  Path Type:              Setup (Max at Slow Process Corner)
+  Requirement:            12.500ns  (clk rise@12.500ns - clk rise@0.000ns)
+  Data Path Delay:        12.109ns  (logic 3.093ns (25.543%)  route 9.016ns (74.457%))
+  Logic Levels:           32  (CARRY4=15 LUT1=1 LUT2=2 LUT3=1 LUT4=1 LUT5=2 LUT6=9 RAMD32=1)
+  Clock Path Skew:        -0.048ns (DCD - SCD + CPR)
+    Destination Clock Delay (DCD):    4.919ns = ( 17.419 - 12.500 ) 
+    Source Clock Delay      (SCD):    5.310ns
+    Clock Pessimism Removal (CPR):    0.342ns
+  Clock Uncertainty:      0.035ns  ((TSJ^2 + TIJ^2)^1/2 + DJ) / 2 + PE
+    Total System Jitter     (TSJ):    0.071ns
+    Total Input Jitter      (TIJ):    0.000ns
+    Discrete Jitter          (DJ):    0.000ns
+    Phase Error              (PE):    0.000ns
+
+    Location             Delay type                Incr(ns)  Path(ns)    Netlist Resource(s)
+  -------------------------------------------------------------------    -------------------
+                         (clock clk rise edge)        0.000     0.000 r  
+    AU32                                              0.000     0.000 r  clock (IN)
+                         net (fo=0)                   0.000     0.000    clock
+    AU32                 IBUF (Prop_ibuf_I_O)         0.642     0.642 r  clock_IBUF_inst/O
+                         net (fo=1, routed)           2.644     3.286    clock_IBUF
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.093     3.379 r  clock_IBUF_BUFG_inst/O
+                         net (fo=310, routed)         1.931     5.310    Q_table/clock
+    SLICE_X41Y24         FDRE                                         r  Q_table/Q_s_a0__T_20_addr_pipe_0_reg_rep[1]__0/C
+  -------------------------------------------------------------------    -------------------
+    SLICE_X41Y24         FDRE (Prop_fdre_C_Q)         0.223     5.533 r  Q_table/Q_s_a0__T_20_addr_pipe_0_reg_rep[1]__0/Q
+                         net (fo=18, routed)          0.782     6.315    Q_table/Q_s_a1_reg_r1_0_31_0_5/ADDRC1
+    SLICE_X40Y21         RAMD32 (Prop_ramd32_RADR1_O)
+                                                      0.043     6.358 r  Q_table/Q_s_a1_reg_r1_0_31_0_5/RAMC_D1/O
+                         net (fo=7, routed)           0.449     6.807    Q_table/max4/io_ins1[5]
+    SLICE_X41Y22         LUT4 (Prop_lut4_I1_O)        0.043     6.850 r  Q_table/max4/io_Q_max[15]_INST_0_i_36/O
+                         net (fo=1, routed)           0.000     6.850    Q_table/max4/io_Q_max[15]_INST_0_i_36_n_0
+    SLICE_X41Y22         CARRY4 (Prop_carry4_S[2]_CO[3])
+                                                      0.195     7.045 r  Q_table/max4/io_Q_max[15]_INST_0_i_4/CO[3]
+                         net (fo=1, routed)           0.000     7.045    Q_table/max4/io_Q_max[15]_INST_0_i_4_n_0
+    SLICE_X41Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053     7.098 f  Q_table/max4/io_Q_max[15]_INST_0_i_1/CO[3]
+                         net (fo=41, routed)          0.621     7.719    Q_table/max4/_T
+    SLICE_X40Y22         LUT5 (Prop_lut5_I4_O)        0.043     7.762 r  Q_table/max4/io_Q_max[15]_INST_0_i_43/O
+                         net (fo=1, routed)           0.000     7.762    Q_table/max4/io_Q_max[15]_INST_0_i_43_n_0
+    SLICE_X40Y22         CARRY4 (Prop_carry4_S[3]_CO[3])
+                                                      0.180     7.942 r  Q_table/max4/io_Q_max[15]_INST_0_i_13/CO[3]
+                         net (fo=1, routed)           0.000     7.942    Q_table/max4/io_Q_max[15]_INST_0_i_13_n_0
+    SLICE_X40Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.054     7.996 r  Q_table/max4/io_Q_max[15]_INST_0_i_2/CO[3]
+                         net (fo=25, routed)          0.504     8.500    Q_table/max4/_T_2
+    SLICE_X41Y24         LUT2 (Prop_lut2_I1_O)        0.054     8.554 r  Q_table/max4/io_Q_max[15]_INST_0_i_56/O
+                         net (fo=16, routed)          0.525     9.079    Q_table/max4/io_Q_max[15]_INST_0_i_56_n_0
+    SLICE_X39Y19         LUT6 (Prop_lut6_I4_O)        0.137     9.216 r  Q_table/max4/io_Q_max[15]_INST_0_i_50/O
+                         net (fo=1, routed)           0.193     9.408    Q_table/max4/io_Q_max[15]_INST_0_i_50_n_0
+    SLICE_X39Y20         CARRY4 (Prop_carry4_DI[0]_CO[3])
+                                                      0.269     9.677 r  Q_table/max4/io_Q_max[15]_INST_0_i_22/CO[3]
+                         net (fo=1, routed)           0.000     9.677    Q_table/max4/io_Q_max[15]_INST_0_i_22_n_0
+    SLICE_X39Y21         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053     9.730 r  Q_table/max4/io_Q_max[15]_INST_0_i_3/CO[3]
+                         net (fo=16, routed)          0.479    10.209    Q_table/max4/_T_4
+    SLICE_X39Y22         LUT6 (Prop_lut6_I4_O)        0.043    10.252 f  Q_table/max4/io_Q_max[0]_INST_0/O
+                         net (fo=7, routed)           0.200    10.452    Q_func/io_Q_prime_max[0]
+    SLICE_X37Y22         LUT1 (Prop_lut1_I0_O)        0.043    10.495 r  Q_func/io_Q_updated[2]_INST_0_i_16/O
+                         net (fo=1, routed)           0.193    10.688    Q_func/p_0_out[1]
+    SLICE_X39Y22         CARRY4 (Prop_carry4_DI[1]_CO[3])
+                                                      0.250    10.938 r  Q_func/io_Q_updated[2]_INST_0_i_15/CO[3]
+                         net (fo=1, routed)           0.000    10.938    Q_func/io_Q_updated[2]_INST_0_i_15_n_0
+    SLICE_X39Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053    10.991 r  Q_func/io_Q_updated[15]_INST_0_i_12/CO[3]
+                         net (fo=1, routed)           0.000    10.991    Q_func/io_Q_updated[15]_INST_0_i_12_n_0
+    SLICE_X39Y24         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053    11.044 r  Q_func/io_Q_updated[15]_INST_0_i_7/CO[3]
+                         net (fo=1, routed)           0.007    11.051    Q_func/io_Q_updated[15]_INST_0_i_7_n_0
+    SLICE_X39Y25         CARRY4 (Prop_carry4_CI_O[1])
+                                                      0.166    11.217 r  Q_func/io_Q_updated[15]_INST_0_i_4/O[1]
+                         net (fo=1, routed)           0.438    11.655    Q_func/test2[13]
+    SLICE_X38Y25         LUT3 (Prop_lut3_I0_O)        0.123    11.778 r  Q_func/io_Q_updated[14]_INST_0_i_21/O
+                         net (fo=6, routed)           0.633    12.411    Q_func/test1[13]
+    SLICE_X43Y26         LUT6 (Prop_lut6_I0_O)        0.043    12.454 r  Q_func/io_Q_updated[14]_INST_0_i_16/O
+                         net (fo=6, routed)           0.520    12.974    Q_func/test0[12]
+    SLICE_X45Y24         LUT6 (Prop_lut6_I0_O)        0.043    13.017 r  Q_func/io_Q_updated[10]_INST_0_i_9/O
+                         net (fo=6, routed)           0.549    13.565    Q_func/test0[10]
+    SLICE_X44Y21         LUT6 (Prop_lut6_I0_O)        0.043    13.608 r  Q_func/io_Q_updated[10]_INST_0_i_11/O
+                         net (fo=6, routed)           0.609    14.217    Q_func/test0[8]
+    SLICE_X43Y19         LUT6 (Prop_lut6_I0_O)        0.043    14.260 r  Q_func/io_Q_updated[6]_INST_0_i_6/O
+                         net (fo=6, routed)           0.272    14.532    Q_func/test0[6]
+    SLICE_X41Y19         LUT6 (Prop_lut6_I0_O)        0.043    14.575 r  Q_func/io_Q_updated[6]_INST_0_i_8/O
+                         net (fo=4, routed)           0.453    15.029    Q_func/test0[4]
+    SLICE_X41Y19         LUT6 (Prop_lut6_I0_O)        0.043    15.072 r  Q_func/io_Q_updated[2]_INST_0_i_6/O
+                         net (fo=4, routed)           0.288    15.360    Q_func/test0[2]
+    SLICE_X43Y20         LUT5 (Prop_lut5_I0_O)        0.043    15.403 r  Q_func/io_Q_updated[2]_INST_0_i_9/O
+                         net (fo=1, routed)           0.288    15.691    Q_func/io_Q_updated[2]_INST_0_i_9_n_0
+    SLICE_X43Y21         LUT6 (Prop_lut6_I3_O)        0.043    15.734 r  Q_func/io_Q_updated[2]_INST_0_i_5/O
+                         net (fo=1, routed)           0.000    15.734    Q_func/io_Q_updated[2]_INST_0_i_5_n_0
+    SLICE_X43Y21         CARRY4 (Prop_carry4_S[1]_CO[3])
+                                                      0.267    16.001 r  Q_func/io_Q_updated[2]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    16.001    Q_func/io_Q_updated[2]_INST_0_i_1_n_0
+    SLICE_X43Y22         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053    16.054 r  Q_func/io_Q_updated[6]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    16.054    Q_func/io_Q_updated[6]_INST_0_i_1_n_0
+    SLICE_X43Y23         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053    16.107 r  Q_func/io_Q_updated[10]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.000    16.107    Q_func/io_Q_updated[10]_INST_0_i_1_n_0
+    SLICE_X43Y24         CARRY4 (Prop_carry4_CI_CO[3])
+                                                      0.053    16.160 r  Q_func/io_Q_updated[14]_INST_0_i_1/CO[3]
+                         net (fo=1, routed)           0.007    16.167    Q_func/io_Q_updated[14]_INST_0_i_1_n_0
+    SLICE_X43Y25         CARRY4 (Prop_carry4_CI_O[0])
+                                                      0.111    16.278 r  Q_func/io_Q_updated[15]_INST_0_i_1/O[0]
+                         net (fo=1, routed)           0.569    16.847    Q_func/_T_8[15]
+    SLICE_X45Y25         LUT2 (Prop_lut2_I1_O)        0.134    16.981 r  Q_func/io_Q_updated[15]_INST_0/O
+                         net (fo=7, routed)           0.438    17.419    Q_table/Q_s_a1_reg_r1_0_31_12_15/DIB1
+    SLICE_X42Y25         RAMD32                                       r  Q_table/Q_s_a1_reg_r1_0_31_12_15/RAMB_D1/I
+  -------------------------------------------------------------------    -------------------
+
+                         (clock clk rise edge)       12.500    12.500 r  
+    AU32                                              0.000    12.500 r  clock (IN)
+                         net (fo=0)                   0.000    12.500    clock
+    AU32                 IBUF (Prop_ibuf_I_O)         0.535    13.035 r  clock_IBUF_inst/O
+                         net (fo=1, routed)           2.510    15.545    clock_IBUF
+    BUFGCTRL_X0Y0        BUFG (Prop_bufg_I_O)         0.083    15.628 r  clock_IBUF_BUFG_inst/O
+                         net (fo=310, routed)         1.791    17.419    Q_table/Q_s_a1_reg_r1_0_31_12_15/WCLK
+    SLICE_X42Y25         RAMD32                                       r  Q_table/Q_s_a1_reg_r1_0_31_12_15/RAMB_D1/CLK
+                         clock pessimism              0.342    17.762    
+                         clock uncertainty           -0.035    17.726    
+    SLICE_X42Y25         RAMD32 (Setup_ramd32_CLK_I)
+                                                     -0.227    17.499    Q_table/Q_s_a1_reg_r1_0_31_12_15/RAMB_D1
+  -------------------------------------------------------------------
+                         required time                         17.499    
+                         arrival time                         -17.419    
+  -------------------------------------------------------------------
+                         slack                                  0.080    
+
+
+
+

@@ -1,6 +1,6 @@
 import chisel3._
 import chisel3.util._
-class sloving_maze_by_RL extends Module{
+class solving_maze_by_RL extends Module{
   val io=IO(new Bundle{
     val COL=Input(UInt(3.W))
     val ROW=Input(UInt(3.W))
@@ -66,7 +66,7 @@ class sloving_maze_by_RL extends Module{
 
 }
 
-object sloving_maze_by_RL extends App {
-  chisel3.Driver.execute(Array[String](), () => new sloving_maze_by_RL())
+object solving_maze_by_RL extends App {
+  chisel3.Driver.execute(Array[String](), () => new solving_maze_by_RL())
 }
 //- end

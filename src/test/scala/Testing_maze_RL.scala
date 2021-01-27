@@ -6,9 +6,9 @@ import scala.io.Source
 import java.io._
 import scala.util.control._
 
-class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
-  val rand1 = Source.fromFile("C:\\Users\\leduc\\rand1.txt").getLines.toArray
-  val rand2 = Source.fromFile("C:\\Users\\leduc\\rand2.txt").getLines.toArray
+class solvingMazeTester(dut:solving_maze_by_RL) extends PeekPokeTester(dut) {
+  //val rand1 = Source.fromFile("C:\\Users\\leduc\\rand1.txt").getLines.toArray
+  //val rand2 = Source.fromFile("C:\\Users\\leduc\\rand2.txt").getLines.toArray
   poke(dut.io.ROW,5)
   poke(dut.io.COL,5)
   step(4)
@@ -31,7 +31,7 @@ class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
     }
     }
   print("is tht done")
-    val Q_table = new File("C:/Users/leduc/Q_table_hardware.text")
+    val Q_table = new File("Q_table_hardware.text")
     val writer = new BufferedWriter(new FileWriter(Q_table))
 
     for(state<-0 until 25) {
@@ -63,13 +63,13 @@ class solvingMazeTester(dut:sloving_maze_by_RL) extends PeekPokeTester(dut) {
 class solvingMaze_waveform extends FlatSpec with Matchers {
   " WaveformCounter" should "pass" in {
     Driver.execute(Array("--generate-vcd-output", "on"), () =>
-      new sloving_maze_by_RL()) { c =>
+      new solving_maze_by_RL()) { c =>
       new solvingMazeTester(c)
     } should be (true)
   }
 }
 object solvingMazeTester extends App {
-  chisel3.iotesters.Driver(() => new   sloving_maze_by_RL() ) { c =>
+  chisel3.iotesters.Driver(() => new   solving_maze_by_RL() ) { c =>
     new solvingMazeTester(c)
   }
 }
